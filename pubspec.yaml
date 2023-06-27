@@ -25,6 +25,16 @@ dependencies:
   injectable: ^2.1.0
   flutter_dotenv: ^5.0.2
   intl: ^0.18.1
+  freezed_annotation: ^2.2.0
+  internet_connection_checker: ^1.0.0+1
+  json_annotation: ^4.8.1
+  cached_network_image: ^3.2.3
+  fluro: ^2.0.4
+  freezed: ^2.3.1
+  flutter_bloc: ^8.1.1
+  flutter_svg: ^2.0.2
+  flutterui_modifiers: ^0.3.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -46,6 +56,6 @@ flutter:
   uses-material-design: true
   assets:
     # - assets/icons
-    # - assets/images
+    - assets/images
     # - assets/audios
     - .env
