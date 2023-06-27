@@ -1,12 +1,29 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() {
-  runApp(const MyApp());
+import 'package:cabo_customer/core/network/remote/cabo_server/cabo_client_config.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'core/network/local/isar/isar_database.dart';
+import 'core/service_locator/service_locator.dart';
+
+void main() async {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await dotenv.load();
+    configureDependencies(
+      dio: CaboClientConfig.initApiService(
+          baseUrl: dotenv.env['CABO_SERVER_URL']),
+    );
+    await IsarDatabase.init();
+    runApp(const App());
+  }, (error, stackTrace) async {
+    throw error;
+  });
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class App extends StatelessWidget {
+  const App({super.key});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

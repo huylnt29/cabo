@@ -3,10 +3,10 @@ import 'package:dio/dio.dart';
 import 'cabo_client.dart';
 
 class CaboClientConfig {
-  static Dio initApiService({String? apiEndpoint}) {
+  static Dio initApiService({String? baseUrl}) {
     final dio = Dio();
-    if (apiEndpoint != null) {
-      dio.options.baseUrl = apiEndpoint;
+    if (baseUrl != null) {
+      dio.options.baseUrl = baseUrl;
     }
 
     dio.options.connectTimeout = const Duration(seconds: 50);
