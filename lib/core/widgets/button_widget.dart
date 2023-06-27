@@ -18,15 +18,23 @@ class ButtonWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 5,
+          backgroundColor: backgroundColor ?? AppColors.accentColor,
+          shadowColor: Colors.transparent.withOpacity(0.1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
         onPressed: () {},
         child: Text(
           title,
-          style: AppTextStyles.heading3(AppColors.secondaryColor),
+          style: AppTextStyles.heading2(AppColors.secondaryColor),
         ).padding(
           horizontal: 10,
           vertical: 12,
         ),
-      ).backgroundColor(Colors.transparent).shadow(12),
-    ).backgroundColor(backgroundColor ?? AppColors.accentColor).corner(12);
+      ),
+    );
   }
 }

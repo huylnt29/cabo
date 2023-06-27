@@ -37,6 +37,7 @@ class _CompleteScaffoldWidgetState extends State<CompleteScaffoldWidget> {
       child: Scaffold(
         backgroundColor: widget.backgroundColor ?? AppColors.primaryColor,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
           leading: (widget.backButtonEnabled!)
               ? IconButton(
@@ -47,6 +48,7 @@ class _CompleteScaffoldWidgetState extends State<CompleteScaffoldWidget> {
           title: Text(widget.appBarTitle),
           centerTitle: true,
           backgroundColor: Colors.transparent,
+          elevation: 0,
           shadowColor: Colors.black,
         ),
         body: widget.body,

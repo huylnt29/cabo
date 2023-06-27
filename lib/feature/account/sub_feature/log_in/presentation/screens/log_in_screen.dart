@@ -1,16 +1,16 @@
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/core/widgets/button_widget.dart';
-import 'package:cabo_customer/core/widgets/scaffold_widget.dart';
+import 'package:cabo_customer/core/widgets/complete_scaffold_widget.dart';
 import 'package:flutter/material.dart';
 
-class LogInSreen extends StatefulWidget {
-  const LogInSreen({super.key});
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key});
 
   @override
-  State<LogInSreen> createState() => _LogInSreenState();
+  State<LogInScreen> createState() => _LogInScreenState();
 }
 
-class _LogInSreenState extends State<LogInSreen> {
+class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
     return CompleteScaffoldWidget(

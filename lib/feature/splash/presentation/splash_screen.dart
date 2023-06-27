@@ -1,7 +1,9 @@
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
+import 'package:cabo_customer/core/router/route_config.dart';
+import 'package:cabo_customer/core/router/route_paths.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/core/theme/app_text_styles.dart';
-import 'package:cabo_customer/core/widgets/scaffold_widget.dart';
+import 'package:cabo_customer/core/widgets/complete_scaffold_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterui_modifiers/flutterui_modifiers.dart';
 
@@ -35,9 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
         child: Text(
-          'Welcome',
-          style: AppTextStyles.heading3(AppColors.primaryColor),
-        ).centered(),
+          'A car booking app that eases your journey',
+          textAlign: TextAlign.center,
+          style: AppTextStyles.heading1(AppColors.primaryColor),
+        ).align(Alignment.center),
       ).frame(
         height: double.infinity,
         width: double.infinity,
@@ -45,5 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<void> checkRoute() async {}
+  Future<void> checkRoute() async {
+    Routes.router.navigateTo(context, RoutePath.logInScreen);
+  }
 }
