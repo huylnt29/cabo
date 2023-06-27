@@ -12,6 +12,10 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/log_in_illustration.png
+  AssetGenImage get logInIllustration =>
+      const AssetGenImage('assets/images/log_in_illustration.png');
+
   /// File path: assets/images/splash_screen_background.jpg
   AssetGenImage get splashScreenBackground =>
       const AssetGenImage('assets/images/splash_screen_background.jpg');
@@ -20,7 +24,8 @@ class $AssetsImagesGen {
   AssetGenImage get success => const AssetGenImage('assets/images/success.gif');
 
   /// List of all assets
-  List<AssetGenImage> get values => [splashScreenBackground, success];
+  List<AssetGenImage> get values =>
+      [logInIllustration, splashScreenBackground, success];
 }
 
 class Assets {

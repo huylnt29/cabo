@@ -12,11 +12,12 @@ class ButtonWidget extends StatelessWidget {
   }) : super(key: key);
   final Color? backgroundColor;
   final String title;
-  final Function onPressed;
+  // ignore: prefer_typing_uninitialized_variables
+  final onPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 5,
@@ -26,7 +27,7 @@ class ButtonWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        onPressed: () {},
+        onPressed: onPressed,
         child: Text(
           title,
           style: AppTextStyles.heading2(AppColors.secondaryColor),

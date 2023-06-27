@@ -27,6 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return CompleteScaffoldWidget(
+      appBarOverlapped: true,
       backButtonEnabled: false,
       appBarTitle: 'Cabo',
       body: Container(

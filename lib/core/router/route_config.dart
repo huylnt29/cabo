@@ -13,6 +13,7 @@ class Routes {
   static void configureRoutes() {
     setRouter(RoutePath.splashScreen, handler: splashScreenHandler);
     setRouter(RoutePath.logInScreen, handler: logInScreenHandler);
+    setRouter(RoutePath.otpScreen, handler: otpScreenHandler);
   }
 
   static void setRouter(String path,

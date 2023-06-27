@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class CompleteScaffoldWidget extends StatefulWidget {
   const CompleteScaffoldWidget({
+    this.appBarOverlapped = false,
     this.backButtonEnabled = true,
     required this.appBarTitle,
     required this.body,
@@ -13,6 +14,7 @@ class CompleteScaffoldWidget extends StatefulWidget {
     Key? key,
     this.onTapScreen,
   }) : super(key: key);
+  final bool? appBarOverlapped;
   final bool? backButtonEnabled;
   final String appBarTitle;
   final Widget body;
@@ -37,11 +39,14 @@ class _CompleteScaffoldWidgetState extends State<CompleteScaffoldWidget> {
       child: Scaffold(
         backgroundColor: widget.backgroundColor ?? AppColors.primaryColor,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-        extendBodyBehindAppBar: true,
+        extendBodyBehindAppBar: widget.appBarOverlapped!,
         appBar: AppBar(
           leading: (widget.backButtonEnabled!)
               ? IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: AppColors.primaryColor,
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
                 )
               : Container(),
