@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../app_local_key.dart';
+import '../../network_key.dart';
 import 'shared_preferences_request_model.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -20,7 +20,7 @@ class SharedPreferencesHelper {
 
   String getAccessTokenKey() {
     try {
-      return _pref.getString(AppLocalKey.accessToken) ?? '';
+      return _pref.getString(NetworkKey.accessToken) ?? '';
     } catch (e) {
       return '';
     }
@@ -28,7 +28,7 @@ class SharedPreferencesHelper {
 
   String? getAccount() {
     try {
-      return _pref.getString(AppLocalKey.account);
+      return _pref.getString(NetworkKey.account);
     } catch (e) {
       return null;
     }
@@ -36,7 +36,7 @@ class SharedPreferencesHelper {
 
   String? getUserProfileId() {
     try {
-      return _pref.getString(AppLocalKey.userProfileId);
+      return _pref.getString(NetworkKey.userProfileId);
     } catch (e) {
       return null;
     }
@@ -44,19 +44,19 @@ class SharedPreferencesHelper {
 
   //Set authKey
   Future<void> setAccessToken(String apiTokenKey) async {
-    await _pref.setString(AppLocalKey.accessToken, apiTokenKey);
+    await _pref.setString(NetworkKey.accessToken, apiTokenKey);
   }
 
   Future<bool> setUserProfileId(String value) async {
     try {
-      return _pref.setString(AppLocalKey.userProfileId, value);
+      return _pref.setString(NetworkKey.userProfileId, value);
     } catch (e) {
       return false;
     }
   }
 
   Future<void> removeAccessToken() async {
-    await _pref.remove(AppLocalKey.accessToken);
+    await _pref.remove(NetworkKey.accessToken);
   }
 
   String? getString(String key) {

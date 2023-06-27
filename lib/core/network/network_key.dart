@@ -1,5 +1,5 @@
-class AppLocalKey {
-  AppLocalKey._internall();
+class NetworkKey {
+  NetworkKey._internall();
   static const String listMaximumSentOtp = 'listMaximumSentOtp';
   static const String accessToken = 'access_token';
   static const String refreshToken = 'refresh_token';
