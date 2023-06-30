@@ -8,11 +8,16 @@ class TextFormFieldWidget extends StatefulWidget {
     required this.textInputType,
     required this.colorTheme,
     required this.labelText,
+    this.controller,
+    this.validator,
     super.key,
   });
   final TextInputType textInputType;
   final Color colorTheme;
   final String labelText;
+  final TextEditingController? controller;
+  // ignore: prefer_typing_uninitialized_variables
+  final String? Function(String?)? validator;
   @override
   State<TextFormFieldWidget> createState() => _TextFormFieldWidgetState();
 }
@@ -23,6 +28,8 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        controller: widget.controller,
+        validator: widget.validator,
         style: TextStyle(color: widget.colorTheme),
         cursorColor: widget.colorTheme,
         keyboardType: widget.textInputType,

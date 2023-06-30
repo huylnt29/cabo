@@ -1,5 +1,6 @@
-import 'package:cabo_customer/feature/account/sub_feature/log_in/presentation/screens/input_otp_screen.dart';
-import 'package:cabo_customer/feature/account/sub_feature/log_in/presentation/screens/log_in_screen.dart';
+import 'package:cabo_customer/feature/account/presentation/log_in/input_otp_screen.dart';
+import 'package:cabo_customer/feature/account/presentation/log_in/log_in_screen.dart';
+import 'package:cabo_customer/feature/home/presentation/home_screen.dart';
 import 'package:cabo_customer/feature/splash/presentation/splash_screen.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/widgets.dart';
@@ -17,4 +18,9 @@ Handler logInScreenHandler = Handler(
 Handler otpScreenHandler = Handler(
   handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
       const OtpScreen(),
+);
+
+Handler homeScreenHandler = Handler(
+  handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
+      const HomeScreen(),
 );

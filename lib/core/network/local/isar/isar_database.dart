@@ -1,12 +1,12 @@
 import 'dart:io';
+import 'package:cabo_customer/feature/account/data/model/account_model.dart';
+import 'package:cabo_customer/feature/account/data/model/customer_model.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:cabo_customer/feature/account/model/account_model.dart';
-import 'package:cabo_customer/feature/account/model/customer_model.dart';
 import 'package:isar/isar.dart';
 
 mixin IsarDatabase {
   static late final Isar? isar;
-  Isar? get instance => isar;
+  Isar? get isarInstance => isar;
   static Future<void> init() async {
     try {
       if (Isar.instanceNames.isNotEmpty) return;

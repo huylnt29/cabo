@@ -17,8 +17,13 @@ const CustomerSchema = CollectionSchema(
   name: r'Customer',
   id: -7623823084711604343,
   properties: {
-    r'paymentValue': PropertySchema(
+    r'customerId': PropertySchema(
       id: 0,
+      name: r'customerId',
+      type: IsarType.string,
+    ),
+    r'paymentValue': PropertySchema(
+      id: 1,
       name: r'paymentValue',
       type: IsarType.double,
     )
@@ -43,6 +48,12 @@ int _customerEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.customerId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -52,7 +63,8 @@ void _customerSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDouble(offsets[0], object.paymentValue);
+  writer.writeString(offsets[0], object.customerId);
+  writer.writeDouble(offsets[1], object.paymentValue);
 }
 
 Customer _customerDeserialize(
@@ -62,8 +74,9 @@ Customer _customerDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Customer();
+  object.customerId = reader.readStringOrNull(offsets[0]);
   object.id = id;
-  object.paymentValue = reader.readDoubleOrNull(offsets[0]);
+  object.paymentValue = reader.readDoubleOrNull(offsets[1]);
   return object;
 }
 
@@ -75,6 +88,8 @@ P _customerDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
+      return (reader.readStringOrNull(offset)) as P;
+    case 1:
       return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -170,6 +185,154 @@ extension CustomerQueryWhere on QueryBuilder<Customer, Customer, QWhereClause> {
 
 extension CustomerQueryFilter
     on QueryBuilder<Customer, Customer, QFilterCondition> {
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'customerId',
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition>
+      customerIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'customerId',
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'customerId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'customerId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'customerId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'customerId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'customerId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'customerId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'customerId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'customerId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> customerIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'customerId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition>
+      customerIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'customerId',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Customer, Customer, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -310,6 +473,18 @@ extension CustomerQueryLinks
     on QueryBuilder<Customer, Customer, QFilterCondition> {}
 
 extension CustomerQuerySortBy on QueryBuilder<Customer, Customer, QSortBy> {
+  QueryBuilder<Customer, Customer, QAfterSortBy> sortByCustomerId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'customerId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> sortByCustomerIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'customerId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Customer, Customer, QAfterSortBy> sortByPaymentValue() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'paymentValue', Sort.asc);
@@ -325,6 +500,18 @@ extension CustomerQuerySortBy on QueryBuilder<Customer, Customer, QSortBy> {
 
 extension CustomerQuerySortThenBy
     on QueryBuilder<Customer, Customer, QSortThenBy> {
+  QueryBuilder<Customer, Customer, QAfterSortBy> thenByCustomerId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'customerId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> thenByCustomerIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'customerId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Customer, Customer, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -352,6 +539,13 @@ extension CustomerQuerySortThenBy
 
 extension CustomerQueryWhereDistinct
     on QueryBuilder<Customer, Customer, QDistinct> {
+  QueryBuilder<Customer, Customer, QDistinct> distinctByCustomerId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'customerId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Customer, Customer, QDistinct> distinctByPaymentValue() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'paymentValue');
@@ -364,6 +558,12 @@ extension CustomerQueryProperty
   QueryBuilder<Customer, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Customer, String?, QQueryOperations> customerIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'customerId');
     });
   }
 

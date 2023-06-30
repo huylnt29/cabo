@@ -14,6 +14,7 @@ class Routes {
     setRouter(RoutePath.splashScreen, handler: splashScreenHandler);
     setRouter(RoutePath.logInScreen, handler: logInScreenHandler);
     setRouter(RoutePath.otpScreen, handler: otpScreenHandler);
+    setRouter(RoutePath.homeScreen, handler: homeScreenHandler);
   }
 
   static void setRouter(String path,

@@ -19,12 +19,12 @@ class _CaboClient implements CaboClient {
   String? baseUrl;
 
   @override
-  Future<bool> getId(String firebaseIdToken) async {
+  Future<String> getId(String firebaseIdToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = firebaseIdToken;
-    final _result = await _dio.fetch<bool>(_setStreamType<bool>(Options(
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -41,6 +41,33 @@ class _CaboClient implements CaboClient {
           baseUrl,
         ))));
     final value = _result.data!;
+    return value;
+  }
+
+  @override
+  Future<dynamic> checkPhone(Map<String, dynamic> body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/check-phone-existence',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
     return value;
   }
 

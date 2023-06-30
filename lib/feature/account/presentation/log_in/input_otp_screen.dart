@@ -5,39 +5,47 @@ import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/core/widgets/button_widget.dart';
 import 'package:cabo_customer/core/widgets/complete_scaffold_widget.dart';
 import 'package:cabo_customer/core/widgets/text_form_field_widget.dart';
+import 'package:cabo_customer/core/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
 
-class LogInScreen extends StatefulWidget {
-  const LogInScreen({super.key});
+class OtpScreen extends StatefulWidget {
+  const OtpScreen({super.key});
 
   @override
-  State<LogInScreen> createState() => _LogInScreenState();
+  State<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _LogInScreenState extends State<LogInScreen> {
+class _OtpScreenState extends State<OtpScreen> {
+  final otpController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return CompleteScaffoldWidget(
       backButtonEnabled: false,
-      appBarTitle: 'Log in',
+      appBarTitle: 'Verify OTP',
       backgroundColor: AppColors.secondaryColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
             Assets.images.logInIllustration.image(),
-            const TextFormFieldWidget(
-              labelText: 'Phone number',
-              textInputType: TextInputType.phone,
+            TextFormFieldWidget(
+              controller: otpController,
+              labelText: 'OTP',
+              textInputType: TextInputType.number,
               colorTheme: AppColors.primaryColor,
             ),
           ],
         ),
       ),
       bottomNavigationBar: ButtonWidget(
-          title: 'Submit',
-          onPressed: () {
-            Routes.router.navigateTo(context, RoutePath.otpScreen);
-          }),
+        title: 'Submit',
+        onPressed: () {
+          if (otpController.text.length == 4) {
+            Routes.router.navigateTo(context, RoutePath.homeScreen);
+          } else {
+            ToastWidget.show('OTP code must include 4 digits.');
+          }
+        },
+      ),
     );
   }
 }

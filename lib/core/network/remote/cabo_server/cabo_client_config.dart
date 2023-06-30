@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import 'cabo_client.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class CaboClientConfig {
   static Dio initApiService({String? baseUrl}) {
@@ -13,6 +14,11 @@ class CaboClientConfig {
     dio.options.headers['Content-Type'] = 'application/json';
 
     dio.options.headers['Accept'] = 'application/json';
+
+    dio.interceptors.add(PrettyDioLogger(
+      requestHeader: true,
+      requestBody: true,
+    ));
 
     return dio;
   }

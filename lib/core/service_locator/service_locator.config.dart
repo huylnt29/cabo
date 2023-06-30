@@ -12,6 +12,13 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
+import '../../feature/account/data/remote_data_source/authentication_remote_data_source.dart'
+    as _i5;
+import '../../feature/account/data/repository/authentication_repository_impl.dart'
+    as _i4;
+import '../../feature/account/domain/repository/authentication_repository.dart'
+    as _i3;
+
 // ignore_for_file: unnecessary_lambdas
 // ignore_for_file: lines_longer_than_80_chars
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -25,5 +32,9 @@ _i1.GetIt $initGetIt(
     environment,
     environmentFilter,
   );
+  gh.factory<_i3.AuthenticationRepository>(() =>
+      _i4.AuthenticationRepositoryImpl(
+          authenticationRemoteDataSource:
+              gh<_i5.AuthenticationRemoteDataSource>()));
   return getIt;
 }

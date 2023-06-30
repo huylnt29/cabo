@@ -37,11 +37,14 @@ class _SplashScreenState extends State<SplashScreen> {
             image: AssetImage(Assets.images.splashScreenBackground.path),
           ),
         ),
-        child: Text(
-          'A car booking app that eases your journey',
-          textAlign: TextAlign.center,
-          style: AppTextStyles.heading1(AppColors.primaryColor),
-        ).align(Alignment.center),
+        child: Padding(
+          padding: const EdgeInsets.all(36),
+          child: Text(
+            'A car booking app that eases your journey',
+            textAlign: TextAlign.center,
+            style: AppTextStyles.heading1(AppColors.primaryColor),
+          ).align(Alignment.center),
+        ),
       ).frame(
         height: double.infinity,
         width: double.infinity,
