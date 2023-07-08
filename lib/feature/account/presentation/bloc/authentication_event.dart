@@ -17,3 +17,7 @@ class OtpVerificationEvent extends AuthenticationEvent {
   OtpVerificationEvent(this.otpCode);
   String otpCode;
 }
+
+class AutoLogInEvent extends AuthenticationEvent {
+  AutoLogInEvent();
+}

@@ -35,12 +35,39 @@ class AuthenticationBloc
     on<PhoneExistenceCheckEvent>((event, emit) async {
       await _checkPhoneExistence(event, emit);
     });
-    on<OtpVerificationEvent>((event, emit) async {
-      await _verifyOtp(event, emit);
-    });
+
     on<PhoneSentToFirebaseEvent>((event, emit) async {
       await _submitSignUpForm(event, emit);
     });
+
+    on<OtpVerificationEvent>((event, emit) async {
+      await _verifyOtp(event, emit);
+    });
+
+    on<AutoLogInEvent>((event, emit) async {
+      await _logInAutomatically(event, emit);
+    });
+  }
+
+  Future<void> _logInAutomatically(
+    AutoLogInEvent event,
+    Emitter<AuthenticationState> emit,
+  ) async {
+    emit(state.copyWith(loadState: LoadState.loading));
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Logger.v('Current Firebase user: $user');
+
+      emit(state.copyWith(
+        loadState: LoadState.loaded,
+        canLoginAutomatically: true,
+      ));
+    } else {
+      emit(state.copyWith(
+        loadState: LoadState.loaded,
+        canLoginAutomatically: false,
+      ));
+    }
   }
 
   Future<void> _checkPhoneExistence(
