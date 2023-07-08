@@ -6,5 +6,7 @@ class Customer {
   Id id = Isar.autoIncrement;
   @Index(unique: true)
   String? customerId;
+  int? totalTrip;
   double? paymentValue;
+  bool? vip;
 }

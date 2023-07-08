@@ -40,4 +40,17 @@ class AuthenticationUseCase {
       throw ErrorDescription(e.toString());
     }
   }
+
+  Future<String> signUpWithCaboServer(
+      String phoneNumber, String fullName) async {
+    try {
+      final response = await authenticationRepository.signUpWithCaboServer(
+        phoneNumber,
+        fullName,
+      );
+      return response;
+    } catch (e) {
+      throw ErrorDescription(e.toString());
+    }
+  }
 }

@@ -10,14 +10,13 @@ abstract class CaboClient {
     String baseUrl,
   }) = _CaboClient;
 
-  @POST('/get-id')
-  // After logging in successfully with Firebase, ask server for an ID in Cloud firestore
-  Future<String> getId(
-    @Body() String firebaseIdToken,
+  @POST('/auth/register')
+  // After logging in successfully with Firebase, ask server for an ID in Firebase database
+  Future<dynamic> signUpWithCaboServer(
+    @Body() Map<String, dynamic> body,
   );
 
   @POST('/check-phone-existence')
-  // Check phone before Firebase process
   Future<dynamic> checkPhone(
     @Body() Map<String, dynamic> body,
   );

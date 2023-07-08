@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
 import 'package:cabo_customer/core/router/route_config.dart';
 import 'package:cabo_customer/core/router/route_paths.dart';
@@ -62,7 +64,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 fullnameController.text,
               ),
             );
-            Routes.router.navigateTo(context, RoutePath.otpScreen);
+            Timer(
+              const Duration(seconds: 3),
+              () => Routes.router.navigateTo(context, RoutePath.otpScreen),
+            );
           }),
     );
   }

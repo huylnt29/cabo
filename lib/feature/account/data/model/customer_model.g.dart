@@ -26,6 +26,16 @@ const CustomerSchema = CollectionSchema(
       id: 1,
       name: r'paymentValue',
       type: IsarType.double,
+    ),
+    r'totalTrip': PropertySchema(
+      id: 2,
+      name: r'totalTrip',
+      type: IsarType.long,
+    ),
+    r'vip': PropertySchema(
+      id: 3,
+      name: r'vip',
+      type: IsarType.bool,
     )
   },
   estimateSize: _customerEstimateSize,
@@ -79,6 +89,8 @@ void _customerSerialize(
 ) {
   writer.writeString(offsets[0], object.customerId);
   writer.writeDouble(offsets[1], object.paymentValue);
+  writer.writeLong(offsets[2], object.totalTrip);
+  writer.writeBool(offsets[3], object.vip);
 }
 
 Customer _customerDeserialize(
@@ -91,6 +103,8 @@ Customer _customerDeserialize(
   object.customerId = reader.readStringOrNull(offsets[0]);
   object.id = id;
   object.paymentValue = reader.readDoubleOrNull(offsets[1]);
+  object.totalTrip = reader.readLongOrNull(offsets[2]);
+  object.vip = reader.readBoolOrNull(offsets[3]);
   return object;
 }
 
@@ -105,6 +119,10 @@ P _customerDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readDoubleOrNull(offset)) as P;
+    case 2:
+      return (reader.readLongOrNull(offset)) as P;
+    case 3:
+      return (reader.readBoolOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -598,6 +616,101 @@ extension CustomerQueryFilter
       ));
     });
   }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> totalTripIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'totalTrip',
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> totalTripIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'totalTrip',
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> totalTripEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'totalTrip',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> totalTripGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'totalTrip',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> totalTripLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'totalTrip',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> totalTripBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'totalTrip',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> vipIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'vip',
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> vipIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'vip',
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterFilterCondition> vipEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'vip',
+        value: value,
+      ));
+    });
+  }
 }
 
 extension CustomerQueryObject
@@ -628,6 +741,30 @@ extension CustomerQuerySortBy on QueryBuilder<Customer, Customer, QSortBy> {
   QueryBuilder<Customer, Customer, QAfterSortBy> sortByPaymentValueDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'paymentValue', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> sortByTotalTrip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalTrip', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> sortByTotalTripDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalTrip', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> sortByVip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'vip', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> sortByVipDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'vip', Sort.desc);
     });
   }
 }
@@ -669,6 +806,30 @@ extension CustomerQuerySortThenBy
       return query.addSortBy(r'paymentValue', Sort.desc);
     });
   }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> thenByTotalTrip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalTrip', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> thenByTotalTripDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalTrip', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> thenByVip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'vip', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterSortBy> thenByVipDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'vip', Sort.desc);
+    });
+  }
 }
 
 extension CustomerQueryWhereDistinct
@@ -683,6 +844,18 @@ extension CustomerQueryWhereDistinct
   QueryBuilder<Customer, Customer, QDistinct> distinctByPaymentValue() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'paymentValue');
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QDistinct> distinctByTotalTrip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'totalTrip');
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QDistinct> distinctByVip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'vip');
     });
   }
 }
@@ -704,6 +877,18 @@ extension CustomerQueryProperty
   QueryBuilder<Customer, double?, QQueryOperations> paymentValueProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'paymentValue');
+    });
+  }
+
+  QueryBuilder<Customer, int?, QQueryOperations> totalTripProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'totalTrip');
+    });
+  }
+
+  QueryBuilder<Customer, bool?, QQueryOperations> vipProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'vip');
     });
   }
 }

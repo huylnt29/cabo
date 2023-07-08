@@ -115,19 +115,37 @@ class AuthenticationBloc
         final idToken = await user.getIdToken();
         Logger.v('ID token $idToken');
 
+        await putAccountIntoIsar(idToken);
+        final customerId = await getCustomerId();
+        Logger.v('Customer ID: $customerId');
+        await putCustomerIntoIsar(customerId);
+
         emit(state.copyWith(
           loadState: LoadState.loaded,
           otpCorrect: true,
         ));
-
-        await _authenticationUseCase.insertNewAccount(
-          idToken,
-          phoneNumber,
-          fullName,
-        );
       }
     } on FirebaseAuthException catch (e) {
       Logger.e(e.message);
     }
+  }
+
+  Future<void> putAccountIntoIsar(String idToken) async {
+    await _authenticationUseCase.insertNewAccount(
+      idToken,
+      phoneNumber,
+      fullName,
+    );
+  }
+
+  Future<String> getCustomerId() async {
+    return await _authenticationUseCase.signUpWithCaboServer(
+      phoneNumber,
+      fullName,
+    );
+  }
+
+  Future<void> putCustomerIntoIsar(String customerId) async {
+    await _authenticationUseCase.insertNewCustomer(customerId);
   }
 }

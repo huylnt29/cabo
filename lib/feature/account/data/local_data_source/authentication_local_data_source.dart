@@ -7,7 +7,11 @@ class AuthenticationLocalDataSource with IsarDatabase {
   Future<int> insertNewCustomer(String customerId) async {
     final customerCollection = isarInstance!.collection<Customer>();
     final customer = Customer()..customerId = customerId;
-    return await customerCollection.put(customer);
+    int customerKey = -1;
+    await isarInstance!.writeTxn(() async {
+      customerKey = await customerCollection.putByCustomerId(customer);
+    });
+    return customerKey;
   }
 
   Future<int> insertNewAccount(
@@ -23,7 +27,7 @@ class AuthenticationLocalDataSource with IsarDatabase {
 
     int accountKey = -1;
     await isarInstance!.writeTxn(() async {
-      accountKey = await accountCollection.put(account);
+      accountKey = await accountCollection.putByPhoneNumber(account);
     });
     return accountKey;
   }

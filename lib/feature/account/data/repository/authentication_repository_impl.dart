@@ -35,4 +35,13 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       fullName,
     );
   }
+
+  @override
+  Future<String> signUpWithCaboServer(
+      String phoneNumber, String fullName) async {
+    return authenticationRemoteDataSource.signUpWithCaboServer(
+      phoneNumber,
+      fullName,
+    );
+  }
 }

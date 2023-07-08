@@ -19,19 +19,20 @@ class _CaboClient implements CaboClient {
   String? baseUrl;
 
   @override
-  Future<String> getId(String firebaseIdToken) async {
+  Future<dynamic> signUpWithCaboServer(Map<String, dynamic> body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = firebaseIdToken;
-    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/get-id',
+          '/auth/register',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -40,7 +41,7 @@ class _CaboClient implements CaboClient {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data!;
+    final value = _result.data;
     return value;
   }
 

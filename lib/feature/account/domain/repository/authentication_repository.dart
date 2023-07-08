@@ -6,4 +6,5 @@ abstract class AuthenticationRepository {
     String phoneNumber,
     String fullName,
   );
+  Future<String> signUpWithCaboServer(String phoneNumber, String fullName);
 }

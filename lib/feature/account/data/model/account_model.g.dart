@@ -48,7 +48,7 @@ const AccountSchema = CollectionSchema(
       id: 5414128966131364535,
       name: r'phoneNumber',
       unique: true,
-      replace: false,
+      replace: true,
       properties: [
         IndexPropertySchema(
           name: r'phoneNumber',
