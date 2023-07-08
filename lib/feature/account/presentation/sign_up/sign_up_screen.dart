@@ -32,43 +32,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CompleteScaffoldWidget(
-      backButtonEnabled: false,
-      appBarTitle: 'Log in',
-      backgroundColor: AppColors.secondaryColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Assets.images.logInIllustration.image(height: 300),
-            TextFormFieldWidget(
-              controller: phoneNumerController,
-              labelText: 'Phone number',
-              textInputType: TextInputType.phone,
-              colorTheme: AppColors.primaryColor,
-            ),
-            TextFormFieldWidget(
-              controller: fullnameController,
-              labelText: 'Full name',
-              textInputType: TextInputType.text,
-              colorTheme: AppColors.primaryColor,
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: ButtonWidget(
-          title: 'Submit',
-          onPressed: () {
-            _authenticationBloc.add(
-              PhoneSentToFirebaseEvent(
-                phoneNumerController.text,
-                fullnameController.text,
+    return BlocListener<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {
+        if (state.canNavigateToOtpScreen) {
+          Routes.router.navigateTo(context, RoutePath.otpScreen);
+        }
+      },
+      child: CompleteScaffoldWidget(
+        backButtonEnabled: false,
+        appBarTitle: 'Log in',
+        backgroundColor: AppColors.secondaryColor,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Assets.images.logInIllustration.image(height: 300),
+              TextFormFieldWidget(
+                controller: phoneNumerController,
+                labelText: 'Phone number',
+                textInputType: TextInputType.phone,
+                colorTheme: AppColors.primaryColor,
               ),
-            );
-            Timer(
-              const Duration(seconds: 3),
-              () => Routes.router.navigateTo(context, RoutePath.otpScreen),
-            );
-          }),
+              TextFormFieldWidget(
+                controller: fullnameController,
+                labelText: 'Full name',
+                textInputType: TextInputType.text,
+                colorTheme: AppColors.primaryColor,
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: ButtonWidget(
+            title: 'Submit',
+            onPressed: () {
+              _authenticationBloc.add(
+                PhoneSentToFirebaseEvent(
+                  phoneNumerController.text,
+                  fullnameController.text,
+                ),
+              );
+            }),
+      ),
     );
   }
 }

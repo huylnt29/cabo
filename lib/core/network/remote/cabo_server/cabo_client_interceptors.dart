@@ -12,7 +12,7 @@ class CaboClientInterceptors extends InterceptorsWrapper with IsarDatabase {
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     if (isarInstance == null) return;
-    final account = (await isarInstance!.accounts.get(1));
+    final account = await isarInstance!.accounts.get(1);
     if (account == null) return;
     final idToken = account.firestoreIdToken;
 

@@ -66,6 +66,7 @@ class AuthenticationBloc
       fullName = event.fullName;
       phoneNumber = event.phoneNumber;
       await _authenticateWithPhone(event, emit);
+      emit(state.copyWith(canNavigateToOtpScreen: true));
     }
   }
 

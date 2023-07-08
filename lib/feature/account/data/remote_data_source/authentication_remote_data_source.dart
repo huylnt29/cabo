@@ -17,7 +17,6 @@ class AuthenticationRemoteDataSource {
       'phoneNumber': phoneNumber,
       'fullName': fullName,
     });
-    final decodedResponse = json.decode(response);
-    return decodedResponse['customerId'];
+    return response['customerId'];
   }
 }

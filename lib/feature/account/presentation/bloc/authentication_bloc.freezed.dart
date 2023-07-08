@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$AuthenticationState {
   bool get canLoginAutomatically => throw _privateConstructorUsedError;
+  bool get canNavigateToOtpScreen => throw _privateConstructorUsedError;
   bool get otpCorrect => throw _privateConstructorUsedError;
   LoadState get loadState => throw _privateConstructorUsedError;
 
@@ -31,7 +32,11 @@ abstract class $AuthenticationStateCopyWith<$Res> {
           AuthenticationState value, $Res Function(AuthenticationState) then) =
       _$AuthenticationStateCopyWithImpl<$Res, AuthenticationState>;
   @useResult
-  $Res call({bool canLoginAutomatically, bool otpCorrect, LoadState loadState});
+  $Res call(
+      {bool canLoginAutomatically,
+      bool canNavigateToOtpScreen,
+      bool otpCorrect,
+      LoadState loadState});
 }
 
 /// @nodoc
@@ -48,6 +53,7 @@ class _$AuthenticationStateCopyWithImpl<$Res, $Val extends AuthenticationState>
   @override
   $Res call({
     Object? canLoginAutomatically = null,
+    Object? canNavigateToOtpScreen = null,
     Object? otpCorrect = null,
     Object? loadState = null,
   }) {
@@ -55,6 +61,10 @@ class _$AuthenticationStateCopyWithImpl<$Res, $Val extends AuthenticationState>
       canLoginAutomatically: null == canLoginAutomatically
           ? _value.canLoginAutomatically
           : canLoginAutomatically // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canNavigateToOtpScreen: null == canNavigateToOtpScreen
+          ? _value.canNavigateToOtpScreen
+          : canNavigateToOtpScreen // ignore: cast_nullable_to_non_nullable
               as bool,
       otpCorrect: null == otpCorrect
           ? _value.otpCorrect
@@ -76,7 +86,11 @@ abstract class _$$_AuthenticationStateCopyWith<$Res>
       __$$_AuthenticationStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool canLoginAutomatically, bool otpCorrect, LoadState loadState});
+  $Res call(
+      {bool canLoginAutomatically,
+      bool canNavigateToOtpScreen,
+      bool otpCorrect,
+      LoadState loadState});
 }
 
 /// @nodoc
@@ -91,6 +105,7 @@ class __$$_AuthenticationStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? canLoginAutomatically = null,
+    Object? canNavigateToOtpScreen = null,
     Object? otpCorrect = null,
     Object? loadState = null,
   }) {
@@ -98,6 +113,10 @@ class __$$_AuthenticationStateCopyWithImpl<$Res>
       canLoginAutomatically: null == canLoginAutomatically
           ? _value.canLoginAutomatically
           : canLoginAutomatically // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canNavigateToOtpScreen: null == canNavigateToOtpScreen
+          ? _value.canNavigateToOtpScreen
+          : canNavigateToOtpScreen // ignore: cast_nullable_to_non_nullable
               as bool,
       otpCorrect: null == otpCorrect
           ? _value.otpCorrect
@@ -116,6 +135,7 @@ class __$$_AuthenticationStateCopyWithImpl<$Res>
 class _$_AuthenticationState implements _AuthenticationState {
   const _$_AuthenticationState(
       {this.canLoginAutomatically = false,
+      this.canNavigateToOtpScreen = false,
       this.otpCorrect = false,
       required this.loadState});
 
@@ -124,13 +144,16 @@ class _$_AuthenticationState implements _AuthenticationState {
   final bool canLoginAutomatically;
   @override
   @JsonKey()
+  final bool canNavigateToOtpScreen;
+  @override
+  @JsonKey()
   final bool otpCorrect;
   @override
   final LoadState loadState;
 
   @override
   String toString() {
-    return 'AuthenticationState(canLoginAutomatically: $canLoginAutomatically, otpCorrect: $otpCorrect, loadState: $loadState)';
+    return 'AuthenticationState(canLoginAutomatically: $canLoginAutomatically, canNavigateToOtpScreen: $canNavigateToOtpScreen, otpCorrect: $otpCorrect, loadState: $loadState)';
   }
 
   @override
@@ -140,6 +163,8 @@ class _$_AuthenticationState implements _AuthenticationState {
             other is _$_AuthenticationState &&
             (identical(other.canLoginAutomatically, canLoginAutomatically) ||
                 other.canLoginAutomatically == canLoginAutomatically) &&
+            (identical(other.canNavigateToOtpScreen, canNavigateToOtpScreen) ||
+                other.canNavigateToOtpScreen == canNavigateToOtpScreen) &&
             (identical(other.otpCorrect, otpCorrect) ||
                 other.otpCorrect == otpCorrect) &&
             (identical(other.loadState, loadState) ||
@@ -147,8 +172,8 @@ class _$_AuthenticationState implements _AuthenticationState {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, canLoginAutomatically, otpCorrect, loadState);
+  int get hashCode => Object.hash(runtimeType, canLoginAutomatically,
+      canNavigateToOtpScreen, otpCorrect, loadState);
 
   @JsonKey(ignore: true)
   @override
@@ -161,11 +186,14 @@ class _$_AuthenticationState implements _AuthenticationState {
 abstract class _AuthenticationState implements AuthenticationState {
   const factory _AuthenticationState(
       {final bool canLoginAutomatically,
+      final bool canNavigateToOtpScreen,
       final bool otpCorrect,
       required final LoadState loadState}) = _$_AuthenticationState;
 
   @override
   bool get canLoginAutomatically;
+  @override
+  bool get canNavigateToOtpScreen;
   @override
   bool get otpCorrect;
   @override
