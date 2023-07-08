@@ -74,7 +74,7 @@ class AuthenticationBloc
     emit(state.copyWith(loadState: LoadState.loading));
 
     await auth.verifyPhoneNumber(
-      phoneNumber: '+84${event.phoneNumber}',
+      phoneNumber: '+1${event.phoneNumber}',
       verificationCompleted: (credential) async {
         await auth.signInWithCredential(credential);
       },
@@ -88,7 +88,7 @@ class AuthenticationBloc
       },
       codeSent: (verificationId, forceResendToken) async {
         firebaseVerificationId = verificationId;
-        Logger.i('Code sent.');
+        Logger.v('Code sent.');
         Logger.v('Verification ID: $verificationId');
         firebaseVerificationId = verificationId;
       },
