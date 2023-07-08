@@ -12,7 +12,7 @@ class Routes {
 
   static void configureRoutes() {
     setRouter(RoutePath.splashScreen, handler: splashScreenHandler);
-    setRouter(RoutePath.logInScreen, handler: logInScreenHandler);
+    setRouter(RoutePath.logInScreen, handler: signUpScreenHandler);
     setRouter(RoutePath.otpScreen, handler: otpScreenHandler);
     setRouter(RoutePath.homeScreen, handler: homeScreenHandler);
   }

@@ -43,7 +43,21 @@ const AccountSchema = CollectionSchema(
   deserialize: _accountDeserialize,
   deserializeProp: _accountDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'phoneNumber': IndexSchema(
+      id: 5414128966131364535,
+      name: r'phoneNumber',
+      unique: true,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'phoneNumber',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _accountGetId,
@@ -144,6 +158,61 @@ void _accountAttach(IsarCollection<dynamic> col, Id id, Account object) {
   object.id = id;
 }
 
+extension AccountByIndex on IsarCollection<Account> {
+  Future<Account?> getByPhoneNumber(String? phoneNumber) {
+    return getByIndex(r'phoneNumber', [phoneNumber]);
+  }
+
+  Account? getByPhoneNumberSync(String? phoneNumber) {
+    return getByIndexSync(r'phoneNumber', [phoneNumber]);
+  }
+
+  Future<bool> deleteByPhoneNumber(String? phoneNumber) {
+    return deleteByIndex(r'phoneNumber', [phoneNumber]);
+  }
+
+  bool deleteByPhoneNumberSync(String? phoneNumber) {
+    return deleteByIndexSync(r'phoneNumber', [phoneNumber]);
+  }
+
+  Future<List<Account?>> getAllByPhoneNumber(List<String?> phoneNumberValues) {
+    final values = phoneNumberValues.map((e) => [e]).toList();
+    return getAllByIndex(r'phoneNumber', values);
+  }
+
+  List<Account?> getAllByPhoneNumberSync(List<String?> phoneNumberValues) {
+    final values = phoneNumberValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'phoneNumber', values);
+  }
+
+  Future<int> deleteAllByPhoneNumber(List<String?> phoneNumberValues) {
+    final values = phoneNumberValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'phoneNumber', values);
+  }
+
+  int deleteAllByPhoneNumberSync(List<String?> phoneNumberValues) {
+    final values = phoneNumberValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'phoneNumber', values);
+  }
+
+  Future<Id> putByPhoneNumber(Account object) {
+    return putByIndex(r'phoneNumber', object);
+  }
+
+  Id putByPhoneNumberSync(Account object, {bool saveLinks = true}) {
+    return putByIndexSync(r'phoneNumber', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByPhoneNumber(List<Account> objects) {
+    return putAllByIndex(r'phoneNumber', objects);
+  }
+
+  List<Id> putAllByPhoneNumberSync(List<Account> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'phoneNumber', objects, saveLinks: saveLinks);
+  }
+}
+
 extension AccountQueryWhereSort on QueryBuilder<Account, Account, QWhere> {
   QueryBuilder<Account, Account, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
@@ -215,6 +284,71 @@ extension AccountQueryWhere on QueryBuilder<Account, Account, QWhereClause> {
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterWhereClause> phoneNumberIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'phoneNumber',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterWhereClause> phoneNumberIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'phoneNumber',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterWhereClause> phoneNumberEqualTo(
+      String? phoneNumber) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'phoneNumber',
+        value: [phoneNumber],
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterWhereClause> phoneNumberNotEqualTo(
+      String? phoneNumber) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'phoneNumber',
+              lower: [],
+              upper: [phoneNumber],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'phoneNumber',
+              lower: [phoneNumber],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'phoneNumber',
+              lower: [phoneNumber],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'phoneNumber',
+              lower: [],
+              upper: [phoneNumber],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }

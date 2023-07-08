@@ -6,6 +6,7 @@ class Account {
   Id id = Isar.autoIncrement;
   String? firestoreIdToken;
   String? fullName;
+  @Index(unique: true)
   String? phoneNumber;
   String? avatarPath;
 }

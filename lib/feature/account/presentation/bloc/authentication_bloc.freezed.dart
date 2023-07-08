@@ -16,10 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AuthenticationState {
-  bool? get phoneExisted => throw _privateConstructorUsedError;
-  bool? get otpSentToDevice => throw _privateConstructorUsedError;
-  bool? get otpCorrect => throw _privateConstructorUsedError;
-  bool? get customerIdReceived => throw _privateConstructorUsedError;
+  bool get canLoginAutomatically => throw _privateConstructorUsedError;
+  bool get otpCorrect => throw _privateConstructorUsedError;
   LoadState get loadState => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -33,12 +31,7 @@ abstract class $AuthenticationStateCopyWith<$Res> {
           AuthenticationState value, $Res Function(AuthenticationState) then) =
       _$AuthenticationStateCopyWithImpl<$Res, AuthenticationState>;
   @useResult
-  $Res call(
-      {bool? phoneExisted,
-      bool? otpSentToDevice,
-      bool? otpCorrect,
-      bool? customerIdReceived,
-      LoadState loadState});
+  $Res call({bool canLoginAutomatically, bool otpCorrect, LoadState loadState});
 }
 
 /// @nodoc
@@ -54,29 +47,19 @@ class _$AuthenticationStateCopyWithImpl<$Res, $Val extends AuthenticationState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? phoneExisted = freezed,
-    Object? otpSentToDevice = freezed,
-    Object? otpCorrect = freezed,
-    Object? customerIdReceived = freezed,
+    Object? canLoginAutomatically = null,
+    Object? otpCorrect = null,
     Object? loadState = null,
   }) {
     return _then(_value.copyWith(
-      phoneExisted: freezed == phoneExisted
-          ? _value.phoneExisted
-          : phoneExisted // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      otpSentToDevice: freezed == otpSentToDevice
-          ? _value.otpSentToDevice
-          : otpSentToDevice // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      otpCorrect: freezed == otpCorrect
+      canLoginAutomatically: null == canLoginAutomatically
+          ? _value.canLoginAutomatically
+          : canLoginAutomatically // ignore: cast_nullable_to_non_nullable
+              as bool,
+      otpCorrect: null == otpCorrect
           ? _value.otpCorrect
           : otpCorrect // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      customerIdReceived: freezed == customerIdReceived
-          ? _value.customerIdReceived
-          : customerIdReceived // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       loadState: null == loadState
           ? _value.loadState
           : loadState // ignore: cast_nullable_to_non_nullable
@@ -93,12 +76,7 @@ abstract class _$$_AuthenticationStateCopyWith<$Res>
       __$$_AuthenticationStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {bool? phoneExisted,
-      bool? otpSentToDevice,
-      bool? otpCorrect,
-      bool? customerIdReceived,
-      LoadState loadState});
+  $Res call({bool canLoginAutomatically, bool otpCorrect, LoadState loadState});
 }
 
 /// @nodoc
@@ -112,29 +90,19 @@ class __$$_AuthenticationStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? phoneExisted = freezed,
-    Object? otpSentToDevice = freezed,
-    Object? otpCorrect = freezed,
-    Object? customerIdReceived = freezed,
+    Object? canLoginAutomatically = null,
+    Object? otpCorrect = null,
     Object? loadState = null,
   }) {
     return _then(_$_AuthenticationState(
-      phoneExisted: freezed == phoneExisted
-          ? _value.phoneExisted
-          : phoneExisted // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      otpSentToDevice: freezed == otpSentToDevice
-          ? _value.otpSentToDevice
-          : otpSentToDevice // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      otpCorrect: freezed == otpCorrect
+      canLoginAutomatically: null == canLoginAutomatically
+          ? _value.canLoginAutomatically
+          : canLoginAutomatically // ignore: cast_nullable_to_non_nullable
+              as bool,
+      otpCorrect: null == otpCorrect
           ? _value.otpCorrect
           : otpCorrect // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      customerIdReceived: freezed == customerIdReceived
-          ? _value.customerIdReceived
-          : customerIdReceived // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       loadState: null == loadState
           ? _value.loadState
           : loadState // ignore: cast_nullable_to_non_nullable
@@ -147,26 +115,22 @@ class __$$_AuthenticationStateCopyWithImpl<$Res>
 
 class _$_AuthenticationState implements _AuthenticationState {
   const _$_AuthenticationState(
-      {this.phoneExisted,
-      this.otpSentToDevice,
-      this.otpCorrect,
-      this.customerIdReceived,
+      {this.canLoginAutomatically = false,
+      this.otpCorrect = false,
       required this.loadState});
 
   @override
-  final bool? phoneExisted;
+  @JsonKey()
+  final bool canLoginAutomatically;
   @override
-  final bool? otpSentToDevice;
-  @override
-  final bool? otpCorrect;
-  @override
-  final bool? customerIdReceived;
+  @JsonKey()
+  final bool otpCorrect;
   @override
   final LoadState loadState;
 
   @override
   String toString() {
-    return 'AuthenticationState(phoneExisted: $phoneExisted, otpSentToDevice: $otpSentToDevice, otpCorrect: $otpCorrect, customerIdReceived: $customerIdReceived, loadState: $loadState)';
+    return 'AuthenticationState(canLoginAutomatically: $canLoginAutomatically, otpCorrect: $otpCorrect, loadState: $loadState)';
   }
 
   @override
@@ -174,21 +138,17 @@ class _$_AuthenticationState implements _AuthenticationState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AuthenticationState &&
-            (identical(other.phoneExisted, phoneExisted) ||
-                other.phoneExisted == phoneExisted) &&
-            (identical(other.otpSentToDevice, otpSentToDevice) ||
-                other.otpSentToDevice == otpSentToDevice) &&
+            (identical(other.canLoginAutomatically, canLoginAutomatically) ||
+                other.canLoginAutomatically == canLoginAutomatically) &&
             (identical(other.otpCorrect, otpCorrect) ||
                 other.otpCorrect == otpCorrect) &&
-            (identical(other.customerIdReceived, customerIdReceived) ||
-                other.customerIdReceived == customerIdReceived) &&
             (identical(other.loadState, loadState) ||
                 other.loadState == loadState));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, phoneExisted, otpSentToDevice,
-      otpCorrect, customerIdReceived, loadState);
+  int get hashCode =>
+      Object.hash(runtimeType, canLoginAutomatically, otpCorrect, loadState);
 
   @JsonKey(ignore: true)
   @override
@@ -200,20 +160,14 @@ class _$_AuthenticationState implements _AuthenticationState {
 
 abstract class _AuthenticationState implements AuthenticationState {
   const factory _AuthenticationState(
-      {final bool? phoneExisted,
-      final bool? otpSentToDevice,
-      final bool? otpCorrect,
-      final bool? customerIdReceived,
+      {final bool canLoginAutomatically,
+      final bool otpCorrect,
       required final LoadState loadState}) = _$_AuthenticationState;
 
   @override
-  bool? get phoneExisted;
+  bool get canLoginAutomatically;
   @override
-  bool? get otpSentToDevice;
-  @override
-  bool? get otpCorrect;
-  @override
-  bool? get customerIdReceived;
+  bool get otpCorrect;
   @override
   LoadState get loadState;
   @override

@@ -8,8 +8,9 @@ class PhoneExistenceCheckEvent extends AuthenticationEvent {
 }
 
 class PhoneSentToFirebaseEvent extends AuthenticationEvent {
-  PhoneSentToFirebaseEvent(this.phoneNumber);
+  PhoneSentToFirebaseEvent(this.phoneNumber, this.fullName);
   String phoneNumber;
+  String fullName;
 }
 
 class OtpVerificationEvent extends AuthenticationEvent {

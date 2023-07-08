@@ -12,6 +12,8 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
+import '../../feature/account/data/local_data_source/authentication_local_data_source.dart'
+    as _i6;
 import '../../feature/account/data/remote_data_source/authentication_remote_data_source.dart'
     as _i5;
 import '../../feature/account/data/repository/authentication_repository_impl.dart'
@@ -34,7 +36,9 @@ _i1.GetIt $initGetIt(
   );
   gh.factory<_i3.AuthenticationRepository>(() =>
       _i4.AuthenticationRepositoryImpl(
-          authenticationRemoteDataSource:
-              gh<_i5.AuthenticationRemoteDataSource>()));
+        authenticationRemoteDataSource:
+            gh<_i5.AuthenticationRemoteDataSource>(),
+        authenticationLocalDataSource: gh<_i6.AuthenticationLocalDataSource>(),
+      ));
   return getIt;
 }

@@ -24,7 +24,7 @@ class ButtonWidget extends StatelessWidget {
           backgroundColor: backgroundColor ?? AppColors.accentColor,
           shadowColor: Colors.transparent.withOpacity(0.1),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(50),
           ),
         ),
         onPressed: onPressed,

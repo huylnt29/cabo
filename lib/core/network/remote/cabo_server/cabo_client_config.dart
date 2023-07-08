@@ -1,3 +1,4 @@
+import 'package:cabo_customer/core/network/remote/cabo_server/cabo_client_interceptors.dart';
 import 'package:dio/dio.dart';
 
 import 'cabo_client.dart';
@@ -9,7 +10,7 @@ class CaboClientConfig {
     if (baseUrl != null) {
       dio.options.baseUrl = baseUrl;
     }
-
+    dio.interceptors.add(CaboClientInterceptors(dio: dio));
     dio.options.connectTimeout = const Duration(seconds: 50);
     dio.options.headers['Content-Type'] = 'application/json';
 

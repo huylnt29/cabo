@@ -47,7 +47,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             borderSide: BorderSide(color: widget.colorTheme),
           ),
         ),
-      ).margin(all: 20),
+      ).margin(top: 20, horizontal: 20),
     );
   }
 }

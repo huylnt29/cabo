@@ -33,7 +33,21 @@ const CustomerSchema = CollectionSchema(
   deserialize: _customerDeserialize,
   deserializeProp: _customerDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'customerId': IndexSchema(
+      id: 1498639901530368639,
+      name: r'customerId',
+      unique: true,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'customerId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _customerGetId,
@@ -108,6 +122,61 @@ void _customerAttach(IsarCollection<dynamic> col, Id id, Customer object) {
   object.id = id;
 }
 
+extension CustomerByIndex on IsarCollection<Customer> {
+  Future<Customer?> getByCustomerId(String? customerId) {
+    return getByIndex(r'customerId', [customerId]);
+  }
+
+  Customer? getByCustomerIdSync(String? customerId) {
+    return getByIndexSync(r'customerId', [customerId]);
+  }
+
+  Future<bool> deleteByCustomerId(String? customerId) {
+    return deleteByIndex(r'customerId', [customerId]);
+  }
+
+  bool deleteByCustomerIdSync(String? customerId) {
+    return deleteByIndexSync(r'customerId', [customerId]);
+  }
+
+  Future<List<Customer?>> getAllByCustomerId(List<String?> customerIdValues) {
+    final values = customerIdValues.map((e) => [e]).toList();
+    return getAllByIndex(r'customerId', values);
+  }
+
+  List<Customer?> getAllByCustomerIdSync(List<String?> customerIdValues) {
+    final values = customerIdValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'customerId', values);
+  }
+
+  Future<int> deleteAllByCustomerId(List<String?> customerIdValues) {
+    final values = customerIdValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'customerId', values);
+  }
+
+  int deleteAllByCustomerIdSync(List<String?> customerIdValues) {
+    final values = customerIdValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'customerId', values);
+  }
+
+  Future<Id> putByCustomerId(Customer object) {
+    return putByIndex(r'customerId', object);
+  }
+
+  Id putByCustomerIdSync(Customer object, {bool saveLinks = true}) {
+    return putByIndexSync(r'customerId', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByCustomerId(List<Customer> objects) {
+    return putAllByIndex(r'customerId', objects);
+  }
+
+  List<Id> putAllByCustomerIdSync(List<Customer> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'customerId', objects, saveLinks: saveLinks);
+  }
+}
+
 extension CustomerQueryWhereSort on QueryBuilder<Customer, Customer, QWhere> {
   QueryBuilder<Customer, Customer, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
@@ -179,6 +248,71 @@ extension CustomerQueryWhere on QueryBuilder<Customer, Customer, QWhereClause> {
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterWhereClause> customerIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'customerId',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterWhereClause> customerIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'customerId',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterWhereClause> customerIdEqualTo(
+      String? customerId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'customerId',
+        value: [customerId],
+      ));
+    });
+  }
+
+  QueryBuilder<Customer, Customer, QAfterWhereClause> customerIdNotEqualTo(
+      String? customerId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'customerId',
+              lower: [],
+              upper: [customerId],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'customerId',
+              lower: [customerId],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'customerId',
+              lower: [customerId],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'customerId',
+              lower: [],
+              upper: [customerId],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }

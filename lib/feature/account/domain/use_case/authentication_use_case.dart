@@ -14,28 +14,27 @@ class AuthenticationUseCase {
     }
   }
 
-  Future<String> getCustomerId() async {
-    try {
-      final response = await authenticationRepository.getCustomerId();
-      return response;
-    } catch (e) {
-      throw ErrorDescription(e.toString());
-    }
-  }
-
-  Future<void> authenticateWithPhone(String phoneNumber) async {
+  Future<int> insertNewCustomer(String customerId) async {
     try {
       final response =
-          await authenticationRepository.authenticateWithPhone(phoneNumber);
+          await authenticationRepository.insertNewCustomer(customerId);
       return response;
     } catch (e) {
       throw ErrorDescription(e.toString());
     }
   }
 
-  Future<bool> verifyOtp(String otp) async {
+  Future<int> insertNewAccount(
+    String firebaseIdToken,
+    String phoneNumber,
+    String fullName,
+  ) async {
     try {
-      final response = await authenticationRepository.verifyOtp(otp);
+      final response = await authenticationRepository.insertNewAccount(
+        firebaseIdToken,
+        phoneNumber,
+        fullName,
+      );
       return response;
     } catch (e) {
       throw ErrorDescription(e.toString());

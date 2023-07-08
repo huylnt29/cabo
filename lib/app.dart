@@ -1,4 +1,5 @@
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
+import 'package:cabo_customer/feature/account/data/local_data_source/authentication_local_data_source.dart';
 import 'package:cabo_customer/feature/account/data/remote_data_source/authentication_remote_data_source.dart';
 import 'package:cabo_customer/feature/account/data/repository/authentication_repository_impl.dart';
 import 'package:cabo_customer/feature/account/domain/use_case/authentication_use_case.dart';
@@ -21,6 +22,7 @@ class App extends StatelessWidget {
                 authenticationRemoteDataSource: AuthenticationRemoteDataSource(
                   getIt(),
                 ),
+                authenticationLocalDataSource: AuthenticationLocalDataSource(),
               ),
             ),
           ),

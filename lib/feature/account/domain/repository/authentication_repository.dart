@@ -1,6 +1,9 @@
 abstract class AuthenticationRepository {
   Future<bool> checkPhone(String phoneNumber);
-  Future<String> getCustomerId();
-  Future<void> authenticateWithPhone(String phoneNumber);
-  Future<bool> verifyOtp(String otp);
+  Future<int> insertNewCustomer(String customerId);
+  Future<int> insertNewAccount(
+    String firebaseIdToken,
+    String phoneNumber,
+    String fullName,
+  );
 }
