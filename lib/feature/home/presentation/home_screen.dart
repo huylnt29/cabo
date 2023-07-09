@@ -1,3 +1,4 @@
+import 'package:cabo_customer/core/widgets/complete_scaffold_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,8 +11,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Text('This is home'),
-    );
+    return Text('Home');
   }
 }

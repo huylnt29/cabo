@@ -19,17 +19,17 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<int> insertNewCustomer(String customerId) async {
-    return authenticationLocalDataSource.insertNewCustomer(customerId);
+  Future<int> putCustomer(String customerId) async {
+    return authenticationLocalDataSource.putCustomer(customerId);
   }
 
   @override
-  Future<int> insertNewAccount(
+  Future<int> putAccount(
     String firebaseIdToken,
     String phoneNumber,
     String fullName,
   ) async {
-    return authenticationLocalDataSource.insertNewAccount(
+    return authenticationLocalDataSource.putAccount(
       firebaseIdToken,
       phoneNumber,
       fullName,

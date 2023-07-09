@@ -5,6 +5,7 @@ class CompleteScaffoldWidget extends StatefulWidget {
   const CompleteScaffoldWidget({
     this.appBarOverlapped = false,
     this.backButtonEnabled = true,
+    this.actions,
     required this.appBarTitle,
     required this.body,
     this.bottomNavigationBar,
@@ -16,6 +17,7 @@ class CompleteScaffoldWidget extends StatefulWidget {
   }) : super(key: key);
   final bool? appBarOverlapped;
   final bool? backButtonEnabled;
+  final List<Widget>? actions;
   final String appBarTitle;
   final Widget body;
   final Widget? bottomNavigationBar;
@@ -50,6 +52,7 @@ class _CompleteScaffoldWidgetState extends State<CompleteScaffoldWidget> {
                   onPressed: () => Navigator.of(context).pop(),
                 )
               : Container(),
+          actions: widget.actions,
           title: Text(widget.appBarTitle),
           centerTitle: true,
           backgroundColor: Colors.transparent,

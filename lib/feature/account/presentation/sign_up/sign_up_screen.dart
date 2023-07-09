@@ -45,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Assets.images.logInIllustration.image(height: 300),
+              Assets.images.authIllustration.image(height: 300),
               TextFormFieldWidget(
                 controller: phoneNumerController,
                 labelText: 'Phone number',

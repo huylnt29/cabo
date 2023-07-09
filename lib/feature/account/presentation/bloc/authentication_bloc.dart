@@ -25,7 +25,7 @@ class AuthenticationBloc
     listenToEvents();
   }
   late AuthenticationUseCase _authenticationUseCase;
-  final auth = FirebaseAuth.instance;
+  final firebaseAuth = FirebaseAuth.instance;
 
   late String phoneNumber;
   late String fullName;
@@ -54,10 +54,19 @@ class AuthenticationBloc
     Emitter<AuthenticationState> emit,
   ) async {
     emit(state.copyWith(loadState: LoadState.loading));
-    final user = FirebaseAuth.instance.currentUser;
+    final user = firebaseAuth.currentUser;
+
     if (user != null) {
       Logger.v('Current Firebase user: $user');
+      final refreshedIdToken = await user.getIdToken(true);
 
+      Logger.v('Refreshed ID token: $refreshedIdToken');
+
+      await _authenticationUseCase.putAccount(
+        refreshedIdToken,
+        user.phoneNumber!,
+        user.displayName!,
+      );
       emit(state.copyWith(
         loadState: LoadState.loaded,
         canLoginAutomatically: true,
@@ -101,10 +110,10 @@ class AuthenticationBloc
       PhoneSentToFirebaseEvent event, Emitter<AuthenticationState> emit) async {
     emit(state.copyWith(loadState: LoadState.loading));
 
-    await auth.verifyPhoneNumber(
+    await firebaseAuth.verifyPhoneNumber(
       phoneNumber: '+1${event.phoneNumber}',
       verificationCompleted: (credential) async {
-        await auth.signInWithCredential(credential);
+        await firebaseAuth.signInWithCredential(credential);
       },
       verificationFailed: (error) {
         if (error.code == 'invalid-phone-number') {
@@ -138,7 +147,8 @@ class AuthenticationBloc
         verificationId: firebaseVerificationId,
         smsCode: event.otpCode,
       );
-      final user = (await auth.signInWithCredential(phoneCredential)).user;
+      final user =
+          (await firebaseAuth.signInWithCredential(phoneCredential)).user;
       if (user != null) {
         final idToken = await user.getIdToken();
         Logger.v('ID token $idToken');
@@ -159,7 +169,7 @@ class AuthenticationBloc
   }
 
   Future<void> putAccountIntoIsar(String idToken) async {
-    await _authenticationUseCase.insertNewAccount(
+    await _authenticationUseCase.putAccount(
       idToken,
       phoneNumber,
       fullName,
@@ -174,6 +184,6 @@ class AuthenticationBloc
   }
 
   Future<void> putCustomerIntoIsar(String customerId) async {
-    await _authenticationUseCase.insertNewCustomer(customerId);
+    await _authenticationUseCase.putCustomer(customerId);
   }
 }

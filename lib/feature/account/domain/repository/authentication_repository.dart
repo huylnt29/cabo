@@ -1,7 +1,7 @@
 abstract class AuthenticationRepository {
   Future<bool> checkPhone(String phoneNumber);
-  Future<int> insertNewCustomer(String customerId);
-  Future<int> insertNewAccount(
+  Future<int> putCustomer(String customerId);
+  Future<int> putAccount(
     String firebaseIdToken,
     String phoneNumber,
     String fullName,

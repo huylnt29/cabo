@@ -4,7 +4,7 @@ import '../model/account_model.dart';
 import '../model/customer_model.dart';
 
 class AuthenticationLocalDataSource with IsarDatabase {
-  Future<int> insertNewCustomer(String customerId) async {
+  Future<int> putCustomer(String customerId) async {
     final customerCollection = isarInstance!.collection<Customer>();
     final customer = Customer()..customerId = customerId;
     int customerKey = -1;
@@ -14,7 +14,7 @@ class AuthenticationLocalDataSource with IsarDatabase {
     return customerKey;
   }
 
-  Future<int> insertNewAccount(
+  Future<int> putAccount(
     String firebaseIdToken,
     String phoneNumber,
     String fullName,

@@ -34,7 +34,7 @@ class _OtpScreenState extends State<OtpScreen> {
         if (state.otpCorrect!) {
           Routes.router.navigateTo(
             context,
-            RoutePath.homeScreen,
+            RoutePath.bottomNavBar,
           );
         }
       },
@@ -46,7 +46,7 @@ class _OtpScreenState extends State<OtpScreen> {
           child: Center(
             child: Column(
               children: [
-                Assets.images.logInIllustration.image(height: 300),
+                Assets.images.authIllustration.image(height: 300),
                 Pinput(
                   length: 6,
                   showCursor: true,

@@ -14,23 +14,22 @@ class AuthenticationUseCase {
     }
   }
 
-  Future<int> insertNewCustomer(String customerId) async {
+  Future<int> putCustomer(String customerId) async {
     try {
-      final response =
-          await authenticationRepository.insertNewCustomer(customerId);
+      final response = await authenticationRepository.putCustomer(customerId);
       return response;
     } catch (e) {
       throw ErrorDescription(e.toString());
     }
   }
 
-  Future<int> insertNewAccount(
+  Future<int> putAccount(
     String firebaseIdToken,
     String phoneNumber,
     String fullName,
   ) async {
     try {
-      final response = await authenticationRepository.insertNewAccount(
+      final response = await authenticationRepository.putAccount(
         firebaseIdToken,
         phoneNumber,
         fullName,

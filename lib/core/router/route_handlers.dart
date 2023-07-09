@@ -1,11 +1,13 @@
-import 'package:cabo_customer/feature/account/presentation/bloc/authentication_bloc.dart';
 import 'package:cabo_customer/feature/account/presentation/sign_up/input_otp_screen.dart';
 import 'package:cabo_customer/feature/account/presentation/sign_up/sign_up_screen.dart';
+import 'package:cabo_customer/feature/bottom_nav_bar.dart';
+import 'package:cabo_customer/feature/car_booking/presentation/car_booking_screen.dart';
 import 'package:cabo_customer/feature/home/presentation/home_screen.dart';
 import 'package:cabo_customer/feature/splash/presentation/splash_screen.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../feature/drive_history/presentation/drive_history_screen.dart';
 
 Handler splashScreenHandler = Handler(
   handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
@@ -18,14 +20,25 @@ Handler signUpScreenHandler = Handler(
 );
 
 Handler otpScreenHandler = Handler(
-    handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
-  return BlocProvider.value(
-    value: BlocProvider.of<AuthenticationBloc>(context!),
-    child: OtpScreen(),
-  );
-});
+    handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
+        const OtpScreen());
+
+Handler bottomNavBarHandler = Handler(
+  handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
+      const BottomNavBar(),
+);
 
 Handler homeScreenHandler = Handler(
   handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
       const HomeScreen(),
+);
+
+Handler carBookingScreenHandler = Handler(
+  handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
+      const CarBookingScreen(),
+);
+
+Handler driveHistoryScreenHandler = Handler(
+  handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
+      const DriveHistoryScreen(),
 );
