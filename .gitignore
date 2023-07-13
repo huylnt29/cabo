@@ -46,3 +46,5 @@ pubspeck.lock
 
 .env
 phone_credentials.csv
+*.g.dart 
+*.freezed.dart
