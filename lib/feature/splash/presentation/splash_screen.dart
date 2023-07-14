@@ -1,8 +1,7 @@
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
-import 'package:cabo_customer/core/extensions/load_state.dart';
+import 'package:cabo_customer/core/enums/load_state.dart';
 import 'package:cabo_customer/core/router/route_config.dart';
 import 'package:cabo_customer/core/router/route_paths.dart';
-import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/core/theme/app_text_styles.dart';
 import 'package:cabo_customer/core/widgets/complete_scaffold_widget.dart';

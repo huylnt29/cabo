@@ -1,13 +1,16 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
-import 'package:cabo_customer/core/extensions/size_extensions.dart';
+import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/car_booking/presentation/car_booking_screen.dart';
 import 'package:cabo_customer/feature/drive_history/presentation/drive_history_screen.dart';
+import 'package:cabo_customer/feature/home/data/repository/home_repository_impl.dart';
+import 'package:cabo_customer/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:cabo_customer/feature/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -19,7 +22,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   /// Controller to handle PageView and also handles initial page
   final _screenController = PageController(initialPage: 0);
-  int screenIndex = 0;
+  final bottomNavBarIndex = ValueNotifier<int>(0);
 
   /// Controller to handle bottom nav bar and also handles initial page
   final _controller = NotchBottomBarController(index: 0);
@@ -31,18 +34,34 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   final List<Widget> bottomBarScreens = [
-    const HomeScreen(),
+    BlocProvider(
+      create: (_) => HomeBloc(
+        HomeRepositoryImpl(
+          HomeRemoteDataSource(
+            getIt(),
+          ),
+        ),
+      )..fetchDataForScreen(),
+      child: const HomeScreen(),
+    ),
     const CarBookingScreen(),
     const DriveHistoryScreen(),
   ];
 
-  final List<String> screenTitles = ['Home', 'Drive booking', 'Drive history'];
+  final List<String> screenTitles = [
+    'Home',
+    'Drive booking',
+    'Booking history',
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(screenTitles[screenIndex]),
+        title: ValueListenableBuilder(
+          valueListenable: bottomNavBarIndex,
+          builder: (context, value, child) => Text(screenTitles[value]),
+        ),
         centerTitle: true,
         leading: Container(),
         backgroundColor: AppColors.secondaryColor,
@@ -93,7 +112,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ],
         onTap: (index) {
           _screenController.jumpToPage(index);
-          setState(() => screenIndex = index);
+          bottomNavBarIndex.value = index;
         },
       ),
     );

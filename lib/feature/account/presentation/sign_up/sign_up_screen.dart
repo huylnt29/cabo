@@ -40,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       child: CompleteScaffoldWidget(
         backButtonEnabled: false,
-        appBarTitle: 'Log in',
+        appBarTitle: 'Sign up',
         backgroundColor: AppColors.secondaryColor,
         body: SingleChildScrollView(
           child: Column(

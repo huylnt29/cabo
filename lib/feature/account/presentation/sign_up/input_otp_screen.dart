@@ -1,4 +1,5 @@
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
+import 'package:cabo_customer/core/extensions/logger.dart';
 import 'package:cabo_customer/core/router/route_config.dart';
 import 'package:cabo_customer/core/router/route_paths.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
@@ -24,6 +25,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   void initState() {
     _authenticationBloc = context.read<AuthenticationBloc>();
+    Logger.d('Authentication bloc in OTP screen: $_authenticationBloc');
     super.initState();
   }
 
@@ -31,7 +33,7 @@ class _OtpScreenState extends State<OtpScreen> {
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
-        if (state.otpCorrect!) {
+        if (state.otpCorrect) {
           Routes.router.navigateTo(
             context,
             RoutePath.bottomNavBar,
