@@ -1,3 +1,5 @@
+import 'package:cabo_customer/core/constants/error_message.dart';
+import 'package:cabo_customer/core/converter/datetime_converter.dart';
 import 'package:cabo_customer/core/enums/payment_type.dart';
 
 import 'package:isar/isar.dart';
@@ -20,12 +22,24 @@ class Trip {
   String id;
   int? cost;
   int? distance;
-  int? startTime;
-  int? endTime;
+  double? startTime;
+  double? endTime;
   String? customerOrderLocation;
   String? toLocation;
   @enumerated
   PaymentType? paymentType;
 
   factory Trip.fromJson(Map<String, Object?> json) => _$TripFromJson(json);
+
+  String get formattedCost =>
+      (cost != null) ? '$cost VND' : ErrorMessage.isNotDetermined;
+
+  String get formattedDistance =>
+      (distance != null) ? '$distance km' : ErrorMessage.isNotDetermined;
+
+  String get formattedStartTime =>
+      DateTimeConverter.getTimeFirstDateAfter(startTime);
+
+  String get formattedEndTime =>
+      DateTimeConverter.getTimeFirstDateAfter(endTime);
 }

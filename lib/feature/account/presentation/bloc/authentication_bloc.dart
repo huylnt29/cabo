@@ -62,7 +62,7 @@ class AuthenticationBloc
       await _authenticationUseCase.putAccount(
         refreshedIdToken,
         user.phoneNumber!,
-        user.displayName!,
+        user.displayName ?? '',
       );
       emit(state.copyWith(
         loadState: LoadState.loaded,
@@ -108,7 +108,7 @@ class AuthenticationBloc
     emit(state.copyWith(loadState: LoadState.loading));
 
     await firebaseAuth.verifyPhoneNumber(
-      phoneNumber: '+1${event.phoneNumber}',
+      phoneNumber: '+84${event.phoneNumber}',
       verificationCompleted: (credential) async {
         await firebaseAuth.signInWithCredential(credential);
       },

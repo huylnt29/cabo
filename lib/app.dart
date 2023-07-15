@@ -6,7 +6,7 @@ import 'package:cabo_customer/feature/account/domain/use_case/authentication_use
 import 'package:cabo_customer/feature/account/presentation/bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'core/router/route_config.dart';
 
 class App extends StatelessWidget {
@@ -31,6 +31,9 @@ class App extends StatelessWidget {
       child: MaterialApp(
         onGenerateRoute: Routes.router.generator,
         initialRoute: '/',
+        theme: ThemeData(
+          fontFamily: GoogleFonts.tillana().fontFamily,
+        ),
         debugShowCheckedModeBanner: false,
       ),
     );

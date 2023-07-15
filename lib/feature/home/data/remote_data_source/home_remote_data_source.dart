@@ -9,7 +9,7 @@ class HomeRemoteDataSource with IsarDatabase {
       'totalTrip': 1,
       'recentTrip': {
         'id': '1',
-        'cost': '50000',
+        'cost': 50000,
         'distance': 12,
         'startTime': 1689261671,
         'endTime': 1689262311,

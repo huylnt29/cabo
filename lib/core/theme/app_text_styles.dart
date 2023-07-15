@@ -16,27 +16,27 @@ class AppTextStyles {
         color: color,
         fontSize: 20.sf,
         fontWeight: FontWeight.bold,
-        height: 2,
+        height: 0,
       );
 
   static TextStyle heading3(Color color) => TextStyle(
         color: color,
         fontSize: 18.sf,
         fontWeight: FontWeight.bold,
-        height: 2,
+        height: 1,
       );
 
   static TextStyle text(Color color, {bool bold = false}) => TextStyle(
         color: color,
         fontSize: 13.sf,
         fontWeight: (bold) ? FontWeight.bold : FontWeight.normal,
-        height: 2,
+        height: 1,
       );
 
   static TextStyle smallText(Color color) => TextStyle(
         color: color,
         fontSize: 11.sf,
-        height: 2,
+        height: 1,
       );
 
   static TextStyle custom({

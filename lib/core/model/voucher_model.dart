@@ -16,6 +16,7 @@ class Voucher {
     this.total,
     this.expirationEpochTime,
   });
+  @JsonKey(includeFromJson: false)
   Id isarKey = Isar.autoIncrement;
   String id;
   String? title;
@@ -29,4 +30,7 @@ class Voucher {
   String get expirationDate {
     return DateTimeConverter.getDate(expirationEpochTime);
   }
+
+  String get slotRatio =>
+      (remaining != null && total != null) ? '$remaining/$total' : '';
 }

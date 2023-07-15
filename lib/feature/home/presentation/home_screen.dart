@@ -1,6 +1,9 @@
+import 'package:cabo_customer/core/constants/error_message.dart';
 import 'package:cabo_customer/core/enums/load_state.dart';
-import 'package:cabo_customer/core/extensions/space_size_extensions.dart';
-import 'package:cabo_customer/core/widgets/complete_scaffold_widget.dart';
+import 'package:cabo_customer/core/extensions/font_size_extensions.dart';
+import 'package:cabo_customer/core/theme/app_colors.dart';
+import 'package:cabo_customer/core/theme/app_text_styles.dart';
+import 'package:cabo_customer/core/widgets/home_shimmer.dart';
 import 'package:cabo_customer/feature/home/data/model/customer_summary_model.dart';
 import 'package:cabo_customer/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +25,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) => (state.loadState == LoadState.loaded)
-          ? Column(
-              children: [
-                buildVoucherArea(state.vouchers),
-                buildSummaryArea(state.customerSummary!),
-              ],
+          ? SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildVoucherArea(state.vouchers),
+                  buildSummaryArea(state.customerSummary!),
+                ],
+              ),
             )
           : Container(),
     );
@@ -35,23 +40,179 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildVoucherArea(List<Voucher?>? vouchers) {
     if (vouchers != null && vouchers.isNotEmpty) {
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Hot discounts'),
-          ListView.separated(
-            itemBuilder: (context, index) => VoucherItem(
-              voucher: vouchers[index]!,
+          Text(
+            'Hot discounts',
+            style: AppTextStyles.heading1(
+              AppColors.secondaryColor,
             ),
-            separatorBuilder: (context, index) => 5.horizontalSpace,
-            itemCount: vouchers.length,
+          ),
+          Container(
+            height: 120.sf,
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(
+              vertical: 10.sf,
+            ),
+            child: ListView.separated(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => VoucherItem(
+                voucher: vouchers[index]!,
+              ),
+              separatorBuilder: (context, index) => 24.hSpace,
+              itemCount: vouchers.length,
+            ),
           )
         ],
       );
     } else {
-      return Container();
+      return const HomeShimmer();
     }
   }
 
   Widget buildSummaryArea(CustomerSummary customerSummary) {
-    return Text(customerSummary.totalTrip.toString());
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Summary',
+          style: AppTextStyles.heading1(
+            AppColors.secondaryColor,
+          ),
+        ),
+        12.vSpace,
+        Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 18.sf,
+              ),
+              padding: EdgeInsets.only(
+                top: 8.sf,
+                bottom: 24.sf,
+                left: 10.sf,
+                right: 10.sf,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.secondaryColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total trip',
+                    style: AppTextStyles.custom(
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    customerSummary.totalTrip.toString(),
+                    style: AppTextStyles.custom(
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: 40.sf,
+                bottom: 12.sf,
+                left: 3.sf,
+                right: 3.sf,
+              ),
+              padding: EdgeInsets.only(
+                left: 15.sf,
+                right: 15.sf,
+                bottom: 15.sf,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: const [
+                  BoxShadow(
+                    color: AppColors.accentColor,
+                    spreadRadius: 3,
+                    blurRadius: 3,
+                  )
+                ],
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Recent trip',
+                    style: AppTextStyles.heading1(
+                      AppColors.secondaryColor,
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      buildRecentTripFieldItem(
+                        'Cost',
+                        customerSummary.recentTrip!.formattedCost,
+                      ),
+                      buildRecentTripFieldItem(
+                        'Distance',
+                        customerSummary.recentTrip!.formattedDistance,
+                      ),
+                      buildRecentTripFieldItem(
+                        'Booking time',
+                        customerSummary.recentTrip!.formattedStartTime,
+                      ),
+                      buildRecentTripFieldItem(
+                        'Arriving time',
+                        customerSummary.recentTrip!.formattedEndTime,
+                      ),
+                      buildRecentTripFieldItem(
+                        'Booking location',
+                        customerSummary.recentTrip!.customerOrderLocation,
+                      ),
+                      buildRecentTripFieldItem(
+                        'Destination',
+                        customerSummary.recentTrip!.toLocation,
+                      ),
+                      buildRecentTripFieldItem(
+                        'Payment type',
+                        customerSummary.recentTrip!.paymentType?.name ??
+                            ErrorMessage.isNotDetermined,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildRecentTripFieldItem(String field, dynamic value) {
+    return Container(
+      margin: EdgeInsets.symmetric(
+        vertical: 5.sf,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            field,
+            style: AppTextStyles.custom(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          12.hSpace,
+          Expanded(
+              child: Text(
+            value.toString(),
+            textAlign: TextAlign.right,
+          )),
+        ],
+      ),
+    );
   }
 }

@@ -1,6 +1,9 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
+import 'dart:math';
+
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
+import 'package:cabo_customer/core/extensions/font_size_extensions.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/car_booking/presentation/car_booking_screen.dart';
@@ -54,6 +57,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
     'Booking history',
   ];
 
+  final fakedAvatar = [
+    'https://static.vecteezy.com/system/resources/previews/001/503/756/original/boy-face-avatar-cartoon-free-vector.jpg',
+    'https://toppng.com/uploads/preview/cool-avatar-transparent-image-cool-boy-avatar-11562893383qsirclznyw.png',
+    'https://thumbs.dreamstime.com/b/young-woman-avatar-cartoon-character-profile-picture-young-woman-wearing-blue-t-shirt-bandana-avatar-cartoon-character-149672072.jpg',
+    'https://i.pinimg.com/originals/37/0a/bb/370abbaecdac86751e2b7ef9df453f12.jpg',
+    'https://i.pinimg.com/originals/51/27/26/5127260decf1999d70da97d44cc59980.jpg',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +74,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
           builder: (context, value, child) => Text(screenTitles[value]),
         ),
         centerTitle: true,
-        leading: Container(),
+        leading: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 10.sf,
+            horizontal: 5.sf,
+          ),
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(
+              fakedAvatar[Random().nextInt(fakedAvatar.length)],
+            ),
+          ),
+        ),
         backgroundColor: AppColors.secondaryColor,
         foregroundColor: AppColors.primaryColor,
         actions: [
@@ -80,7 +101,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
         physics: const NeverScrollableScrollPhysics(),
         children: List.generate(
           bottomBarScreens.length,
-          (index) => bottomBarScreens[index],
+          (index) => Padding(
+            padding: EdgeInsets.only(
+              top: 5.sf,
+              bottom: 100.sf,
+              left: 12.sf,
+              right: 12.sf,
+            ),
+            child: bottomBarScreens[index],
+          ),
         ),
       ),
       extendBody: true,

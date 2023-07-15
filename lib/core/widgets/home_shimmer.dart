@@ -15,14 +15,14 @@ class HomeShimmer extends StatelessWidget {
       highlightColor: Colors.grey[100]!,
       child: Column(
         children: [
-          20.verticalSpace,
+          20.vSpace,
           Container(
             width: double.infinity,
             height: 123.sf,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(12)),
           ),
-          24.verticalSpace,
+          24.vSpace,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -34,7 +34,7 @@ class HomeShimmer extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12)),
                 ),
               ),
-              12.horizontalSpace,
+              12.hSpace,
               Expanded(
                 child: Container(
                     height: 75.sf,
@@ -44,15 +44,15 @@ class HomeShimmer extends StatelessWidget {
               ),
             ],
           ),
-          24.verticalSpace,
+          24.vSpace,
           buildContent(
             width: 60.sf,
           ),
-          24.verticalSpace,
+          24.vSpace,
           buildContent(
             width: 90.sf,
           ),
-          24.verticalSpace,
+          24.vSpace,
           buildContent(
             width: 120.sf,
           ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cabo_customer/core/model/voucher_model.dart';
 import 'package:cabo_customer/feature/account/data/model/account_model.dart';
 import 'package:cabo_customer/feature/account/data/model/customer_model.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,6 +25,7 @@ mixin IsarDatabase {
     final isar = await Isar.open([
       AccountSchema,
       CustomerSchema,
+      VoucherSchema,
     ], directory: isarDir.path, inspector: true);
 
     return isar;
@@ -35,6 +37,9 @@ mixin IsarDatabase {
     );
     await isar?.writeTxn<void>(
       () async => await isar?.customers.where().deleteAll(),
+    );
+    await isar?.writeTxn<void>(
+      () async => await isar?.vouchers.where().deleteAll(),
     );
   }
 
