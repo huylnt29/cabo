@@ -1,12 +1,13 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:bloc/bloc.dart';
-import 'package:cabo_customer/core/enums/load_state.dart';
-import 'package:cabo_customer/core/extensions/logger.dart';
-import 'package:cabo_customer/core/widgets/toast_widget.dart';
+
 import 'package:cabo_customer/feature/account/domain/use_case/authentication_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
+import 'package:huylnt_flutter_component/reusable_core/widgets/toast_widget.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';

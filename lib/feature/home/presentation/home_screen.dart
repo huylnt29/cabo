@@ -1,13 +1,14 @@
-import 'package:cabo_customer/core/constants/error_message.dart';
-import 'package:cabo_customer/core/enums/load_state.dart';
-import 'package:cabo_customer/core/extensions/font_size_extensions.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
-import 'package:cabo_customer/core/theme/app_text_styles.dart';
-import 'package:cabo_customer/core/widgets/home_shimmer.dart';
+
 import 'package:cabo_customer/feature/home/data/model/customer_summary_model.dart';
 import 'package:cabo_customer/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
+import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
+import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
+import 'package:huylnt_flutter_component/reusable_core/widgets/home_shimmer.dart';
 
 import '../../../core/model/voucher_model.dart';
 
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             )
-          : Container(),
+          : const HomeShimmer(),
     );
   }
 
@@ -67,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       );
     } else {
-      return const HomeShimmer();
+      return Container();
     }
   }
 
@@ -92,8 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.only(
                 top: 8.sf,
                 bottom: 24.sf,
-                left: 10.sf,
-                right: 10.sf,
+                left: 12.sf,
+                right: 12.sf,
               ),
               decoration: BoxDecoration(
                 color: AppColors.secondaryColor,
@@ -125,11 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 left: 3.sf,
                 right: 3.sf,
               ),
-              padding: EdgeInsets.only(
-                left: 15.sf,
-                right: 15.sf,
-                bottom: 15.sf,
-              ),
+              padding: EdgeInsets.all(15.sf),
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
                 borderRadius: BorderRadius.circular(12),

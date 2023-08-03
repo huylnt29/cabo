@@ -1,4 +1,3 @@
-import 'package:cabo_customer/core/widgets/complete_scaffold_widget.dart';
 import 'package:flutter/material.dart';
 
 class CarBookingScreen extends StatefulWidget {

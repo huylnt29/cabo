@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  huylnt_flutter_component:
+    path: huylnt_flutter_component
   cupertino_icons: ^1.0.2
   bloc: ^8.1.2
   skeletons: ^0.0.3
@@ -45,6 +47,7 @@ dependencies:
   json_serializable: ^6.7.1
   shimmer: ^3.0.0
   google_fonts: ^5.1.0
+  fancy_containers: ^0.0.5
   
 dev_dependencies:
   flutter_test:

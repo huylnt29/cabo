@@ -1,6 +1,5 @@
-import 'package:cabo_customer/core/constants/error_message.dart';
-import 'package:cabo_customer/core/converter/datetime_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:huylnt_flutter_component/reusable_core/converter/datetime_converter.dart';
 import 'package:isar/isar.dart';
 part 'voucher_model.g.dart';
 
@@ -22,7 +21,7 @@ class Voucher {
   String? title;
   int? remaining;
   int? total;
-  double? expirationEpochTime;
+  int? expirationEpochTime;
 
   factory Voucher.fromJson(Map<String, Object?> json) =>
       _$VoucherFromJson(json);

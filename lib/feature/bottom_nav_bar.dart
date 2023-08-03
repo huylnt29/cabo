@@ -3,7 +3,6 @@
 import 'dart:math';
 
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
-import 'package:cabo_customer/core/extensions/font_size_extensions.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/car_booking/presentation/car_booking_screen.dart';
@@ -14,6 +13,9 @@ import 'package:cabo_customer/feature/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
+
+import '../core/faked_data/faked_account.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -57,14 +59,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
     'Booking history',
   ];
 
-  final fakedAvatar = [
-    'https://static.vecteezy.com/system/resources/previews/001/503/756/original/boy-face-avatar-cartoon-free-vector.jpg',
-    'https://toppng.com/uploads/preview/cool-avatar-transparent-image-cool-boy-avatar-11562893383qsirclznyw.png',
-    'https://thumbs.dreamstime.com/b/young-woman-avatar-cartoon-character-profile-picture-young-woman-wearing-blue-t-shirt-bandana-avatar-cartoon-character-149672072.jpg',
-    'https://i.pinimg.com/originals/37/0a/bb/370abbaecdac86751e2b7ef9df453f12.jpg',
-    'https://i.pinimg.com/originals/51/27/26/5127260decf1999d70da97d44cc59980.jpg',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +97,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           bottomBarScreens.length,
           (index) => Padding(
             padding: EdgeInsets.only(
-              top: 5.sf,
+              top: 18.sf,
               bottom: 100.sf,
               left: 12.sf,
               right: 12.sf,

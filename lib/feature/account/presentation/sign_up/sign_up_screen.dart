@@ -1,15 +1,15 @@
-import 'dart:async';
-
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
 import 'package:cabo_customer/core/router/route_config.dart';
 import 'package:cabo_customer/core/router/route_paths.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
-import 'package:cabo_customer/core/widgets/button_widget.dart';
-import 'package:cabo_customer/core/widgets/complete_scaffold_widget.dart';
-import 'package:cabo_customer/core/widgets/text_form_field_widget.dart';
+
 import 'package:cabo_customer/feature/account/presentation/bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
+import 'package:huylnt_flutter_component/reusable_core/widgets/button_widget.dart';
+import 'package:huylnt_flutter_component/reusable_core/widgets/complete_scaffold_widget.dart';
+import 'package:huylnt_flutter_component/reusable_core/widgets/text_form_field_widget.dart';
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -40,7 +40,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       child: CompleteScaffoldWidget(
         backButtonEnabled: false,
-        appBarTitle: 'Sign up',
+        appBarTextWidget: Text(
+          'Sign up',
+          style: AppTextStyles.text(
+            AppColors.textColor,
+          ),
+        ),
         backgroundColor: AppColors.secondaryColor,
         body: SingleChildScrollView(
           child: Column(

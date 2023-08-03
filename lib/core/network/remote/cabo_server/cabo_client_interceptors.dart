@@ -1,7 +1,7 @@
-import 'package:cabo_customer/core/extensions/logger.dart';
 import 'package:cabo_customer/core/network/local/isar/isar_database.dart';
 import 'package:cabo_customer/feature/account/data/model/account_model.dart';
 import 'package:dio/dio.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class CaboClientInterceptors extends InterceptorsWrapper with IsarDatabase {

@@ -1,6 +1,6 @@
-import 'package:cabo_customer/core/constants/error_message.dart';
-import 'package:cabo_customer/core/converter/datetime_converter.dart';
 import 'package:cabo_customer/core/enums/payment_type.dart';
+import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
+import 'package:huylnt_flutter_component/reusable_core/converter/datetime_converter.dart';
 
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -22,8 +22,8 @@ class Trip {
   String id;
   int? cost;
   int? distance;
-  double? startTime;
-  double? endTime;
+  int? startTime;
+  int? endTime;
   String? customerOrderLocation;
   String? toLocation;
   @enumerated

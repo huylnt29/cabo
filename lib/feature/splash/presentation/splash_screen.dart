@@ -1,13 +1,16 @@
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
-import 'package:cabo_customer/core/enums/load_state.dart';
+
 import 'package:cabo_customer/core/router/route_config.dart';
 import 'package:cabo_customer/core/router/route_paths.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
-import 'package:cabo_customer/core/theme/app_text_styles.dart';
-import 'package:cabo_customer/core/widgets/complete_scaffold_widget.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterui_modifiers/flutterui_modifiers.dart';
+import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
+import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
+import 'package:huylnt_flutter_component/reusable_core/widgets/complete_scaffold_widget.dart';
 
 import '../../account/presentation/bloc/authentication_bloc.dart';
 
@@ -45,7 +48,12 @@ class _SplashScreenState extends State<SplashScreen> {
       child: CompleteScaffoldWidget(
         appBarOverlapped: true,
         backButtonEnabled: false,
-        appBarTitle: 'Cabo',
+        appBarTextWidget: Text(
+          'Cabo',
+          style: AppTextStyles.text(
+            AppColors.textColor,
+          ),
+        ),
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -54,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(36),
+            padding: EdgeInsets.all(36.sf),
             child: Text(
               'A car booking app that eases your journey',
               textAlign: TextAlign.center,
