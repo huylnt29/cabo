@@ -1,4 +1,4 @@
-import 'package:cabo_customer/core/network/remote/cabo_server/cabo_client.dart';
+import 'package:cabo_customer/core/network/remote/cabo_server/api_client.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -15,7 +15,7 @@ final getIt = GetIt.instance;
 )
 // ignore: always_declare_return_types
 configureDependencies({required Dio dio}) {
-  getIt.registerLazySingleton<CaboClient>(() => CaboClient(dio));
+  getIt.registerLazySingleton<ApiClient>(() => ApiClient(dio));
 
   $initGetIt(getIt);
 }

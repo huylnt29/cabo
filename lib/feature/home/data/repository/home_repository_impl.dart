@@ -1,6 +1,6 @@
 import '../../../../core/model/voucher_model.dart';
 import '../../../../core/network/local/isar/isar_database.dart';
-import '../../../../core/network/remote/cabo_server/cabo_client.dart';
+import '../../../../core/network/remote/cabo_server/api_client.dart';
 import '../model/customer_summary_model.dart';
 
 part '../remote_data_source/home_remote_data_source.dart';

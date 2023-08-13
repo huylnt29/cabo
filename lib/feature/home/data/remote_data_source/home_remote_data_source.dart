@@ -2,7 +2,7 @@ part of '../repository/home_repository_impl.dart';
 
 class HomeRemoteDataSource with IsarDatabase {
   HomeRemoteDataSource(this._caboClient);
-  final CaboClient _caboClient;
+  final ApiClient _caboClient;
 
   Future<CustomerSummary> getCustomerSummary() async {
     return CustomerSummary.fromJson({

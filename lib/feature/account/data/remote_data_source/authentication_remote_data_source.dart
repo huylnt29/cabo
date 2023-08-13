@@ -1,8 +1,8 @@
-import 'package:cabo_customer/core/network/remote/cabo_server/cabo_client.dart';
+import 'package:cabo_customer/core/network/remote/cabo_server/api_client.dart';
 
 class AuthenticationRemoteDataSource {
   AuthenticationRemoteDataSource(this._caboClient);
-  final CaboClient _caboClient;
+  final ApiClient _caboClient;
 
   Future<bool> checkPhone(String phoneNumber) async {
     final response = await _caboClient.checkPhone({'phoneNumber': phoneNumber});

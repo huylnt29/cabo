@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:cabo_customer/core/network/remote/cabo_server/cabo_client_config.dart';
+import 'package:cabo_customer/core/network/remote/cabo_server/api_client_config.dart';
 import 'package:cabo_customer/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ void main() async {
     await dotenv.load();
 
     configureDependencies(
-      dio: CaboClientConfig.initApiService(
+      dio: ApiClientConfig.initApiService(
         baseUrl: dotenv.env['CABO_SERVER_URL'],
       ),
     );

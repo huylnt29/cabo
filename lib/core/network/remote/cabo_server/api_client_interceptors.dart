@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-class CaboClientInterceptors extends InterceptorsWrapper with IsarDatabase {
-  CaboClientInterceptors({required this.dio});
+class ApiClientInterceptors extends InterceptorsWrapper with IsarDatabase {
+  ApiClientInterceptors({required this.dio});
 
   final Dio dio;
   @override
