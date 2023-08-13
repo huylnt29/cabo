@@ -1,6 +1,6 @@
 import 'package:cabo_customer/core/enums/payment_type.dart';
 import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
-import 'package:huylnt_flutter_component/reusable_core/converter/datetime_converter.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/date_time.dart';
 
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -37,9 +37,7 @@ class Trip {
   String get formattedDistance =>
       (distance != null) ? '$distance km' : ErrorMessage.isNotDetermined;
 
-  String get formattedStartTime =>
-      DateTimeConverter.getTimeFirstDateAfter(startTime);
+  String get formattedStartTime => startTime.dateTime.timeFirstDateAfter;
 
-  String get formattedEndTime =>
-      DateTimeConverter.getTimeFirstDateAfter(endTime);
+  String get formattedEndTime => endTime.dateTime.timeFirstDateAfter;
 }

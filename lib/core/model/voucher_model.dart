@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:huylnt_flutter_component/reusable_core/converter/datetime_converter.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/date_time.dart';
+
 import 'package:isar/isar.dart';
 part 'voucher_model.g.dart';
 
@@ -27,7 +28,7 @@ class Voucher {
       _$VoucherFromJson(json);
 
   String get expirationDate {
-    return DateTimeConverter.getDate(expirationEpochTime);
+    return expirationEpochTime.dateTime.beautifulDate;
   }
 
   String get slotRatio =>
