@@ -42,6 +42,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/cabo.png
   AssetGenImage get cabo => const AssetGenImage('assets/images/cabo.png');
 
+  /// File path: assets/images/car_booking_background.jpg
+  AssetGenImage get carBookingBackground =>
+      const AssetGenImage('assets/images/car_booking_background.jpg');
+
   /// File path: assets/images/splash_screen_background.jpg
   AssetGenImage get splashScreenBackground =>
       const AssetGenImage('assets/images/splash_screen_background.jpg');
@@ -50,8 +54,13 @@ class $AssetsImagesGen {
   AssetGenImage get success => const AssetGenImage('assets/images/success.gif');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [authIllustration, cabo, splashScreenBackground, success];
+  List<AssetGenImage> get values => [
+        authIllustration,
+        cabo,
+        carBookingBackground,
+        splashScreenBackground,
+        success
+      ];
 }
 
 class Assets {

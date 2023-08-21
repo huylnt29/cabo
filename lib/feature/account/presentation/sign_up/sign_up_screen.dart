@@ -6,6 +6,7 @@ import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/account/presentation/bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/button_widget.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/complete_scaffold_widget.dart';
@@ -43,14 +44,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         appBarTextWidget: Text(
           'Sign up',
           style: AppTextStyles.text(
-            AppColors.textColor,
+            AppColors.primaryColor,
           ),
         ),
         backgroundColor: AppColors.secondaryColor,
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Assets.images.authIllustration.image(height: 300),
+              Assets.images.authIllustration.image(height: 270.sf),
               TextFormFieldWidget(
                 controller: phoneNumerController,
                 labelText: 'Phone number',
@@ -67,15 +68,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
         bottomNavigationBar: ButtonWidget(
-            title: 'Submit',
-            onPressed: () {
-              _authenticationBloc.add(
-                PhoneSentToFirebaseEvent(
-                  phoneNumerController.text,
-                  fullnameController.text,
-                ),
-              );
-            }),
+          backgroundColor: AppColors.accentColor,
+          title: 'Submit',
+          onPressed: () {
+            _authenticationBloc.add(
+              PhoneSentToFirebaseEvent(
+                phoneNumerController.text,
+                fullnameController.text,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

@@ -92,16 +92,21 @@ class AuthenticationBloc
     PhoneSentToFirebaseEvent event,
     Emitter<AuthenticationState> emit,
   ) async {
-    if (event.phoneNumber.length != 10) {
-      ToastWidget.show('Phone number must include 10 digits.');
-    } else if (event.fullName.length < 3) {
-      ToastWidget.show('Your name should be more detailed');
-    } else {
-      fullName = event.fullName;
-      phoneNumber = event.phoneNumber;
-      await _authenticateWithPhone(event, emit);
-      emit(state.copyWith(canNavigateToOtpScreen: true));
-    }
+    // if (event.phoneNumber.length != 10) {
+    //   ToastWidget.show('Phone number must include 10 digits.');
+    // } else if (event.fullName.length < 3) {
+    //   ToastWidget.show('Your name should be more detailed');
+    // } else {
+    //   fullName = event.fullName;
+    //   phoneNumber = event.phoneNumber;
+    //   await _authenticateWithPhone(event, emit);
+    //   emit(state.copyWith(canNavigateToOtpScreen: true));
+    // }
+
+    fullName = event.fullName;
+    phoneNumber = event.phoneNumber;
+    await _authenticateWithPhone(event, emit);
+    emit(state.copyWith(canNavigateToOtpScreen: true));
   }
 
   Future<void> _authenticateWithPhone(
@@ -109,7 +114,7 @@ class AuthenticationBloc
     emit(state.copyWith(loadState: LoadState.loading));
 
     await firebaseAuth.verifyPhoneNumber(
-      phoneNumber: '+84${event.phoneNumber}',
+      phoneNumber: event.phoneNumber,
       verificationCompleted: (credential) async {
         await firebaseAuth.signInWithCredential(credential);
       },

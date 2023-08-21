@@ -1,17 +1,12 @@
-import 'package:cabo_customer/feature/account/data/local_data_source/authentication_local_data_source.dart';
-import 'package:cabo_customer/feature/account/data/remote_data_source/authentication_remote_data_source.dart';
 import 'package:cabo_customer/feature/account/domain/repository/authentication_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: AuthenticationRepository)
 class AuthenticationRepositoryImpl extends AuthenticationRepository {
-  AuthenticationRepositoryImpl({
-    required this.authenticationRemoteDataSource,
-    required this.authenticationLocalDataSource,
-  });
-
-  late AuthenticationRemoteDataSource authenticationRemoteDataSource;
-  late AuthenticationLocalDataSource authenticationLocalDataSource;
+  AuthenticationRepositoryImpl(
+    super.authenticationRemoteDataSource,
+    super.authenticationLocalDataSource,
+  );
 
   @override
   Future<bool> checkPhone(String phoneNumber) async {

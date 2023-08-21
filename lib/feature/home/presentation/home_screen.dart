@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   buildVoucherArea(state.vouchers),
+                  12.vertical,
                   buildSummaryArea(state.customerSummary!),
                 ],
               ),

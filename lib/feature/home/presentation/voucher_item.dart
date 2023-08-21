@@ -13,12 +13,12 @@ class VoucherItem extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: AppColors.getRandom(),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.sf),
         boxShadow: [
           BoxShadow(
             color: AppColors.secondaryColor.withOpacity(0.5),
-            offset: const Offset(2, 3),
-            spreadRadius: 3,
+            offset: Offset(2.sf, 3.sf),
+            spreadRadius: 1.sf,
             blurRadius: 3,
           )
         ],
@@ -54,7 +54,9 @@ class VoucherItem extends StatelessWidget {
               children: [
                 Text(
                   voucher.title ?? ErrorMessage.isNotDetermined,
-                  // maxLines: 2,
+                  softWrap: false,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.heading3(
                     AppColors.secondaryColor,
                   ),

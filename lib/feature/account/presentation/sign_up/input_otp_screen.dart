@@ -46,7 +46,7 @@ class _OtpScreenState extends State<OtpScreen> {
         appBarTextWidget: Text(
           'Verify OTP',
           style: AppTextStyles.text(
-            AppColors.textColor,
+            AppColors.primaryColor,
           ),
         ),
         backgroundColor: AppColors.secondaryColor,
@@ -78,6 +78,7 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
         ),
         bottomNavigationBar: ButtonWidget(
+          backgroundColor: AppColors.accentColor,
           title: 'Submit',
           onPressed: () => _authenticationBloc.add(
             OtpVerificationEvent(otpController.text),

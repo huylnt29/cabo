@@ -40,13 +40,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   final List<Widget> bottomBarScreens = [
     BlocProvider(
-      create: (_) => HomeBloc(
-        HomeRepositoryImpl(
-          HomeRemoteDataSource(
-            getIt(),
-          ),
-        ),
-      )..fetchDataForScreen(),
+      create: (_) => getIt<HomeBloc>()..fetchDataForScreen(),
       child: const HomeScreen(),
     ),
     const CarBookingScreen(),
@@ -83,7 +77,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         foregroundColor: AppColors.primaryColor,
         actions: [
           Container(
-            margin: const EdgeInsets.only(right: 20),
+            margin: EdgeInsets.only(right: 20.sf),
             child: Assets.icons.favoriteLocation.svg(
               color: AppColors.primaryColor,
             ),
@@ -108,36 +102,40 @@ class _BottomNavBarState extends State<BottomNavBar> {
       ),
       extendBody: true,
       extendBodyBehindAppBar: false,
-      bottomNavigationBar: AnimatedNotchBottomBar(
-        notchBottomBarController: _controller,
-        color: AppColors.secondaryColor,
-        showLabel: false,
-        notchColor: AppColors.accentColor,
-        bottomBarWidth: 500,
-        durationInMilliSeconds: 200,
-        bottomBarItems: [
-          BottomBarItem(
-            inActiveItem: Assets.icons.home.svg(color: AppColors.primaryColor),
-            activeItem: Assets.icons.home.svg(),
-            itemLabel: 'Home',
-          ),
-          BottomBarItem(
-            inActiveItem: Assets.images.cabo.image(),
-            activeItem: Assets.images.cabo.image(),
-            itemLabel: 'Drive booking',
-          ),
-          BottomBarItem(
-            inActiveItem:
-                Assets.icons.driveHistory.svg(color: AppColors.primaryColor),
-            activeItem: Assets.icons.driveHistory.svg(),
-            itemLabel: 'Drive history',
-          ),
-        ],
-        onTap: (index) {
-          _screenController.jumpToPage(index);
-          bottomNavBarIndex.value = index;
-        },
-      ),
+      bottomNavigationBar: buildBottomNavigationBar(),
+    );
+  }
+
+  Widget buildBottomNavigationBar() {
+    return AnimatedNotchBottomBar(
+      notchBottomBarController: _controller,
+      color: AppColors.secondaryColor,
+      showLabel: false,
+      notchColor: AppColors.accentColor,
+      bottomBarWidth: 500,
+      durationInMilliSeconds: 200,
+      bottomBarItems: [
+        BottomBarItem(
+          inActiveItem: Assets.icons.home.svg(color: AppColors.primaryColor),
+          activeItem: Assets.icons.home.svg(),
+          itemLabel: 'Home',
+        ),
+        BottomBarItem(
+          inActiveItem: Assets.images.cabo.image(),
+          activeItem: Assets.images.cabo.image(),
+          itemLabel: 'Drive booking',
+        ),
+        BottomBarItem(
+          inActiveItem:
+              Assets.icons.driveHistory.svg(color: AppColors.primaryColor),
+          activeItem: Assets.icons.driveHistory.svg(),
+          itemLabel: 'Drive history',
+        ),
+      ],
+      onTap: (index) {
+        _screenController.jumpToPage(index);
+        bottomNavBarIndex.value = index;
+      },
     );
   }
 }
