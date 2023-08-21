@@ -209,12 +209,12 @@ class AuthenticationBloc
     await setUpFcmToken();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      Logger.v('Got a message whilst in the foreground!');
-      Logger.d('Message data: ${message.data}');
+      Logger.v('Got foreground message: ${message.data}');
 
       if (message.notification != null) {
-        Logger.v('Message also contained a notification:');
-        Logger.d(message.notification);
+        Logger.v(
+          'Message also contained a notification: ${message.notification}',
+        );
       }
     });
   }
@@ -229,7 +229,6 @@ class AuthenticationBloc
   }
 
   Future<void> requestNotificationPermission() async {
-    // requestPermission();
     if (Platform.isAndroid) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
       if (androidInfo.version.sdkInt >= 33) {
@@ -248,7 +247,9 @@ class AuthenticationBloc
 
     Logger.v('FCM token: $token');
 
-    await _updateFcmToken(token!);
+    await _authenticationUseCase.registerFcmNotification(token!);
+
+    await _updateFcmToken(token);
 
     firebaseMessaging.onTokenRefresh.listen(_updateFcmToken);
   }

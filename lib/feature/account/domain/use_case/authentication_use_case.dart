@@ -54,4 +54,15 @@ class AuthenticationUseCase {
       throw ErrorDescription(e.toString());
     }
   }
+
+  Future<dynamic> registerFcmNotification(String fcmToken) async {
+    try {
+      final response = await authenticationRepository.registerFcmNotification(
+        fcmToken,
+      );
+      return response;
+    } catch (error) {
+      throw ErrorDescription(error.toString());
+    }
+  }
 }

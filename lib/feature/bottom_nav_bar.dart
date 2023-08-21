@@ -5,9 +5,8 @@ import 'dart:math';
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
-import 'package:cabo_customer/feature/car_booking/presentation/car_booking_screen.dart';
+
 import 'package:cabo_customer/feature/drive_history/presentation/drive_history_screen.dart';
-import 'package:cabo_customer/feature/home/data/repository/home_repository_impl.dart';
 import 'package:cabo_customer/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:cabo_customer/feature/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 
 import '../core/faked_data/faked_account.dart';
+import 'drive_booking/presentation/form_booking/form_booking_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -43,7 +43,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       create: (_) => getIt<HomeBloc>()..fetchDataForScreen(),
       child: const HomeScreen(),
     ),
-    const CarBookingScreen(),
+    const FormBookingScreen(),
     const DriveHistoryScreen(),
   ];
 

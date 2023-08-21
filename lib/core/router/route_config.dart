@@ -15,13 +15,13 @@ class Routes {
     setRouter(RoutePath.logInScreen, handler: signUpScreenHandler);
     setRouter(RoutePath.otpScreen, handler: otpScreenHandler);
     setRouter(RoutePath.bottomNavBar, handler: bottomNavBarHandler);
-    setRouter(RoutePath.homeScreen, handler: homeScreenHandler);
-    setRouter(RoutePath.carBookingScreen, handler: carBookingScreenHandler);
-    setRouter(RoutePath.driveHistoryScreen, handler: driveHistoryScreenHandler);
   }
 
-  static void setRouter(String path,
-      {required Handler handler, TransitionType? transitionType}) {
+  static void setRouter(
+    String path, {
+    required Handler handler,
+    TransitionType? transitionType,
+  }) {
     transitionType ??= TransitionType.cupertino;
     router.define(path, handler: handler, transitionType: transitionType);
   }

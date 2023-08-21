@@ -17,4 +17,5 @@ abstract class AuthenticationRepository {
     String fullName,
   );
   Future<String> signUpWithCaboServer(String phoneNumber, String fullName);
+  Future<dynamic> registerFcmNotification(String fcmToken);
 }

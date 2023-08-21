@@ -1,5 +1,9 @@
+import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+
+import '../../../model/address.dart';
 
 part 'api_client.g.dart';
 
@@ -10,8 +14,8 @@ abstract class ApiClient {
     String baseUrl,
   }) = _ApiClient;
 
+  /// After logging in successfully with Firebase, ask server for customer document ID in Firebase database
   @POST('/auth/register')
-  // After logging in successfully with Firebase, ask server for an ID in Firebase database
   Future<dynamic> signUpWithCaboServer(
     @Body() Map<String, dynamic> body,
   );
@@ -19,5 +23,24 @@ abstract class ApiClient {
   @POST('/check-phone-existence')
   Future<dynamic> checkPhone(
     @Body() Map<String, dynamic> body,
+  );
+
+  @GET('/notification/subscribe/{fcmToken}')
+  Future<HttpResponse> postFcmToken(@Path() String fcmToken);
+
+  @POST('/drive-booking/estimate-cost')
+  Future<TripEstimation> postLocations(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST('/drive-booking/confirm/{customerId}')
+  Future<BookingResponse?> proceedBooking(
+    @Path() String customerId,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @GET('/bing-map/get-list-places')
+  Future<List<Address>> getAddressList(
+    @Query('searchLocation') String locationHint,
   );
 }

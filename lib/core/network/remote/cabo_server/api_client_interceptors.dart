@@ -10,7 +10,9 @@ class ApiClientInterceptors extends InterceptorsWrapper with IsarDatabase {
   final Dio dio;
   @override
   Future<void> onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     if (isarInstance == null) return;
     final account = await isarInstance!.accounts.get(1);
     if (account == null) return;

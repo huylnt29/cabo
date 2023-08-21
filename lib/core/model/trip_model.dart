@@ -1,4 +1,4 @@
-import 'package:cabo_customer/core/enums/payment_type.dart';
+import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/date_time.dart';
 
@@ -27,7 +27,7 @@ class Trip {
   String? customerOrderLocation;
   String? toLocation;
   @enumerated
-  PaymentType? paymentType;
+  PaymentMethod? paymentType;
 
   factory Trip.fromJson(Map<String, Object?> json) => _$TripFromJson(json);
 

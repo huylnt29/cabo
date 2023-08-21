@@ -33,10 +33,17 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
   @override
   Future<String> signUpWithCaboServer(
-      String phoneNumber, String fullName) async {
+    String phoneNumber,
+    String fullName,
+  ) async {
     return authenticationRemoteDataSource.signUpWithCaboServer(
       phoneNumber,
       fullName,
     );
+  }
+
+  @override
+  Future<dynamic> registerFcmNotification(String fcmToken) async {
+    return authenticationRemoteDataSource.registerFcmNotification(fcmToken);
   }
 }

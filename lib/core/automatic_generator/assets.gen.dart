@@ -42,9 +42,22 @@ class $AssetsImagesGen {
   /// File path: assets/images/cabo.png
   AssetGenImage get cabo => const AssetGenImage('assets/images/cabo.png');
 
+  /// File path: assets/images/car4.png
+  AssetGenImage get car4 => const AssetGenImage('assets/images/car4.png');
+
+  /// File path: assets/images/car7.png
+  AssetGenImage get car7 => const AssetGenImage('assets/images/car7.png');
+
   /// File path: assets/images/car_booking_background.jpg
   AssetGenImage get carBookingBackground =>
       const AssetGenImage('assets/images/car_booking_background.jpg');
+
+  /// File path: assets/images/money.png
+  AssetGenImage get money => const AssetGenImage('assets/images/money.png');
+
+  /// File path: assets/images/motorcycle.png
+  AssetGenImage get motorcycle =>
+      const AssetGenImage('assets/images/motorcycle.png');
 
   /// File path: assets/images/splash_screen_background.jpg
   AssetGenImage get splashScreenBackground =>
@@ -53,13 +66,21 @@ class $AssetsImagesGen {
   /// File path: assets/images/success.gif
   AssetGenImage get success => const AssetGenImage('assets/images/success.gif');
 
+  /// File path: assets/images/wallet.png
+  AssetGenImage get wallet => const AssetGenImage('assets/images/wallet.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         authIllustration,
         cabo,
+        car4,
+        car7,
         carBookingBackground,
+        money,
+        motorcycle,
         splashScreenBackground,
-        success
+        success,
+        wallet
       ];
 }
 
