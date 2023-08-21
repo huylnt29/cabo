@@ -41,7 +41,9 @@ class AuthenticationUseCase {
   }
 
   Future<String> signUpWithCaboServer(
-      String phoneNumber, String fullName) async {
+    String phoneNumber,
+    String fullName,
+  ) async {
     try {
       final response = await authenticationRepository.signUpWithCaboServer(
         phoneNumber,

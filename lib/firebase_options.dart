@@ -59,13 +59,13 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBNMuZfV7JLZv0vpLVIXwVvlB1gukrAxw8',
+    apiKey: 'AIzaSyChzCKwyrq1Xr_RKUN1CU9RJzFXj_SpuM8',
     appId: '1:525461582701:ios:d05ed9034f52ac9d48a064',
     messagingSenderId: '525461582701',
     projectId: 'cabo-backend-f8715',
     databaseURL: 'https://cabo-backend-f8715-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'cabo-backend-f8715.appspot.com',
-    androidClientId: '525461582701-j868k723bgosmul5qjoiv93fs3rcnrp7.apps.googleusercontent.com',
+    androidClientId: '525461582701-faprq10svu6sa5os0n5enitlhutejt7i.apps.googleusercontent.com',
     iosClientId: '525461582701-enq04ko2nfailoidl971takaqsq0jqb6.apps.googleusercontent.com',
     iosBundleId: 'com.example.caboCustomer',
   );

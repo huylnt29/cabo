@@ -14,7 +14,7 @@ class HomeBloc extends Cubit<HomeState> {
   HomeBloc(this.homeRepository)
       : super(const HomeState(loadState: LoadState.initial));
 
-  late HomeRepository homeRepository;
+  final HomeRepository homeRepository;
 
   Future<void> fetchDataForScreen() async {
     final customerSummary = await homeRepository.getCustomerSummary();

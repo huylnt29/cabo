@@ -1,13 +1,19 @@
 // ignore_for_file: unused_local_variable
 
+import 'dart:io';
+import 'package:cabo_customer/core/network/local/shared_preferences/shared_preferences_request_model.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:bloc/bloc.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cabo_customer/feature/account/domain/use_case/authentication_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/src/services/platform_channel.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/toast_widget.dart';
+
+import '../../../../core/network/local/shared_preferences/shared_preferences.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -24,6 +30,7 @@ class AuthenticationBloc
 
   final AuthenticationUseCase _authenticationUseCase;
   final firebaseAuth = FirebaseAuth.instance;
+  final firebaseMessaging = FirebaseMessaging.instance;
 
   late String phoneNumber;
   late String fullName;
@@ -65,6 +72,9 @@ class AuthenticationBloc
         user.phoneNumber!,
         user.displayName ?? '',
       );
+
+      await invokeFcmListener();
+
       emit(state.copyWith(
         loadState: LoadState.loaded,
         canLoginAutomatically: true,
@@ -152,6 +162,8 @@ class AuthenticationBloc
       );
       final user =
           (await firebaseAuth.signInWithCredential(phoneCredential)).user;
+
+      /// Sign up successfully
       if (user != null) {
         final idToken = await user.getIdToken();
         Logger.v('ID token $idToken');
@@ -165,6 +177,8 @@ class AuthenticationBloc
           loadState: LoadState.loaded,
           otpCorrect: true,
         ));
+
+        await invokeFcmListener();
       }
     } on FirebaseAuthException catch (e) {
       Logger.e(e.message);
@@ -188,5 +202,65 @@ class AuthenticationBloc
 
   Future<void> putCustomerIntoIsar(String customerId) async {
     await _authenticationUseCase.putCustomer(customerId);
+  }
+
+  Future<void> invokeFcmListener() async {
+    await requestNotificationPermission();
+    await setUpFcmToken();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      Logger.v('Got a message whilst in the foreground!');
+      Logger.d('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        Logger.v('Message also contained a notification:');
+        Logger.d(message.notification);
+      }
+    });
+  }
+
+  Future<void> requestPermission() async {
+    final settings = await firebaseMessaging.requestPermission();
+    if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
+      Future.delayed(Duration.zero, () async {
+        Logger.e('Authorization status is not determined.');
+      });
+    }
+  }
+
+  Future<void> requestNotificationPermission() async {
+    // requestPermission();
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt >= 33) {
+        const MethodChannel('com.example.cabo_customer')
+            .invokeMethod('getNotificationPermission');
+      } else {
+        requestPermission();
+      }
+    } else {
+      requestPermission();
+    }
+  }
+
+  Future<void> setUpFcmToken() async {
+    final token = await firebaseMessaging.getToken();
+
+    Logger.v('FCM token: $token');
+
+    await _updateFcmToken(token!);
+
+    firebaseMessaging.onTokenRefresh.listen(_updateFcmToken);
+  }
+
+  Future<void> _updateFcmToken(
+    String newFcmToken,
+  ) async {
+    await SharedPreferencesHelper.instance.setString(
+      sharedPreferencesRequest: SharedPreferencesRequest<String>(
+        key: 'fcmToken',
+        value: newFcmToken,
+      ),
+    );
   }
 }

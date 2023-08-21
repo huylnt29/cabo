@@ -48,6 +48,8 @@ dependencies:
   shimmer: ^3.0.0
   google_fonts: ^5.1.0
   fancy_containers: ^0.0.5
+  firebase_messaging: ^14.6.6
+  device_info_plus: ^9.0.3
   
 dev_dependencies:
   flutter_test:

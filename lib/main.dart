@@ -8,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'app.dart';
 import 'core/network/local/isar/isar_database.dart';
+import 'core/network/local/shared_preferences/shared_preferences.dart';
 import 'core/router/route_config.dart';
 import 'core/service_locator/service_locator.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -33,6 +34,7 @@ void main() async {
       ),
     );
 
+    await SharedPreferencesHelper.instance.init();
     await IsarDatabase.init();
 
     Routes.configureRoutes();

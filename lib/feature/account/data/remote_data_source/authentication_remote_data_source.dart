@@ -10,11 +10,15 @@ class AuthenticationRemoteDataSource {
   }
 
   Future<String> signUpWithCaboServer(
-      String phoneNumber, String fullName) async {
-    final response = await _caboClient.signUpWithCaboServer({
-      'phoneNumber': phoneNumber,
-      'fullName': fullName,
-    });
-    return response['customerId'];
+    String phoneNumber,
+    String fullName,
+  ) async {
+    // TODO: Re-open later
+    // final response = await _caboClient.signUpWithCaboServer({
+    //   'phoneNumber': phoneNumber,
+    //   'fullName': fullName,
+    // });
+    // return response['customerId'];
+    return 'Y4mfdJaVfsbESIbICfSh';
   }
 }
