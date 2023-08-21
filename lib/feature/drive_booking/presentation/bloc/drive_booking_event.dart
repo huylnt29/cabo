@@ -1,7 +1,8 @@
 part of 'drive_booking_bloc.dart';
 
-abstract class SampleEvent {}
+abstract class DriveBookingEvent {}
 
-class FetchDataForScreenEvent extends SampleEvent {
-  FetchDataForScreenEvent();
+class GetAddressList extends DriveBookingEvent {
+  GetAddressList(this.locationKeyword);
+  final String locationKeyword;
 }

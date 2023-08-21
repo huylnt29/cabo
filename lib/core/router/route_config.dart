@@ -15,6 +15,10 @@ class Routes {
     setRouter(RoutePath.logInScreen, handler: signUpScreenHandler);
     setRouter(RoutePath.otpScreen, handler: otpScreenHandler);
     setRouter(RoutePath.bottomNavBar, handler: bottomNavBarHandler);
+    setRouter(
+      RoutePath.locationSearchingScreen,
+      handler: locationSearchingScreenHandler,
+    );
   }
 
   static void setRouter(

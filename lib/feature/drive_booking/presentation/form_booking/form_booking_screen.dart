@@ -1,11 +1,15 @@
 import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/enums/vehicle_type.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
+import 'package:cabo_customer/feature/drive_booking/presentation/location_searching/location_searching_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/button_widget.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/rounded_container_widget.dart';
+
+import '../../../../core/router/route_config.dart';
+import '../../../../core/router/route_paths.dart';
 
 class FormBookingScreen extends StatefulWidget {
   const FormBookingScreen({super.key});
@@ -61,8 +65,19 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
               ),
               ButtonWidget(
                 margin: EdgeInsets.zero,
-                title: 'Choose',
-                onPressed: () {},
+                title: 'Pick a place',
+                onPressed: () async {
+                  final response = await Routes.router.navigateTo(
+                    context,
+                    RoutePath.locationSearchingScreen,
+                    routeSettings: const RouteSettings(
+                      arguments: LocationSearchingPurpose.bookingToLocation,
+                    ),
+                  );
+                  if (response != null) {
+                    // TODO
+                  }
+                },
                 titleColor: AppColors.textColor,
                 backgroundColor: AppColors.purpleBackgroundColor,
               ),
@@ -76,8 +91,19 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
               ),
               ButtonWidget(
                 margin: EdgeInsets.zero,
-                title: 'Choose',
-                onPressed: () {},
+                title: 'Pick a place',
+                onPressed: () async {
+                  final response = await Routes.router.navigateTo(
+                    context,
+                    RoutePath.locationSearchingScreen,
+                    routeSettings: const RouteSettings(
+                      arguments: LocationSearchingPurpose.bookingToLocation,
+                    ),
+                  );
+                  if (response != null) {
+                    // TODO
+                  }
+                },
                 titleColor: AppColors.textColor,
                 backgroundColor: AppColors.purpleBackgroundColor,
               ),

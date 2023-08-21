@@ -15,25 +15,25 @@ abstract class ApiClient {
   }) = _ApiClient;
 
   /// After logging in successfully with Firebase, ask server for customer document ID in Firebase database
-  @POST('/auth/register')
+  @POST('/customer/auth/register')
   Future<dynamic> signUpWithCaboServer(
     @Body() Map<String, dynamic> body,
   );
 
-  @POST('/check-phone-existence')
+  @POST('/customer/check-phone-existence')
   Future<dynamic> checkPhone(
     @Body() Map<String, dynamic> body,
   );
 
-  @GET('/notification/subscribe/{fcmToken}')
+  @GET('/customer/notification/subscribe/{fcmToken}')
   Future<HttpResponse> postFcmToken(@Path() String fcmToken);
 
-  @POST('/drive-booking/estimate-cost')
+  @POST('/customer/drive-booking/estimate-cost')
   Future<TripEstimation> postLocations(
     @Body() Map<String, dynamic> body,
   );
 
-  @POST('/drive-booking/confirm/{customerId}')
+  @POST('/customer/drive-booking/confirm/{customerId}')
   Future<BookingResponse?> proceedBooking(
     @Path() String customerId,
     @Body() Map<String, dynamic> body,

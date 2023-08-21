@@ -1,10 +1,38 @@
+import 'package:bloc/bloc.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
+import 'package:cabo_customer/feature/drive_booking/domain/repository/drive_booking_repository.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
+
+import '../../../../core/model/address.dart';
+
 part 'drive_booking_event.dart';
 part 'drive_booking_state.dart';
-// part 'sample_bloc.freezed.dart';
+part 'drive_booking_bloc.freezed.dart';
 
-// class SampleBloc extends Bloc<SampleEvent, SampleState> {
-//   SampleBloc()
-//       : super(const SampleState(loadState: LoadState.initial)) {
-//     on<FetchDataForScreenEvent>((event, emit) async {}
-//       }
-// }
+class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
+  DriveBookingBloc(this.driveBookingRepository)
+      : super(const DriveBookingState(
+          bookingLoadState: LoadState.initial,
+          addressListLoadState: LoadState.initial,
+          tripEstimationLoadState: LoadState.initial,
+        )) {
+    on<GetAddressList>((event, emit) async {
+      emit(state.copyWith(addressListLoadState: LoadState.loading));
+      try {
+        final response = await driveBookingRepository.getAddressList(
+          event.locationKeyword,
+        );
+        emit(state.copyWith(
+          addressList: response,
+          addressListLoadState: LoadState.loaded,
+        ));
+      } catch (error) {
+        Logger.e(error);
+        emit(state.copyWith(addressListLoadState: LoadState.error));
+      }
+    });
+  }
+  final DriveBookingRepository driveBookingRepository;
+}
