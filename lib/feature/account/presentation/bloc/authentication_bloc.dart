@@ -15,14 +15,14 @@ part 'authentication_bloc.freezed.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc(AuthenticationUseCase authenticationUseCase)
+  AuthenticationBloc(this._authenticationUseCase)
       : super(
           const AuthenticationState(loadState: LoadState.initial),
         ) {
-    _authenticationUseCase = authenticationUseCase;
     listenToEvents();
   }
-  late AuthenticationUseCase _authenticationUseCase;
+
+  final AuthenticationUseCase _authenticationUseCase;
   final firebaseAuth = FirebaseAuth.instance;
 
   late String phoneNumber;
