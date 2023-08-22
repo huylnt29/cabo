@@ -1,15 +1,21 @@
 import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/enums/vehicle_type.dart';
+import 'package:cabo_customer/core/model/address.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/drive_booking/presentation/location_searching/location_searching_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/button_widget.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/rounded_container_widget.dart';
+import 'package:huylnt_flutter_component/reusable_core/widgets/toast_widget.dart';
 
 import '../../../../core/router/route_config.dart';
 import '../../../../core/router/route_paths.dart';
+import '../../../../core/service_locator/service_locator.dart';
+import '../bloc/drive_booking_bloc.dart';
 
 class FormBookingScreen extends StatefulWidget {
   const FormBookingScreen({super.key});
@@ -19,8 +25,11 @@ class FormBookingScreen extends StatefulWidget {
 }
 
 class _FormBookingScreenState extends State<FormBookingScreen> {
+  final driveBookingBloc = getIt<DriveBookingBloc>();
   final vehicleTypeIndex = ValueNotifier(0);
   final paymentMethodIndex = ValueNotifier(0);
+  Address? fromLocation;
+  Address? toLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +54,10 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
           ),
           12.vertical,
           buildPaymentMethodArea(),
-          buildSubmitButton(),
+          BlocProvider.value(
+            value: driveBookingBloc,
+            child: buildSubmitButton(),
+          ),
         ],
       ),
     );
@@ -65,7 +77,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
               ),
               ButtonWidget(
                 margin: EdgeInsets.zero,
-                title: 'Pick a place',
+                title: fromLocation?.address ?? 'Pick a place',
                 onPressed: () async {
                   final response = await Routes.router.navigateTo(
                     context,
@@ -74,9 +86,9 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
                       arguments: LocationSearchingPurpose.bookingToLocation,
                     ),
                   );
-                  if (response != null) {
-                    // TODO
-                  }
+                  setState(() {
+                    fromLocation = response;
+                  });
                 },
                 titleColor: AppColors.textColor,
                 backgroundColor: AppColors.purpleBackgroundColor,
@@ -91,7 +103,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
               ),
               ButtonWidget(
                 margin: EdgeInsets.zero,
-                title: 'Pick a place',
+                title: toLocation?.address ?? 'Pick a place',
                 onPressed: () async {
                   final response = await Routes.router.navigateTo(
                     context,
@@ -100,9 +112,9 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
                       arguments: LocationSearchingPurpose.bookingToLocation,
                     ),
                   );
-                  if (response != null) {
-                    // TODO
-                  }
+                  setState(() {
+                    toLocation = response;
+                  });
                 },
                 titleColor: AppColors.textColor,
                 backgroundColor: AppColors.purpleBackgroundColor,
@@ -205,12 +217,34 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
   }
 
   Widget buildSubmitButton() {
-    return ButtonWidget(
-      margin: EdgeInsets.only(top: 18.sf),
-      backgroundColor: AppColors.accentColor,
-      title: 'Submit',
-      titleColor: AppColors.textColor,
-      onPressed: () {},
+    return BlocBuilder<DriveBookingBloc, DriveBookingState>(
+      builder: (context, state) {
+        return ButtonWidget(
+          disabled: (state.bookingLoadState == LoadState.loading),
+          margin: EdgeInsets.only(top: 18.sf),
+          backgroundColor: AppColors.accentColor,
+          title: (state.bookingLoadState != LoadState.loading)
+              ? 'Book now!'
+              : 'Finding driver...',
+          titleColor: AppColors.textColor,
+          onPressed: () {
+            if (fromLocation == null) {
+              ToastWidget.show('Please select your starting place');
+              return;
+            }
+            if (toLocation == null) {
+              ToastWidget.show('Please select your destination');
+              return;
+            }
+            driveBookingBloc.add(ConfirmBookingEvent(
+              fromLocation!,
+              toLocation!,
+              paymentMethodIndex.value,
+              vehicleTypeIndex.value,
+            ));
+          },
+        );
+      },
     );
   }
 }

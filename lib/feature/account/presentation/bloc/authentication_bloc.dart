@@ -67,10 +67,11 @@ class AuthenticationBloc
 
       Logger.v('Refreshed ID token: $refreshedIdToken');
 
-      await _authenticationUseCase.putAccount(
-        refreshedIdToken,
-        user.phoneNumber!,
-        user.displayName ?? '',
+      await SharedPreferencesHelper.instance.setString(
+        sharedPreferencesRequest: SharedPreferencesRequest<String>(
+          key: 'firebaseIdToken',
+          value: refreshedIdToken,
+        ),
       );
 
       await invokeFcmListener();
@@ -120,7 +121,9 @@ class AuthenticationBloc
   }
 
   Future<void> _authenticateWithPhone(
-      PhoneSentToFirebaseEvent event, Emitter<AuthenticationState> emit) async {
+    PhoneSentToFirebaseEvent event,
+    Emitter<AuthenticationState> emit,
+  ) async {
     emit(state.copyWith(loadState: LoadState.loading));
 
     await firebaseAuth.verifyPhoneNumber(
@@ -168,10 +171,16 @@ class AuthenticationBloc
         final idToken = await user.getIdToken();
         Logger.v('ID token $idToken');
 
-        await putAccountIntoIsar(idToken);
+        await SharedPreferencesHelper.instance.setString(
+          sharedPreferencesRequest: SharedPreferencesRequest<String>(
+            key: 'firebaseIdToken',
+            value: idToken,
+          ),
+        );
+
         final customerId = await getCustomerId();
         Logger.v('Customer ID: $customerId');
-        await putCustomerIntoIsar(customerId);
+        await putAccountIntoIsar(customerId);
 
         emit(state.copyWith(
           loadState: LoadState.loaded,
@@ -185,9 +194,9 @@ class AuthenticationBloc
     }
   }
 
-  Future<void> putAccountIntoIsar(String idToken) async {
+  Future<void> putAccountIntoIsar(String customerId) async {
     await _authenticationUseCase.putAccount(
-      idToken,
+      customerId,
       phoneNumber,
       fullName,
     );
@@ -200,10 +209,6 @@ class AuthenticationBloc
     );
   }
 
-  Future<void> putCustomerIntoIsar(String customerId) async {
-    await _authenticationUseCase.putCustomer(customerId);
-  }
-
   Future<void> invokeFcmListener() async {
     await requestNotificationPermission();
     await setUpFcmToken();
@@ -213,7 +218,7 @@ class AuthenticationBloc
 
       if (message.notification != null) {
         Logger.v(
-          'Message also contained a notification: ${message.notification}',
+          'Message also contains a notification: ${message.notification}',
         );
       }
     });
@@ -249,12 +254,12 @@ class AuthenticationBloc
 
     await _authenticationUseCase.registerFcmNotification(token!);
 
-    await _updateFcmToken(token);
+    await updateFcmToken(token);
 
-    firebaseMessaging.onTokenRefresh.listen(_updateFcmToken);
+    firebaseMessaging.onTokenRefresh.listen(updateFcmToken);
   }
 
-  Future<void> _updateFcmToken(
+  Future<void> updateFcmToken(
     String newFcmToken,
   ) async {
     await SharedPreferencesHelper.instance.setString(

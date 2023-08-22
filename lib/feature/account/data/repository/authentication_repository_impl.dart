@@ -14,18 +14,13 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   }
 
   @override
-  Future<int> putCustomer(String customerId) async {
-    return authenticationLocalDataSource.putCustomer(customerId);
-  }
-
-  @override
   Future<int> putAccount(
-    String firebaseIdToken,
+    String customerId,
     String phoneNumber,
     String fullName,
   ) async {
     return authenticationLocalDataSource.putAccount(
-      firebaseIdToken,
+      customerId,
       phoneNumber,
       fullName,
     );
@@ -44,6 +39,8 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
   @override
   Future<dynamic> registerFcmNotification(String fcmToken) async {
-    return authenticationRemoteDataSource.registerFcmNotification(fcmToken);
+    return authenticationRemoteDataSource.registerFcmNotification(
+      fcmToken,
+    );
   }
 }

@@ -52,6 +52,14 @@ class $AssetsImagesGen {
   AssetGenImage get carBookingBackground =>
       const AssetGenImage('assets/images/car_booking_background.jpg');
 
+  /// File path: assets/images/empty_result.jpg
+  AssetGenImage get emptyResult =>
+      const AssetGenImage('assets/images/empty_result.jpg');
+
+  /// File path: assets/images/error_result.gif
+  AssetGenImage get errorResult =>
+      const AssetGenImage('assets/images/error_result.gif');
+
   /// File path: assets/images/money.png
   AssetGenImage get money => const AssetGenImage('assets/images/money.png');
 
@@ -76,6 +84,8 @@ class $AssetsImagesGen {
         car4,
         car7,
         carBookingBackground,
+        emptyResult,
+        errorResult,
         money,
         motorcycle,
         splashScreenBackground,

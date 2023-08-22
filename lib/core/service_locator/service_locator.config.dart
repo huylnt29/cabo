@@ -55,8 +55,8 @@ _i1.GetIt $initGetIt(
             gh<_i3.AuthenticationLocalDataSource>(),
             gh<_i4.AuthenticationRemoteDataSource>(),
           ));
-  gh.factory<_i8.AuthenticationUseCase>(() => _i8.AuthenticationUseCase(
-      authenticationRepository: gh<_i6.AuthenticationRepository>()));
+  gh.factory<_i8.AuthenticationUseCase>(
+      () => _i8.AuthenticationUseCase(gh<_i6.AuthenticationRepository>()));
   gh.factory<_i9.DriveBookingRemoteDataSource>(
       () => _i9.DriveBookingRemoteDataSource(gh<_i5.ApiClient>()));
   gh.factory<_i9.DriveBookingRepository>(() =>

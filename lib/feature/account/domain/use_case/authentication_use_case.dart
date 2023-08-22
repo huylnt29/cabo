@@ -2,8 +2,8 @@ import 'package:cabo_customer/feature/account/domain/repository/authentication_r
 import 'package:flutter/material.dart';
 
 class AuthenticationUseCase {
-  AuthenticationUseCase({required this.authenticationRepository});
-  AuthenticationRepository authenticationRepository;
+  AuthenticationUseCase(this.authenticationRepository);
+  final AuthenticationRepository authenticationRepository;
 
   Future<bool> checkPhone(String phoneNumber) async {
     try {
@@ -14,23 +14,14 @@ class AuthenticationUseCase {
     }
   }
 
-  Future<int> putCustomer(String customerId) async {
-    try {
-      final response = await authenticationRepository.putCustomer(customerId);
-      return response;
-    } catch (e) {
-      throw ErrorDescription(e.toString());
-    }
-  }
-
   Future<int> putAccount(
-    String firebaseIdToken,
+    String customerId,
     String phoneNumber,
     String fullName,
   ) async {
     try {
       final response = await authenticationRepository.putAccount(
-        firebaseIdToken,
+        customerId,
         phoneNumber,
         fullName,
       );

@@ -14,13 +14,12 @@ class AuthenticationRemoteDataSource {
     String phoneNumber,
     String fullName,
   ) async {
-    // TODO: Re-open later
-    // final response = await _caboClient.signUpWithCaboServer({
-    //   'phoneNumber': phoneNumber,
-    //   'fullName': fullName,
-    // });
-    // return response['customerId'];
-    return 'Y4mfdJaVfsbESIbICfSh';
+    final response = await _caboClient.signUpWithCaboServer({
+      'phoneNumber': phoneNumber,
+      'fullName': fullName,
+    });
+    return response['customerId'];
+    // return 'Y4mfdJaVfsbESIbICfSh';
   }
 
   Future<dynamic> registerFcmNotification(String fcmToken) async {

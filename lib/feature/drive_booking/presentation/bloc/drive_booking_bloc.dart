@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:cabo_customer/core/enums/payment_method.dart';
+import 'package:cabo_customer/core/enums/vehicle_type.dart';
 import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
 import 'package:cabo_customer/feature/drive_booking/domain/repository/drive_booking_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -18,7 +20,7 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
           addressListLoadState: LoadState.initial,
           tripEstimationLoadState: LoadState.initial,
         )) {
-    on<GetAddressList>((event, emit) async {
+    on<GetAddressListEvent>((event, emit) async {
       emit(state.copyWith(addressListLoadState: LoadState.loading));
       try {
         final response = await driveBookingRepository.getAddressList(
@@ -32,6 +34,11 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
         Logger.e(error);
         emit(state.copyWith(addressListLoadState: LoadState.error));
       }
+    });
+
+    on<ConfirmBookingEvent>((event, emit) async {
+      Logger.v('Right before confirming booking: ${event.string}');
+      emit(state.copyWith(bookingLoadState: LoadState.loading));
     });
   }
   final DriveBookingRepository driveBookingRepository;

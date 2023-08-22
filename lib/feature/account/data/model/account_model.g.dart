@@ -22,28 +22,56 @@ const AccountSchema = CollectionSchema(
       name: r'avatarPath',
       type: IsarType.string,
     ),
-    r'firestoreIdToken': PropertySchema(
-      id: 1,
-      name: r'firestoreIdToken',
-      type: IsarType.string,
-    ),
     r'fullName': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'fullName',
       type: IsarType.string,
     ),
-    r'phoneNumber': PropertySchema(
+    r'id': PropertySchema(
+      id: 2,
+      name: r'id',
+      type: IsarType.string,
+    ),
+    r'paymentValue': PropertySchema(
       id: 3,
+      name: r'paymentValue',
+      type: IsarType.double,
+    ),
+    r'phoneNumber': PropertySchema(
+      id: 4,
       name: r'phoneNumber',
       type: IsarType.string,
+    ),
+    r'totalTrip': PropertySchema(
+      id: 5,
+      name: r'totalTrip',
+      type: IsarType.long,
+    ),
+    r'vip': PropertySchema(
+      id: 6,
+      name: r'vip',
+      type: IsarType.bool,
     )
   },
   estimateSize: _accountEstimateSize,
   serialize: _accountSerialize,
   deserialize: _accountDeserialize,
   deserializeProp: _accountDeserializeProp,
-  idName: r'id',
+  idName: r'modelKey',
   indexes: {
+    r'id': IndexSchema(
+      id: -3268401673993471357,
+      name: r'id',
+      unique: true,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'id',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    ),
     r'phoneNumber': IndexSchema(
       id: 5414128966131364535,
       name: r'phoneNumber',
@@ -79,13 +107,13 @@ int _accountEstimateSize(
     }
   }
   {
-    final value = object.firestoreIdToken;
+    final value = object.fullName;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
-    final value = object.fullName;
+    final value = object.id;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -106,9 +134,12 @@ void _accountSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.avatarPath);
-  writer.writeString(offsets[1], object.firestoreIdToken);
-  writer.writeString(offsets[2], object.fullName);
-  writer.writeString(offsets[3], object.phoneNumber);
+  writer.writeString(offsets[1], object.fullName);
+  writer.writeString(offsets[2], object.id);
+  writer.writeDouble(offsets[3], object.paymentValue);
+  writer.writeString(offsets[4], object.phoneNumber);
+  writer.writeLong(offsets[5], object.totalTrip);
+  writer.writeBool(offsets[6], object.vip);
 }
 
 Account _accountDeserialize(
@@ -119,10 +150,13 @@ Account _accountDeserialize(
 ) {
   final object = Account();
   object.avatarPath = reader.readStringOrNull(offsets[0]);
-  object.firestoreIdToken = reader.readStringOrNull(offsets[1]);
-  object.fullName = reader.readStringOrNull(offsets[2]);
-  object.id = id;
-  object.phoneNumber = reader.readStringOrNull(offsets[3]);
+  object.fullName = reader.readStringOrNull(offsets[1]);
+  object.id = reader.readStringOrNull(offsets[2]);
+  object.modelKey = id;
+  object.paymentValue = reader.readDoubleOrNull(offsets[3]);
+  object.phoneNumber = reader.readStringOrNull(offsets[4]);
+  object.totalTrip = reader.readLongOrNull(offsets[5]);
+  object.vip = reader.readBoolOrNull(offsets[6]);
   return object;
 }
 
@@ -140,14 +174,20 @@ P _accountDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readDoubleOrNull(offset)) as P;
+    case 4:
       return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readLongOrNull(offset)) as P;
+    case 6:
+      return (reader.readBoolOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
 Id _accountGetId(Account object) {
-  return object.id;
+  return object.modelKey;
 }
 
 List<IsarLinkBase<dynamic>> _accountGetLinks(Account object) {
@@ -155,10 +195,62 @@ List<IsarLinkBase<dynamic>> _accountGetLinks(Account object) {
 }
 
 void _accountAttach(IsarCollection<dynamic> col, Id id, Account object) {
-  object.id = id;
+  object.modelKey = id;
 }
 
 extension AccountByIndex on IsarCollection<Account> {
+  Future<Account?> getById(String? id) {
+    return getByIndex(r'id', [id]);
+  }
+
+  Account? getByIdSync(String? id) {
+    return getByIndexSync(r'id', [id]);
+  }
+
+  Future<bool> deleteById(String? id) {
+    return deleteByIndex(r'id', [id]);
+  }
+
+  bool deleteByIdSync(String? id) {
+    return deleteByIndexSync(r'id', [id]);
+  }
+
+  Future<List<Account?>> getAllById(List<String?> idValues) {
+    final values = idValues.map((e) => [e]).toList();
+    return getAllByIndex(r'id', values);
+  }
+
+  List<Account?> getAllByIdSync(List<String?> idValues) {
+    final values = idValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'id', values);
+  }
+
+  Future<int> deleteAllById(List<String?> idValues) {
+    final values = idValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'id', values);
+  }
+
+  int deleteAllByIdSync(List<String?> idValues) {
+    final values = idValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'id', values);
+  }
+
+  Future<Id> putById(Account object) {
+    return putByIndex(r'id', object);
+  }
+
+  Id putByIdSync(Account object, {bool saveLinks = true}) {
+    return putByIndexSync(r'id', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllById(List<Account> objects) {
+    return putAllByIndex(r'id', objects);
+  }
+
+  List<Id> putAllByIdSync(List<Account> objects, {bool saveLinks = true}) {
+    return putAllByIndexSync(r'id', objects, saveLinks: saveLinks);
+  }
+
   Future<Account?> getByPhoneNumber(String? phoneNumber) {
     return getByIndex(r'phoneNumber', [phoneNumber]);
   }
@@ -214,7 +306,7 @@ extension AccountByIndex on IsarCollection<Account> {
 }
 
 extension AccountQueryWhereSort on QueryBuilder<Account, Account, QWhere> {
-  QueryBuilder<Account, Account, QAfterWhere> anyId() {
+  QueryBuilder<Account, Account, QAfterWhere> anyModelKey() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -222,68 +314,135 @@ extension AccountQueryWhereSort on QueryBuilder<Account, Account, QWhere> {
 }
 
 extension AccountQueryWhere on QueryBuilder<Account, Account, QWhereClause> {
-  QueryBuilder<Account, Account, QAfterWhereClause> idEqualTo(Id id) {
+  QueryBuilder<Account, Account, QAfterWhereClause> modelKeyEqualTo(
+      Id modelKey) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
+        lower: modelKey,
+        upper: modelKey,
       ));
     });
   }
 
-  QueryBuilder<Account, Account, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<Account, Account, QAfterWhereClause> modelKeyNotEqualTo(
+      Id modelKey) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
+              IdWhereClause.lessThan(upper: modelKey, includeUpper: false),
             )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
+              IdWhereClause.greaterThan(lower: modelKey, includeLower: false),
             );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
+              IdWhereClause.greaterThan(lower: modelKey, includeLower: false),
             )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
+              IdWhereClause.lessThan(upper: modelKey, includeUpper: false),
             );
       }
     });
   }
 
-  QueryBuilder<Account, Account, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<Account, Account, QAfterWhereClause> modelKeyGreaterThan(
+      Id modelKey,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: id, includeLower: include),
+        IdWhereClause.greaterThan(lower: modelKey, includeLower: include),
       );
     });
   }
 
-  QueryBuilder<Account, Account, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<Account, Account, QAfterWhereClause> modelKeyLessThan(
+      Id modelKey,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.lessThan(upper: id, includeUpper: include),
+        IdWhereClause.lessThan(upper: modelKey, includeUpper: include),
       );
     });
   }
 
-  QueryBuilder<Account, Account, QAfterWhereClause> idBetween(
-    Id lowerId,
-    Id upperId, {
+  QueryBuilder<Account, Account, QAfterWhereClause> modelKeyBetween(
+    Id lowerModelKey,
+    Id upperModelKey, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
+        lower: lowerModelKey,
         includeLower: includeLower,
-        upper: upperId,
+        upper: upperModelKey,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterWhereClause> idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'id',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterWhereClause> idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'id',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterWhereClause> idEqualTo(String? id) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'id',
+        value: [id],
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterWhereClause> idNotEqualTo(String? id) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'id',
+              lower: [],
+              upper: [id],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'id',
+              lower: [id],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'id',
+              lower: [id],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'id',
+              lower: [],
+              upper: [id],
+              includeUpper: false,
+            ));
+      }
     });
   }
 
@@ -501,159 +660,6 @@ extension AccountQueryFilter
     });
   }
 
-  QueryBuilder<Account, Account, QAfterFilterCondition>
-      firestoreIdTokenIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'firestoreIdToken',
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition>
-      firestoreIdTokenIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'firestoreIdToken',
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition> firestoreIdTokenEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'firestoreIdToken',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition>
-      firestoreIdTokenGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'firestoreIdToken',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition>
-      firestoreIdTokenLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'firestoreIdToken',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition> firestoreIdTokenBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'firestoreIdToken',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition>
-      firestoreIdTokenStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'firestoreIdToken',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition>
-      firestoreIdTokenEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'firestoreIdToken',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition>
-      firestoreIdTokenContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'firestoreIdToken',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition> firestoreIdTokenMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'firestoreIdToken',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition>
-      firestoreIdTokenIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'firestoreIdToken',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterFilterCondition>
-      firestoreIdTokenIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'firestoreIdToken',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<Account, Account, QAfterFilterCondition> fullNameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -800,46 +806,71 @@ extension AccountQueryFilter
     });
   }
 
-  QueryBuilder<Account, Account, QAfterFilterCondition> idEqualTo(Id value) {
+  QueryBuilder<Account, Account, QAfterFilterCondition> idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> idEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Account, Account, QAfterFilterCondition> idGreaterThan(
-    Id value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'id',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Account, Account, QAfterFilterCondition> idLessThan(
-    Id value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'id',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Account, Account, QAfterFilterCondition> idBetween(
-    Id lower,
-    Id upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -848,6 +879,206 @@ extension AccountQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> idStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> idEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> idContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> idMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'id',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> idIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> idIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> modelKeyEqualTo(
+      Id value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'modelKey',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> modelKeyGreaterThan(
+    Id value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'modelKey',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> modelKeyLessThan(
+    Id value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'modelKey',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> modelKeyBetween(
+    Id lower,
+    Id upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'modelKey',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> paymentValueIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'paymentValue',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition>
+      paymentValueIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'paymentValue',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> paymentValueEqualTo(
+    double? value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'paymentValue',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> paymentValueGreaterThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'paymentValue',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> paymentValueLessThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'paymentValue',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> paymentValueBetween(
+    double? lower,
+    double? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'paymentValue',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
       ));
     });
   }
@@ -998,6 +1229,101 @@ extension AccountQueryFilter
       ));
     });
   }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> totalTripIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'totalTrip',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> totalTripIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'totalTrip',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> totalTripEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'totalTrip',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> totalTripGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'totalTrip',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> totalTripLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'totalTrip',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> totalTripBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'totalTrip',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> vipIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'vip',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> vipIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'vip',
+      ));
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterFilterCondition> vipEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'vip',
+        value: value,
+      ));
+    });
+  }
 }
 
 extension AccountQueryObject
@@ -1019,18 +1345,6 @@ extension AccountQuerySortBy on QueryBuilder<Account, Account, QSortBy> {
     });
   }
 
-  QueryBuilder<Account, Account, QAfterSortBy> sortByFirestoreIdToken() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'firestoreIdToken', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterSortBy> sortByFirestoreIdTokenDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'firestoreIdToken', Sort.desc);
-    });
-  }
-
   QueryBuilder<Account, Account, QAfterSortBy> sortByFullName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fullName', Sort.asc);
@@ -1043,6 +1357,30 @@ extension AccountQuerySortBy on QueryBuilder<Account, Account, QSortBy> {
     });
   }
 
+  QueryBuilder<Account, Account, QAfterSortBy> sortById() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByPaymentValue() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paymentValue', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByPaymentValueDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paymentValue', Sort.desc);
+    });
+  }
+
   QueryBuilder<Account, Account, QAfterSortBy> sortByPhoneNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'phoneNumber', Sort.asc);
@@ -1052,6 +1390,30 @@ extension AccountQuerySortBy on QueryBuilder<Account, Account, QSortBy> {
   QueryBuilder<Account, Account, QAfterSortBy> sortByPhoneNumberDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'phoneNumber', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByTotalTrip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalTrip', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByTotalTripDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalTrip', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByVip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'vip', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> sortByVipDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'vip', Sort.desc);
     });
   }
 }
@@ -1067,18 +1429,6 @@ extension AccountQuerySortThenBy
   QueryBuilder<Account, Account, QAfterSortBy> thenByAvatarPathDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'avatarPath', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterSortBy> thenByFirestoreIdToken() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'firestoreIdToken', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Account, Account, QAfterSortBy> thenByFirestoreIdTokenDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'firestoreIdToken', Sort.desc);
     });
   }
 
@@ -1106,6 +1456,30 @@ extension AccountQuerySortThenBy
     });
   }
 
+  QueryBuilder<Account, Account, QAfterSortBy> thenByModelKey() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'modelKey', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByModelKeyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'modelKey', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByPaymentValue() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paymentValue', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByPaymentValueDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paymentValue', Sort.desc);
+    });
+  }
+
   QueryBuilder<Account, Account, QAfterSortBy> thenByPhoneNumber() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'phoneNumber', Sort.asc);
@@ -1115,6 +1489,30 @@ extension AccountQuerySortThenBy
   QueryBuilder<Account, Account, QAfterSortBy> thenByPhoneNumberDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'phoneNumber', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByTotalTrip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalTrip', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByTotalTripDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'totalTrip', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByVip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'vip', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Account, Account, QAfterSortBy> thenByVipDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'vip', Sort.desc);
     });
   }
 }
@@ -1128,18 +1526,23 @@ extension AccountQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Account, Account, QDistinct> distinctByFirestoreIdToken(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'firestoreIdToken',
-          caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<Account, Account, QDistinct> distinctByFullName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'fullName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Account, Account, QDistinct> distinctById(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'id', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Account, Account, QDistinct> distinctByPaymentValue() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'paymentValue');
     });
   }
 
@@ -1149,13 +1552,25 @@ extension AccountQueryWhereDistinct
       return query.addDistinctBy(r'phoneNumber', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<Account, Account, QDistinct> distinctByTotalTrip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'totalTrip');
+    });
+  }
+
+  QueryBuilder<Account, Account, QDistinct> distinctByVip() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'vip');
+    });
+  }
 }
 
 extension AccountQueryProperty
     on QueryBuilder<Account, Account, QQueryProperty> {
-  QueryBuilder<Account, int, QQueryOperations> idProperty() {
+  QueryBuilder<Account, int, QQueryOperations> modelKeyProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'id');
+      return query.addPropertyName(r'modelKey');
     });
   }
 
@@ -1165,21 +1580,39 @@ extension AccountQueryProperty
     });
   }
 
-  QueryBuilder<Account, String?, QQueryOperations> firestoreIdTokenProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'firestoreIdToken');
-    });
-  }
-
   QueryBuilder<Account, String?, QQueryOperations> fullNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fullName');
     });
   }
 
+  QueryBuilder<Account, String?, QQueryOperations> idProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Account, double?, QQueryOperations> paymentValueProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'paymentValue');
+    });
+  }
+
   QueryBuilder<Account, String?, QQueryOperations> phoneNumberProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'phoneNumber');
+    });
+  }
+
+  QueryBuilder<Account, int?, QQueryOperations> totalTripProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'totalTrip');
+    });
+  }
+
+  QueryBuilder<Account, bool?, QQueryOperations> vipProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'vip');
     });
   }
 }

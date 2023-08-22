@@ -6,16 +6,19 @@ abstract class AuthenticationRepository {
     this.authenticationLocalDataSource,
     this.authenticationRemoteDataSource,
   );
-  late AuthenticationRemoteDataSource authenticationRemoteDataSource;
-  late AuthenticationLocalDataSource authenticationLocalDataSource;
+  final AuthenticationRemoteDataSource authenticationRemoteDataSource;
+  final AuthenticationLocalDataSource authenticationLocalDataSource;
 
   Future<bool> checkPhone(String phoneNumber);
-  Future<int> putCustomer(String customerId);
+
   Future<int> putAccount(
-    String firebaseIdToken,
+    String customerId,
     String phoneNumber,
     String fullName,
   );
-  Future<String> signUpWithCaboServer(String phoneNumber, String fullName);
+  Future<String> signUpWithCaboServer(
+    String phoneNumber,
+    String fullName,
+  );
   Future<dynamic> registerFcmNotification(String fcmToken);
 }
