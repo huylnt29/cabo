@@ -5,6 +5,7 @@ import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/drive_booking/presentation/location_searching/location_searching_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
 import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
@@ -28,37 +29,38 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
   final driveBookingBloc = getIt<DriveBookingBloc>();
   final vehicleTypeIndex = ValueNotifier(0);
   final paymentMethodIndex = ValueNotifier(0);
-  Address? fromLocation;
-  Address? toLocation;
+  Address? fromAddress;
+  Address? toAddress;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildLocationArea(),
-          24.vertical,
-          Text(
-            'Vehicle type',
-            style: AppTextStyles.heading3(AppColors.textColor),
-          ),
-          12.vertical,
-          buildVehicleTypeArea(),
-          24.vertical,
-          Text(
-            'Payment method',
-            style: AppTextStyles.heading3(AppColors.textColor),
-          ),
-          12.vertical,
-          buildPaymentMethodArea(),
-          BlocProvider.value(
-            value: driveBookingBloc,
-            child: buildSubmitButton(),
-          ),
-        ],
+    return BlocProvider.value(
+      value: driveBookingBloc,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildLocationArea(),
+            24.vertical,
+            Text(
+              'Vehicle type',
+              style: AppTextStyles.heading3(AppColors.textColor),
+            ),
+            12.vertical,
+            buildVehicleTypeArea(),
+            24.vertical,
+            Text(
+              'Payment method',
+              style: AppTextStyles.heading3(AppColors.textColor),
+            ),
+            12.vertical,
+            buildPaymentMethodArea(),
+            24.vertical,
+            buildTripEstimationWithSubmitButton(),
+          ],
+        ),
       ),
     );
   }
@@ -77,17 +79,19 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
               ),
               ButtonWidget(
                 margin: EdgeInsets.zero,
-                title: fromLocation?.address ?? 'Pick a place',
+                title: fromAddress?.address ?? 'Pick a place',
+                titleFontSize: 13,
                 onPressed: () async {
                   final response = await Routes.router.navigateTo(
                     context,
                     RoutePath.locationSearchingScreen,
                     routeSettings: const RouteSettings(
-                      arguments: LocationSearchingPurpose.bookingToLocation,
+                      arguments: LocationSearchingPurpose.bookingFromLocation,
                     ),
                   );
                   setState(() {
-                    fromLocation = response;
+                    fromAddress = response;
+                    triggerTripEstimatingEventIfCan();
                   });
                 },
                 titleColor: AppColors.textColor,
@@ -103,7 +107,8 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
               ),
               ButtonWidget(
                 margin: EdgeInsets.zero,
-                title: toLocation?.address ?? 'Pick a place',
+                title: toAddress?.address ?? 'Pick a place',
+                titleFontSize: 13,
                 onPressed: () async {
                   final response = await Routes.router.navigateTo(
                     context,
@@ -113,7 +118,8 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
                     ),
                   );
                   setState(() {
-                    toLocation = response;
+                    toAddress = response;
+                    triggerTripEstimatingEventIfCan();
                   });
                 },
                 titleColor: AppColors.textColor,
@@ -228,17 +234,17 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
               : 'Finding driver...',
           titleColor: AppColors.textColor,
           onPressed: () {
-            if (fromLocation == null) {
+            if (fromAddress == null) {
               ToastWidget.show('Please select your starting place');
               return;
             }
-            if (toLocation == null) {
+            if (toAddress == null) {
               ToastWidget.show('Please select your destination');
               return;
             }
             driveBookingBloc.add(ConfirmBookingEvent(
-              fromLocation!,
-              toLocation!,
+              fromAddress!,
+              toAddress!,
               paymentMethodIndex.value,
               vehicleTypeIndex.value,
             ));
@@ -246,5 +252,74 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
         );
       },
     );
+  }
+
+  Widget buildTripEstimationWithSubmitButton() {
+    return BlocBuilder<DriveBookingBloc, DriveBookingState>(
+      builder: (context, state) {
+        switch (state.tripEstimationLoadState) {
+          case LoadState.loaded || LoadState.loading:
+            return RoundedContainerWidget(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  8.vertical,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Distance',
+                        style: AppTextStyles.text(
+                          AppColors.secondaryColor,
+                          bold: true,
+                        ),
+                      ),
+                      Text(
+                        state.tripEstimation?.formattedDistance.toString() ??
+                            ErrorMessage.isNotDetermined,
+                        style: AppTextStyles.text(
+                          AppColors.secondaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  12.vertical,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Cost',
+                        style: AppTextStyles.text(
+                          AppColors.secondaryColor,
+                          bold: true,
+                        ),
+                      ),
+                      Text(
+                        state.tripEstimation?.formattedCost.toString() ??
+                            ErrorMessage.isNotDetermined,
+                        style: AppTextStyles.text(
+                          AppColors.secondaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  buildSubmitButton(),
+                ],
+              ),
+            );
+          default:
+            return buildSubmitButton();
+        }
+      },
+    );
+  }
+
+  void triggerTripEstimatingEventIfCan() {
+    if (fromAddress != null && toAddress != null) {
+      driveBookingBloc.add(TripEstimatingEvent(
+        fromAddress!,
+        toAddress!,
+      ));
+    }
   }
 }

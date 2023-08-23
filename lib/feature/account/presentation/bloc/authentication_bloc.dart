@@ -212,16 +212,6 @@ class AuthenticationBloc
   Future<void> invokeFcmListener() async {
     await requestNotificationPermission();
     await setUpFcmToken();
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      Logger.v('Got foreground message: ${message.data}');
-
-      if (message.notification != null) {
-        Logger.v(
-          'Message also contains a notification: ${message.notification}',
-        );
-      }
-    });
   }
 
   Future<void> requestPermission() async {

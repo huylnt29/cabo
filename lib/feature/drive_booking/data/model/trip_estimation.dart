@@ -10,4 +10,7 @@ class TripEstimation {
 
   double cost;
   double distance;
+
+  String get formattedDistance => '${distance.toStringAsFixed(0)} km';
+  String get formattedCost => '${cost.toStringAsFixed(0)} VND';
 }

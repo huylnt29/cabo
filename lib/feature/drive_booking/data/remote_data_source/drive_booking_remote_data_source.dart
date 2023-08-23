@@ -8,4 +8,13 @@ class DriveBookingRemoteDataSource {
     final response = await apiClient.getAddressList(keyword);
     return response;
   }
+
+  Future<TripEstimation> getTripEstimation(
+      Location fromLocation, Location toLocation) async {
+    final response = await apiClient.postLocations({
+      'fromLocation': fromLocation.toJson(),
+      'toLocation': toLocation.toJson()
+    });
+    return response;
+  }
 }

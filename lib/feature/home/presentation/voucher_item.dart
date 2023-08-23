@@ -12,6 +12,7 @@ class VoucherItem extends StatelessWidget {
         horizontal: 3.sf,
       ),
       decoration: BoxDecoration(
+        backgroundBlendMode: BlendMode.lighten,
         color: AppColors.getRandom(),
         borderRadius: BorderRadius.circular(12.sf),
         boxShadow: [

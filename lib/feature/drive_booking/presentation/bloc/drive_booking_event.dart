@@ -9,16 +9,22 @@ class GetAddressListEvent extends DriveBookingEvent {
 
 class ConfirmBookingEvent extends DriveBookingEvent {
   ConfirmBookingEvent(
-    this.fromLocation,
-    this.toLocation,
+    this.fromAddress,
+    this.toAddress,
     this.paymentMethod,
     this.vehicleType,
   );
-  final Address fromLocation;
-  final Address toLocation;
+  final Address fromAddress;
+  final Address toAddress;
   final int paymentMethod;
   final int vehicleType;
 
   String get string =>
-      '${fromLocation.toJson()} - ${toLocation.toJson()} - $paymentMethod - $vehicleType';
+      '${fromAddress.toJson()} - ${toAddress.toJson()} - $paymentMethod - $vehicleType';
+}
+
+class TripEstimatingEvent extends DriveBookingEvent {
+  TripEstimatingEvent(this.fromAddress, this.toAddress);
+  final Address fromAddress;
+  final Address toAddress;
 }

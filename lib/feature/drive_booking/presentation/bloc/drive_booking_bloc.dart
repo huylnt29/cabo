@@ -40,6 +40,23 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
       Logger.v('Right before confirming booking: ${event.string}');
       emit(state.copyWith(bookingLoadState: LoadState.loading));
     });
+
+    on<TripEstimatingEvent>((event, emit) async {
+      emit(state.copyWith(tripEstimationLoadState: LoadState.loading));
+      try {
+        final response = await driveBookingRepository.getTripEstimation(
+          event.fromAddress,
+          event.toAddress,
+        );
+        emit(state.copyWith(
+          tripEstimation: response,
+          tripEstimationLoadState: LoadState.loaded,
+        ));
+      } catch (error) {
+        Logger.e(error);
+        emit(state.copyWith(tripEstimationLoadState: LoadState.error));
+      }
+    });
   }
   final DriveBookingRepository driveBookingRepository;
 }
