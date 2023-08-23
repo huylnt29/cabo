@@ -6,8 +6,8 @@ import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dar
 import '../automatic_generator/assets.gen.dart';
 
 class NoDataWidget extends StatelessWidget {
-  const NoDataWidget({super.key});
-
+  const NoDataWidget({super.key, this.message = ErrorMessage.isNotDetermined});
+  final String message;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +21,7 @@ class NoDataWidget extends StatelessWidget {
           ),
           12.vSpace,
           Text(
-            ErrorMessage.hasNoData,
+            message,
             style: AppTextStyles.custom(
               fontSize: 14,
             ),

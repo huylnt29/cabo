@@ -69,7 +69,9 @@ class SharedPreferencesHelper {
     required SharedPreferencesRequest<String> sharedPreferencesRequest,
   }) async {
     await _pref.setString(
-        sharedPreferencesRequest.key, sharedPreferencesRequest.value);
+      sharedPreferencesRequest.key,
+      sharedPreferencesRequest.value,
+    );
   }
 
   // Map<String, dynamic> getObject({

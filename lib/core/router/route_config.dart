@@ -19,6 +19,10 @@ class Routes {
       RoutePath.locationSearchingScreen,
       handler: locationSearchingScreenHandler,
     );
+    setRouter(
+      RoutePath.realTimeTrackingScreen,
+      handler: realTimeTrackingScreenHandler,
+    );
   }
 
   static void setRouter(

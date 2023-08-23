@@ -5,16 +5,21 @@ import 'dart:math';
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
+import 'package:cabo_customer/feature/drive_booking/presentation/bloc/drive_booking_bloc.dart';
 
 import 'package:cabo_customer/feature/drive_history/presentation/drive_history_screen.dart';
 import 'package:cabo_customer/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:cabo_customer/feature/home/presentation/home_screen.dart';
+import 'package:cabo_customer/feature/notification/domain/use_case/notification_use_case.dart';
+import 'package:cabo_customer/feature/notification/presentation/bloc/notification_bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 
-import '../core/faked_data/faked_account.dart';
+import '../core/faked_data/faked_data.dart';
 import 'drive_booking/presentation/form_booking/form_booking_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -38,12 +43,37 @@ class _BottomNavBarState extends State<BottomNavBar> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    listenToForegroundMessage();
+    super.didChangeDependencies();
+  }
+
+  void listenToForegroundMessage() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      Logger.v('Got foreground message: ${message.data}');
+      getIt<NotificationUseCase>().handleFcmData(
+        message,
+        context.read<NotificationBloc>(),
+      );
+
+      if (message.notification != null) {
+        Logger.v(
+          'Message also contains a notification: ${message.notification}',
+        );
+      }
+    });
+  }
+
   final List<Widget> bottomBarScreens = [
     BlocProvider(
       create: (_) => getIt<HomeBloc>()..fetchDataForScreen(),
       child: const HomeScreen(),
     ),
-    const FormBookingScreen(),
+    BlocProvider.value(
+      value: getIt<DriveBookingBloc>(),
+      child: const FormBookingScreen(),
+    ),
     const DriveHistoryScreen(),
   ];
 
@@ -69,7 +99,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
-              fakedAvatar[Random().nextInt(fakedAvatar.length)],
+              FakedData
+                  .fakedAvatar[Random().nextInt(FakedData.fakedAvatar.length)],
             ),
           ),
         ),

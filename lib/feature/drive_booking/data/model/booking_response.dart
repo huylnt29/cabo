@@ -11,6 +11,7 @@ class BookingResponse {
       _$BookingResponseFromJson(json);
 
   String tripId;
+  @JsonKey(name: 'driverInfo')
   Driver driver;
 }
 
@@ -22,7 +23,7 @@ class Driver {
     this.avatar,
     required this.brand,
     required this.regNo,
-    required this.location,
+    // required this.realAddress,
   });
   factory Driver.fromJson(Map<String, Object?> json) => _$DriverFromJson(json);
 
@@ -31,5 +32,6 @@ class Driver {
   String? avatar;
   String brand;
   String regNo;
-  Location location;
+  // @JsonKey(name: 'location')
+  // String realAddress;
 }

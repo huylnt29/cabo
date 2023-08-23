@@ -1,6 +1,7 @@
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 
 import 'package:cabo_customer/feature/account/presentation/bloc/authentication_bloc.dart';
+import 'package:cabo_customer/feature/notification/presentation/bloc/notification_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,9 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => getIt<AuthenticationBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => getIt<NotificationBloc>(),
         ),
       ],
       child: MaterialApp(

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/enums/vehicle_type.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.dart';
 import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
 import 'package:cabo_customer/feature/drive_booking/domain/repository/drive_booking_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -39,7 +40,42 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
     on<ConfirmBookingEvent>((event, emit) async {
       Logger.v('Right before confirming booking: ${event.string}');
       emit(state.copyWith(bookingLoadState: LoadState.loading));
+
+      try {
+        final response = await driveBookingRepository.proceedBooking(
+          event.fromAddress.location,
+          event.toAddress.location,
+          state.tripEstimation!,
+          event.vehicleType,
+          event.paymentMethod,
+        );
+        if (response is BookingResponse) {
+          emit(state.copyWith(
+            bookingResponse: response,
+            bookingLoadState: LoadState.loaded,
+          ));
+        } else {
+          emit(state.copyWith(
+            bookingResponse: BookingResponse(
+              tripId: '123456',
+              driver: Driver(
+                fullName: 'Le Minh Nhat',
+                phoneNumber: '0774848931',
+                brand: 'Yamaha',
+                regNo: 'AbcXyz',
+              ),
+            ),
+            bookingLoadState: LoadState.loaded,
+          ));
+        }
+      } catch (error) {
+        Logger.e(error);
+        emit(state.copyWith(bookingLoadState: LoadState.error));
+      }
     });
+
+    on<ResetBookingEvent>((event, emit) =>
+        emit(state.copyWith(bookingLoadState: LoadState.initial)));
 
     on<TripEstimatingEvent>((event, emit) async {
       emit(state.copyWith(tripEstimationLoadState: LoadState.loading));

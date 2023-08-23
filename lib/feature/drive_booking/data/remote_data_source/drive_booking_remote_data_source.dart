@@ -17,4 +17,32 @@ class DriveBookingRemoteDataSource {
     });
     return response;
   }
+
+  Future<dynamic> proceedBooking(
+    Account account,
+    Location fromLocation,
+    Location toLocation,
+    TripEstimation tripEstimation,
+    int vehicleType,
+    int paymentMethod,
+  ) async {
+    try {
+      final response = await apiClient.proceedBooking(
+        account.id!,
+        {
+          'customerOrderLocation': fromLocation.toJson(),
+          'toLocation': toLocation.toJson(),
+          'customerPhoneNumber': account.phoneNumber,
+          'distance': tripEstimation.distance,
+          'cost': tripEstimation.cost,
+          'carType': vehicleType,
+          'paymentType': paymentMethod,
+        },
+      );
+      return response!;
+    } on DioException catch (error) {
+      Logger.e(error);
+      return null;
+    }
+  }
 }
