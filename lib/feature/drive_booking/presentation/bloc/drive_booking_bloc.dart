@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:cabo_customer/core/enums/payment_method.dart';
-import 'package:cabo_customer/core/enums/vehicle_type.dart';
+
 import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.dart';
 import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
 import 'package:cabo_customer/feature/drive_booking/domain/repository/drive_booking_repository.dart';

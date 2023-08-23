@@ -1,5 +1,5 @@
 import 'package:cabo_customer/core/network/local/isar/isar_database.dart';
-import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.dart';
+
 import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
 import 'package:dio/dio.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';

@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../../core/model/location.dart';
-
 part 'booking_response.g.dart';
 
 @JsonSerializable()

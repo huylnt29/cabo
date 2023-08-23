@@ -89,6 +89,7 @@ class AuthenticationBloc
     }
   }
 
+  // TODO: Use later
   Future<void> _checkPhoneExistence(
       PhoneExistenceCheckEvent event, Emitter<AuthenticationState> emit) async {
     emit(state.copyWith(loadState: LoadState.loading));
@@ -104,6 +105,7 @@ class AuthenticationBloc
     PhoneSentToFirebaseEvent event,
     Emitter<AuthenticationState> emit,
   ) async {
+    // TODO: Use later
     // if (event.phoneNumber.length != 10) {
     //   ToastWidget.show('Phone number must include 10 digits.');
     // } else if (event.fullName.length < 3) {
@@ -128,6 +130,7 @@ class AuthenticationBloc
     emit(state.copyWith(loadState: LoadState.loading));
 
     await firebaseAuth.verifyPhoneNumber(
+      // TODO: Add +84 later
       phoneNumber: event.phoneNumber,
       verificationCompleted: (credential) async {
         await firebaseAuth.signInWithCredential(credential);
