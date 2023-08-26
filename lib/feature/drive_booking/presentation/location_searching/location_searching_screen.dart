@@ -104,7 +104,7 @@ class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
       onTap: () => Navigator.pop(context, address),
       child: Container(
         margin: EdgeInsets.only(bottom: 18.sf),
-        child: RoundedContainerWidget(child: Text(address.address)),
+        child: RoundedContainerWidget(child: Text(address.address!)),
       ),
     );
   }

@@ -83,6 +83,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
     'Booking history',
   ];
 
+  Widget buildFavoriteLocationAction() {
+    return IconButton(
+      onPressed: () {},
+      icon: Assets.icons.favoriteLocation.svg(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,12 +114,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         backgroundColor: AppColors.secondaryColor,
         foregroundColor: AppColors.primaryColor,
         actions: [
-          Container(
-            margin: EdgeInsets.only(right: 20.sf),
-            child: Assets.icons.favoriteLocation.svg(
-              color: AppColors.primaryColor,
-            ),
-          )
+          buildFavoriteLocationAction(),
         ],
       ),
       body: PageView(

@@ -57,8 +57,8 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
     Address toAddress,
   ) async {
     final response = await driveBookingRemoteDataSource.getTripEstimation(
-      fromAddress.location,
-      toAddress.location,
+      fromAddress.location!,
+      toAddress.location!,
     );
     return response;
   }

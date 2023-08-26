@@ -51,8 +51,8 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
 
       try {
         final response = await driveBookingRepository.proceedBooking(
-          event.fromAddress.location,
-          event.toAddress.location,
+          event.fromAddress.location!,
+          event.toAddress.location!,
           state.tripEstimation!,
           event.vehicleType,
           event.paymentMethod,
