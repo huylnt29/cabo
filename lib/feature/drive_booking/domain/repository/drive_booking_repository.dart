@@ -1,4 +1,7 @@
 import 'package:cabo_customer/core/network/local/isar/isar_database.dart';
+import 'package:cabo_customer/core/service_locator/service_locator.dart';
+import 'package:cabo_customer/feature/account/data/local_data_source/authentication_local_data_source.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.dart';
 
 import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
 import 'package:dio/dio.dart';
@@ -11,10 +14,10 @@ import '../../../../core/network/remote/cabo_server/api_client.dart';
 import '../../../account/data/model/account_model.dart';
 
 part '../../data/remote_data_source/drive_booking_remote_data_source.dart';
+part '../../data/local_data_source/drive_booking_local_data_source.dart';
 
 abstract class DriveBookingRepository {
-  final DriveBookingRemoteDataSource driveBookingRemoteDataSource;
-  DriveBookingRepository(this.driveBookingRemoteDataSource);
+  DriveBookingRepository();
 
   Future<List<Address>> getAddressList(String keyword);
   Future<TripEstimation> getTripEstimation(
@@ -28,12 +31,19 @@ abstract class DriveBookingRepository {
     int vehicleType,
     int paymentMethod,
   );
+  Future<BookingResponse?> getFirstBookingResponse();
+  Future<int> saveBookingResponse(BookingResponse bookingResponse);
+  Future<bool> deleteFirstBookingResponse();
 }
 
 @Injectable(as: DriveBookingRepository)
-class DriveBookingRepositoryImpl extends DriveBookingRepository
-    with IsarDatabase {
-  DriveBookingRepositoryImpl(super.driveBookingRemoteDataSource);
+class DriveBookingRepositoryImpl extends DriveBookingRepository {
+  DriveBookingRepositoryImpl(
+    this.driveBookingRemoteDataSource,
+    this.driveBookingLocalDataSource,
+  );
+  final DriveBookingRemoteDataSource driveBookingRemoteDataSource;
+  final DriveBookingLocalDataSource driveBookingLocalDataSource;
 
   @override
   Future<List<Address>> getAddressList(String keyword) async {
@@ -61,7 +71,8 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository
     int vehicleType,
     int paymentMethod,
   ) async {
-    final account = await isarInstance!.collection<Account>().get(1);
+    final account =
+        await getIt<AuthenticationLocalDataSource>().getFirstAccount();
     final response = await driveBookingRemoteDataSource.proceedBooking(
       account!,
       fromLocation,
@@ -71,5 +82,20 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository
       paymentMethod,
     );
     return response;
+  }
+
+  @override
+  Future<BookingResponse?> getFirstBookingResponse() async {
+    return driveBookingLocalDataSource.getFirstBookingResponse();
+  }
+
+  @override
+  Future<int> saveBookingResponse(BookingResponse bookingResponse) async {
+    return driveBookingLocalDataSource.saveBookingResponse(bookingResponse);
+  }
+
+  @override
+  Future<bool> deleteFirstBookingResponse() async {
+    return driveBookingLocalDataSource.deleteFirstBookingResponse();
   }
 }

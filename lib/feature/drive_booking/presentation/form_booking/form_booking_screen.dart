@@ -16,6 +16,7 @@ import 'package:huylnt_flutter_component/reusable_core/widgets/toast_widget.dart
 import '../../../../core/router/route_config.dart';
 import '../../../../core/router/route_paths.dart';
 
+import '../../data/model/booking_response.dart';
 import '../bloc/drive_booking_bloc.dart';
 
 class FormBookingScreen extends StatefulWidget {
@@ -36,31 +37,34 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
   void didChangeDependencies() {
     driveBookingBloc = context.read<DriveBookingBloc>();
     driveBookingBloc.stream.listen((state) {
-      if (state.bookingLoadState == LoadState.loaded) {
-        Routes.router.navigateTo(
-          context,
-          RoutePath.realTimeTrackingScreen,
-          routeSettings: RouteSettings(
-            arguments: {
-              'tripId': state.bookingResponse?.tripId,
-              'driver': state.bookingResponse?.driver,
-            },
-          ),
+      if (state.bookingResponse != null) {
+        navigateToRealTimeTrackingScreen(
+          state.bookingResponse!.tripId,
+          state.bookingResponse!.driver,
         );
-        if (state.bookingResponse == null) {
-          Future.delayed(
-            const Duration(seconds: 1),
-            () => driveBookingBloc.add(ResetBookingEvent()),
-          );
-        }
+      } else if (state.bookingLoadState == LoadState.loaded) {
+        navigateToRealTimeTrackingScreen(null, null);
       } else if (state.bookingLoadState == LoadState.error) {
-        Future.delayed(
-          const Duration(seconds: 1),
-          () => driveBookingBloc.add(ResetBookingEvent()),
-        );
+        // TODO: Handle later
       }
     });
     super.didChangeDependencies();
+  }
+
+  Future<dynamic> navigateToRealTimeTrackingScreen(
+    String? tripId,
+    Driver? driver,
+  ) {
+    return Routes.router.navigateTo(
+      context,
+      RoutePath.realTimeTrackingScreen,
+      routeSettings: RouteSettings(
+        arguments: {
+          'tripId': tripId,
+          'driver': driver,
+        },
+      ),
+    );
   }
 
   @override

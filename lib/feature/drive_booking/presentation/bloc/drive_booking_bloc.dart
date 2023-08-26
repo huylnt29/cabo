@@ -20,6 +20,15 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
           addressListLoadState: LoadState.initial,
           tripEstimationLoadState: LoadState.initial,
         )) {
+    on<FetchCurrentBookingEvent>((event, emit) async {
+      try {
+        final response = await driveBookingRepository.getFirstBookingResponse();
+        emit(state.copyWith(bookingResponse: response));
+      } catch (error) {
+        Logger.e(error);
+      }
+    });
+
     on<GetAddressListEvent>((event, emit) async {
       emit(state.copyWith(addressListLoadState: LoadState.loading));
       try {
@@ -53,6 +62,7 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
             bookingResponse: response,
             bookingLoadState: LoadState.loaded,
           ));
+          await driveBookingRepository.saveBookingResponse(response);
         } else {
           emit(state.copyWith(
             bookingResponse: BookingResponse(
@@ -66,6 +76,8 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
             ),
             bookingLoadState: LoadState.loaded,
           ));
+          // TODO: Remove faked flow
+          await driveBookingRepository.saveBookingResponse(response);
         }
       } catch (error) {
         Logger.e(error);
@@ -73,8 +85,12 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
       }
     });
 
-    on<ResetBookingEvent>((event, emit) =>
-        emit(state.copyWith(bookingLoadState: LoadState.initial)));
+    on<ResetBookingEvent>((event, emit) async {
+      await Future.delayed(
+        const Duration(seconds: 1),
+        () => emit(state.copyWith(bookingLoadState: LoadState.initial)),
+      );
+    });
 
     on<TripEstimatingEvent>((event, emit) async {
       emit(state.copyWith(tripEstimationLoadState: LoadState.loading));
@@ -93,5 +109,6 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
       }
     });
   }
+
   final DriveBookingRepository driveBookingRepository;
 }

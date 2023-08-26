@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cabo_customer/core/model/voucher_model.dart';
 import 'package:cabo_customer/feature/account/data/model/account_model.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:isar/isar.dart';
 
@@ -24,6 +25,7 @@ mixin IsarDatabase {
     final isar = await Isar.open([
       AccountSchema,
       VoucherSchema,
+      BookingResponseSchema,
     ], directory: isarDir.path, inspector: true);
 
     return isar;

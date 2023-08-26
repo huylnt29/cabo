@@ -2,6 +2,10 @@ part of 'drive_booking_bloc.dart';
 
 abstract class DriveBookingEvent {}
 
+class FetchCurrentBookingEvent extends DriveBookingEvent {
+  FetchCurrentBookingEvent();
+}
+
 class GetAddressListEvent extends DriveBookingEvent {
   GetAddressListEvent(this.locationKeyword);
   final String locationKeyword;

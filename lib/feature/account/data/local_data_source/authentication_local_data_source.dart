@@ -20,4 +20,9 @@ class AuthenticationLocalDataSource with IsarDatabase {
     });
     return accountKey;
   }
+
+  Future<Account?> getFirstAccount() async {
+    final account = await isarInstance!.collection<Account>().get(1);
+    return account;
+  }
 }
