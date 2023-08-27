@@ -1,3 +1,5 @@
+import 'package:cabo_customer/core/enums/payment_method.dart';
+import 'package:cabo_customer/core/enums/vehicle_type.dart';
 import 'package:cabo_customer/core/network/local/isar/isar_database.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/feature/account/data/local_data_source/authentication_local_data_source.dart';
@@ -23,13 +25,14 @@ abstract class DriveBookingRepository {
   Future<TripEstimation> getTripEstimation(
     Address fromAddress,
     Address toAddress,
+    VehicleType vehicleType,
   );
   Future<dynamic> proceedBooking(
     Location fromLocation,
     Location toLocation,
     TripEstimation tripEstimation,
-    int vehicleType,
-    int paymentMethod,
+    VehicleType vehicleType,
+    PaymentMethod paymentMethod,
   );
   Future<BookingResponse?> getFirstBookingResponse();
   Future<int> saveBookingResponse(BookingResponse bookingResponse);
@@ -55,10 +58,12 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
   Future<TripEstimation> getTripEstimation(
     Address fromAddress,
     Address toAddress,
+    VehicleType vehicleType,
   ) async {
     final response = await driveBookingRemoteDataSource.getTripEstimation(
       fromAddress.location!,
       toAddress.location!,
+      vehicleType.serverKey,
     );
     return response;
   }
@@ -68,8 +73,8 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
     Location fromLocation,
     Location toLocation,
     TripEstimation tripEstimation,
-    int vehicleType,
-    int paymentMethod,
+    VehicleType vehicleType,
+    PaymentMethod paymentMethod,
   ) async {
     final account =
         await getIt<AuthenticationLocalDataSource>().getFirstAccount();
@@ -78,8 +83,8 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
       fromLocation,
       toLocation,
       tripEstimation,
-      vehicleType,
-      paymentMethod,
+      vehicleType.serverKey,
+      paymentMethod.serverKey,
     );
     return response;
   }

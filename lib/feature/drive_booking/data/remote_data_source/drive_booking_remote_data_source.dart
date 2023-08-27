@@ -10,10 +10,14 @@ class DriveBookingRemoteDataSource {
   }
 
   Future<TripEstimation> getTripEstimation(
-      Location fromLocation, Location toLocation) async {
+    Location fromLocation,
+    Location toLocation,
+    String vehicleType,
+  ) async {
     final response = await apiClient.postLocations({
       'fromLocation': fromLocation.toJson(),
-      'toLocation': toLocation.toJson()
+      'toLocation': toLocation.toJson(),
+      'vehicleType': vehicleType
     });
     return response;
   }
@@ -23,7 +27,7 @@ class DriveBookingRemoteDataSource {
     Location fromLocation,
     Location toLocation,
     TripEstimation tripEstimation,
-    int vehicleType,
+    String vehicleType,
     int paymentMethod,
   ) async {
     try {
@@ -36,7 +40,7 @@ class DriveBookingRemoteDataSource {
           'distance': tripEstimation.distance,
           'cost': tripEstimation.cost,
           'carType': vehicleType,
-          'paymentType': paymentMethod,
+          'paymentType': paymentMethod
         },
       );
       return response!;

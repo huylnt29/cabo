@@ -35,7 +35,8 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
 
   @override
   void didChangeDependencies() {
-    driveBookingBloc = context.read<DriveBookingBloc>();
+    driveBookingBloc = context.read<DriveBookingBloc>()
+      ..add(FetchCurrentBookingEvent());
     driveBookingBloc.stream.listen((state) {
       if (state.bookingResponse != null) {
         navigateToRealTimeTrackingScreen(
@@ -278,7 +279,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
                         ),
                       ),
                       Text(
-                        state.tripEstimation?.formattedDistance.toString() ??
+                        state.tripEstimation?.distance ??
                             ErrorMessage.isNotDetermined,
                         style: AppTextStyles.text(
                           AppColors.secondaryColor,
@@ -298,7 +299,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
                         ),
                       ),
                       Text(
-                        state.tripEstimation?.formattedCost.toString() ??
+                        state.tripEstimation?.cost ??
                             ErrorMessage.isNotDetermined,
                         style: AppTextStyles.text(
                           AppColors.secondaryColor,
@@ -342,8 +343,8 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
                 driveBookingBloc.add(ConfirmBookingEvent(
                   fromAddress!,
                   toAddress!,
-                  paymentMethodIndex.value,
-                  vehicleTypeIndex.value,
+                  PaymentMethod.values[paymentMethodIndex.value],
+                  VehicleType.values[vehicleTypeIndex.value],
                 ));
               },
             ),
@@ -369,6 +370,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
       driveBookingBloc.add(TripEstimatingEvent(
         fromAddress!,
         toAddress!,
+        VehicleType.values[vehicleTypeIndex.value],
       ));
     }
   }

@@ -20,8 +20,8 @@ class ConfirmBookingEvent extends DriveBookingEvent {
   );
   final Address fromAddress;
   final Address toAddress;
-  final int paymentMethod;
-  final int vehicleType;
+  final PaymentMethod paymentMethod;
+  final VehicleType vehicleType;
 
   String get string =>
       '${fromAddress.toJson()} - ${toAddress.toJson()} - $paymentMethod - $vehicleType';
@@ -32,7 +32,12 @@ class ResetBookingEvent extends DriveBookingEvent {
 }
 
 class TripEstimatingEvent extends DriveBookingEvent {
-  TripEstimatingEvent(this.fromAddress, this.toAddress);
+  TripEstimatingEvent(
+    this.fromAddress,
+    this.toAddress,
+    this.vehicleType,
+  );
   final Address fromAddress;
   final Address toAddress;
+  final VehicleType vehicleType;
 }

@@ -8,9 +8,9 @@ class TripEstimation {
   factory TripEstimation.fromJson(Map<String, Object?> json) =>
       _$TripEstimationFromJson(json);
 
-  double cost;
-  double distance;
+  String cost;
+  String distance;
 
-  String get formattedDistance => '${distance.toStringAsFixed(0)} km';
-  String get formattedCost => '${cost.toStringAsFixed(0)} VND';
+  // String get formattedDistance => '${distance.toStringAsFixed(0)} km';
+  // String get formattedCost => '${cost.toStringAsFixed(0)} VND';
 }

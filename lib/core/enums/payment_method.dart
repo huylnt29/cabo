@@ -28,4 +28,13 @@ extension PaymentMethodUtil on PaymentMethod {
         return Assets.images.wallet.image();
     }
   }
+
+  int get serverKey {
+    switch (this) {
+      case PaymentMethod.cash:
+        return 1;
+      case PaymentMethod.digital:
+        return 2;
+    }
+  }
 }

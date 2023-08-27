@@ -28,7 +28,7 @@ abstract class ApiClient {
   @GET('/customer/notification/subscribe/{fcmToken}')
   Future<HttpResponse> postFcmToken(@Path() String fcmToken);
 
-  @POST('/customer/drive-booking/estimate-cost')
+  @POST('/bing-map/drive-booking/estimate-cost')
   Future<TripEstimation> postLocations(
     @Body() Map<String, dynamic> body,
   );
