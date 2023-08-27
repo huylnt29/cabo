@@ -25,6 +25,7 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
     on<FetchCurrentBookingEvent>((event, emit) async {
       try {
         final response = await driveBookingRepository.getFirstBookingResponse();
+        Logger.v('Current booking response: $response');
         emit(state.copyWith(bookingResponse: response));
       } catch (error) {
         Logger.e(error);
@@ -79,7 +80,15 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
             bookingLoadState: LoadState.loaded,
           ));
           // TODO: Remove faked flow
-          await driveBookingRepository.saveBookingResponse(response);
+          await driveBookingRepository.saveBookingResponse(BookingResponse(
+            tripId: '123456',
+            driver: Driver(
+              fullName: 'Le Minh Nhat',
+              phoneNumber: '0774848931',
+              brand: 'Yamaha',
+              regNo: 'AbcXyz',
+            ),
+          ));
         }
       } catch (error) {
         Logger.e(error);

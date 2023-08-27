@@ -16,6 +16,8 @@ import 'package:huylnt_flutter_component/reusable_core/widgets/toast_widget.dart
 
 import '../../../../core/faked_data/faked_data.dart';
 
+import '../../../../core/router/route_config.dart';
+import '../../../../core/router/route_paths.dart';
 import '../../../notification/presentation/bloc/notification_bloc.dart';
 import '../../data/model/booking_response.dart';
 
@@ -42,9 +44,17 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
   @override
   Widget build(BuildContext context) {
     return CompleteScaffoldWidget(
+      onLeadingPressed: () => Routes.router.navigateTo(
+        context,
+        RoutePath.bottomNavBar,
+        clearStack: true,
+      ),
       appBarTextWidget: Text(
         'Drive tracking',
-        style: AppTextStyles.text(AppColors.textColor, bold: true),
+        style: AppTextStyles.text(
+          AppColors.textColor,
+          bold: true,
+        ),
       ),
       body: buildBody(),
     );
@@ -57,7 +67,10 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
       );
     } else {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.sf, vertical: 12.sf),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.sf,
+          vertical: 12.sf,
+        ),
         child: Column(
           children: [
             buildDriverArrivalEstimation(),
