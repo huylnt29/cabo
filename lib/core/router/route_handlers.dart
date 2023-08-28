@@ -8,6 +8,8 @@ import 'package:cabo_customer/feature/splash/presentation/splash_screen.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../feature/favorite_location/presentation/favorite_location_screen.dart';
+
 Handler splashScreenHandler = Handler(
   handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
       const SplashScreen(),
@@ -50,5 +52,14 @@ Handler realTimeTrackingScreenHandler = Handler(
       tripId: arg['tripId'],
       driver: arg['driver'],
     );
+  },
+);
+
+Handler viewFavoriteLocationScreenHandler = Handler(
+  handlerFunc: (
+    BuildContext? context,
+    Map<String, List<String>> params,
+  ) {
+    return FavoriteLocationScreen();
   },
 );

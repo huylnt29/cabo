@@ -5,6 +5,8 @@ import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/core/widgets/error_widget.dart';
 import 'package:cabo_customer/feature/drive_booking/presentation/bloc/drive_booking_bloc.dart';
+import 'package:cabo_customer/feature/favorite_location/data/model/favorite_location_model.dart';
+import 'package:cabo_customer/feature/favorite_location/presentation/bloc/favorite_location_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
@@ -48,54 +50,70 @@ class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
         'Search location',
       ),
       appBarBackgroundColor: AppColors.secondaryColor,
-      body: BlocProvider.value(
-        value: driveBookingBloc,
-        child: Column(
-          children: [
-            Expanded(child: buildAddressListArea()),
-            18.vertical,
-            TextFormFieldWidget(
-              textInputType: TextInputType.streetAddress,
-              colorTheme: AppColors.secondaryColor,
-              labelText: 'Address',
-              onChanged: (keyword) {
-                if (timer?.isActive ?? false) timer?.cancel();
-                timer = Timer(const Duration(seconds: 1), () {
-                  driveBookingBloc.add(GetAddressListEvent(keyword));
-                });
-              },
-            )
-          ],
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: driveBookingBloc),
+          BlocProvider.value(
+            value: getIt<FavoriteLocationBloc>()..add(GetAllEvent()),
+          ),
+        ],
+        child: Padding(
+          padding: EdgeInsets.all(18.sf),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildLocalAddressListArea(),
+              Text(
+                'Hint location',
+                style: AppTextStyles.heading3(AppColors.textColor),
+              ),
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 12.sf),
+                  child: buildRemoteAddressListArea(),
+                ),
+              ),
+              8.vertical,
+              TextFormFieldWidget(
+                textInputType: TextInputType.streetAddress,
+                colorTheme: AppColors.secondaryColor,
+                labelText: 'Address',
+                onChanged: (keyword) {
+                  if (timer?.isActive ?? false) timer?.cancel();
+                  timer = Timer(const Duration(seconds: 1), () {
+                    driveBookingBloc.add(GetAddressListEvent(keyword));
+                  });
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget buildAddressListArea() {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 8.sf,
-      ).copyWith(top: 12.sf),
-      child: BlocBuilder<DriveBookingBloc, DriveBookingState>(
-        builder: (context, state) {
-          switch (state.addressListLoadState) {
-            case LoadState.loaded:
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.addressList.length,
-                itemBuilder: (context, index) => buildAddressItem(
-                  state.addressList[index],
-                ),
-              );
-            case LoadState.loading:
-              return const ListViewShimmer();
-            case LoadState.error:
-              return const AppErrorWidget();
-            case LoadState.initial:
-              return Container();
-          }
-        },
-      ),
+  Widget buildRemoteAddressListArea() {
+    return BlocBuilder<DriveBookingBloc, DriveBookingState>(
+      builder: (context, state) {
+        switch (state.addressListLoadState) {
+          case LoadState.loaded:
+            return ListView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              itemCount: state.addressList.length,
+              itemBuilder: (context, index) => buildAddressItem(
+                state.addressList[index],
+              ),
+            );
+          case LoadState.loading:
+            return const ListViewShimmer();
+          case LoadState.error:
+            return const AppErrorWidget();
+          case LoadState.initial:
+            return Container();
+        }
+      },
     );
   }
 
@@ -104,7 +122,112 @@ class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
       onTap: () => Navigator.pop(context, address),
       child: Container(
         margin: EdgeInsets.only(bottom: 18.sf),
-        child: RoundedContainerWidget(child: Text(address.address!)),
+        child: RoundedContainerWidget(
+          margin: EdgeInsets.symmetric(vertical: 12.sf),
+          child: Text(
+            address.address!,
+            style: AppTextStyles.text(
+              AppColors.textColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildLocalAddressListArea() {
+    return BlocBuilder<FavoriteLocationBloc, FavoriteLocationState>(
+      builder: (context, state) {
+        if (state.loadState == LoadState.loaded) {
+          return (state.favoriteLocations!.isNotEmpty)
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Favorite location',
+                      style: AppTextStyles.heading3(AppColors.textColor),
+                    ),
+                    12.vertical,
+                    SizedBox(
+                      height: 100.sf,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => buildLocalAddressItem(
+                          state.favoriteLocations![index],
+                        ),
+                        itemCount: state.favoriteLocations!.length,
+                      ),
+                    ),
+                    24.vertical,
+                  ],
+                )
+              : const SizedBox.shrink();
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
+
+  Widget buildLocalAddressItem(FavoriteLocation favoriteLocation) {
+    return InkWell(
+      onTap: () => Navigator.pop(
+        context,
+        Address(
+          address: favoriteLocation.address,
+          location: favoriteLocation.location,
+        ),
+      ),
+      child: Container(
+        height: double.infinity,
+        width: 200.sf,
+        margin: EdgeInsets.only(right: 18.sf),
+        child: RoundedContainerWidget(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      favoriteLocation.title!,
+                      style: AppTextStyles.text(
+                        AppColors.textColor,
+                        bold: true,
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.getRandom(),
+                        borderRadius: BorderRadius.circular(12.sf),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6.sf,
+                        vertical: 6.sf,
+                      ),
+                      child: Text(
+                        favoriteLocation.favoritePlace.name,
+                        style: AppTextStyles.smallText(AppColors.textColor),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              5.vertical,
+              Text(
+                favoriteLocation.address!,
+                style: AppTextStyles.text(AppColors.textColor)
+                    .copyWith(fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

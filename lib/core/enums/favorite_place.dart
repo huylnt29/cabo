@@ -1,7 +1,6 @@
 import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
 
 enum FavoritePlace {
-  other,
   home,
   office,
   relativeHouse,
@@ -9,6 +8,7 @@ enum FavoritePlace {
   cinema,
   park,
   bar,
+  other
 }
 
 extension FavoritePlaceX on FavoritePlace {

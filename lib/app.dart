@@ -31,3 +31,5 @@ class App extends StatelessWidget {
     );
   }
 }
+
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

@@ -6,7 +6,7 @@ import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/drive_booking/presentation/bloc/drive_booking_bloc.dart';
-
+import 'package:huylnt_flutter_component/reusable_core/widgets/cached_network_image_widget.dart';
 import 'package:cabo_customer/feature/drive_history/presentation/drive_history_screen.dart';
 import 'package:cabo_customer/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:cabo_customer/feature/home/presentation/home_screen.dart';
@@ -20,6 +20,8 @@ import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart
 import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 
 import '../core/faked_data/faked_data.dart';
+import '../core/router/route_config.dart';
+import '../core/router/route_paths.dart';
 import 'drive_booking/presentation/form_booking/form_booking_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -85,8 +87,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   Widget buildFavoriteLocationAction() {
     return IconButton(
-      onPressed: () {},
-      icon: Assets.icons.favoriteLocation.svg(),
+      onPressed: () => Routes.router.navigateTo(
+        context,
+        RoutePath.viewFavoriteLocationScreen,
+      ),
+      icon: Assets.icons.favoriteLocation.svg(
+        color: AppColors.accentColor,
+      ),
     );
   }
 
@@ -102,11 +109,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
         leading: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 10.sf,
-            horizontal: 5.sf,
-          ),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(
-              FakedData
+          ).copyWith(left: 12.sf),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: CachedNetWorkImageWidget(
+              imageUrl: FakedData
                   .fakedAvatar[Random().nextInt(FakedData.fakedAvatar.length)],
             ),
           ),

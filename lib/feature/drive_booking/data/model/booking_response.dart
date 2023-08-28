@@ -8,6 +8,7 @@ class BookingResponse {
   BookingResponse({required this.tripId, required this.driver});
   factory BookingResponse.fromJson(Map<String, Object?> json) =>
       _$BookingResponseFromJson(json);
+  @JsonKey(includeFromJson: false)
   Id modelKey = Isar.autoIncrement;
   String tripId;
   @JsonKey(name: 'driverInfo')

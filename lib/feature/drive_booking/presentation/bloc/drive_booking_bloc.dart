@@ -67,27 +67,31 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
           ));
           await driveBookingRepository.saveBookingResponse(response);
         } else {
+          // emit(state.copyWith(
+          //   bookingResponse: BookingResponse(
+          //     tripId: '123456',
+          //     driver: Driver(
+          //       fullName: 'Le Minh Nhat',
+          //       phoneNumber: '0774848931',
+          //       brand: 'Yamaha',
+          //       regNo: 'AbcXyz',
+          //     ),
+          //   ),
+          //   bookingLoadState: LoadState.loaded,
+          // ));
+
+          // await driveBookingRepository.saveBookingResponse(BookingResponse(
+          //   tripId: '123456',
+          //   driver: Driver(
+          //     fullName: 'Le Minh Nhat',
+          //     phoneNumber: '0774848931',
+          //     brand: 'Yamaha',
+          //     regNo: 'AbcXyz',
+          //   ),
+          // ));
           emit(state.copyWith(
-            bookingResponse: BookingResponse(
-              tripId: '123456',
-              driver: Driver(
-                fullName: 'Le Minh Nhat',
-                phoneNumber: '0774848931',
-                brand: 'Yamaha',
-                regNo: 'AbcXyz',
-              ),
-            ),
+            bookingResponse: null,
             bookingLoadState: LoadState.loaded,
-          ));
-          // TODO: Remove faked flow
-          await driveBookingRepository.saveBookingResponse(BookingResponse(
-            tripId: '123456',
-            driver: Driver(
-              fullName: 'Le Minh Nhat',
-              phoneNumber: '0774848931',
-              brand: 'Yamaha',
-              regNo: 'AbcXyz',
-            ),
           ));
         }
       } catch (error) {

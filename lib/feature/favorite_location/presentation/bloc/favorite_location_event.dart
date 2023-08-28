@@ -7,7 +7,8 @@ class GetAllEvent extends FavoriteLocationEvent {
 }
 
 class GetAllByCategoryEvent extends FavoriteLocationEvent {
-  GetAllByCategoryEvent();
+  GetAllByCategoryEvent(this.favoritePlace);
+  final FavoritePlace favoritePlace;
 }
 
 class CreateNewLocationEvent extends FavoriteLocationEvent {

@@ -23,6 +23,10 @@ class Routes {
       RoutePath.realTimeTrackingScreen,
       handler: realTimeTrackingScreenHandler,
     );
+    setRouter(
+      RoutePath.viewFavoriteLocationScreen,
+      handler: viewFavoriteLocationScreenHandler,
+    );
   }
 
   static void setRouter(

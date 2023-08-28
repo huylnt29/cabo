@@ -49,12 +49,9 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
         RoutePath.bottomNavBar,
         clearStack: true,
       ),
-      appBarTextWidget: Text(
+      appBarBackgroundColor: AppColors.secondaryColor,
+      appBarTextWidget: const Text(
         'Drive tracking',
-        style: AppTextStyles.text(
-          AppColors.textColor,
-          bold: true,
-        ),
       ),
       body: buildBody(),
     );
@@ -89,8 +86,7 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: CachedNetWorkImageWidget(
-              imageUrl: widget.driver?.avatar ??
-                  '${FakedData.uiAvatarPath}${widget.driver?.fullName}',
+              imageUrl: '${FakedData.uiAvatarPath}${widget.driver?.fullName}',
             ),
           ),
           18.vertical,

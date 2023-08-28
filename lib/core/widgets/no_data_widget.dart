@@ -1,3 +1,4 @@
+import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
@@ -12,8 +13,9 @@ class NoDataWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 10.sf, horizontal: 0.sf),
+      padding: EdgeInsets.symmetric(vertical: 10.sf, horizontal: 24.sf),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Assets.images.emptyResult.image(
             fit: BoxFit.cover,
@@ -22,8 +24,9 @@ class NoDataWidget extends StatelessWidget {
           12.vSpace,
           Text(
             message,
-            style: AppTextStyles.custom(
-              fontSize: 14,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.heading3(
+              AppColors.textColor,
             ),
           ),
           12.vSpace,

@@ -23,22 +23,22 @@ import '../../feature/account/domain/repository/authentication_repository.dart'
 import '../../feature/account/domain/use_case/authentication_use_case.dart'
     as _i8;
 import '../../feature/account/presentation/bloc/authentication_bloc.dart'
-    as _i16;
+    as _i15;
 import '../../feature/drive_booking/domain/repository/drive_booking_repository.dart'
     as _i9;
 import '../../feature/drive_booking/presentation/bloc/drive_booking_bloc.dart'
-    as _i17;
+    as _i16;
 import '../../feature/favorite_location/domain/repository/favorite_location_repository.dart'
-    as _i11;
-import '../../feature/favorite_location/presentation/bloc/favorite_location_bloc.dart'
     as _i10;
-import '../../feature/home/data/repository/home_repository_impl.dart' as _i12;
-import '../../feature/home/domain/repository/home_repository.dart' as _i13;
+import '../../feature/favorite_location/presentation/bloc/favorite_location_bloc.dart'
+    as _i17;
+import '../../feature/home/data/repository/home_repository_impl.dart' as _i11;
+import '../../feature/home/domain/repository/home_repository.dart' as _i12;
 import '../../feature/home/presentation/bloc/home_bloc.dart' as _i18;
 import '../../feature/notification/domain/use_case/notification_use_case.dart'
-    as _i15;
-import '../../feature/notification/presentation/bloc/notification_bloc.dart'
     as _i14;
+import '../../feature/notification/presentation/bloc/notification_bloc.dart'
+    as _i13;
 import '../network/remote/cabo_server/api_client.dart' as _i5;
 
 // ignore_for_file: unnecessary_lambdas
@@ -73,22 +73,23 @@ _i1.GetIt $initGetIt(
         gh<_i9.DriveBookingRemoteDataSource>(),
         gh<_i9.DriveBookingLocalDataSource>(),
       ));
-  gh.factory<_i10.FavoriteLocationBloc>(() => _i10.FavoriteLocationBloc());
-  gh.factory<_i11.FavoriteLocationLocalDataSource>(
-      () => _i11.FavoriteLocationLocalDataSource());
-  gh.factory<_i11.FavoriteLocationRepository>(() =>
-      _i11.FavoriteLocationRepositoryImpl(
-          gh<_i11.FavoriteLocationLocalDataSource>()));
-  gh.factory<_i12.HomeRemoteDataSource>(
-      () => _i12.HomeRemoteDataSource(gh<_i5.ApiClient>()));
-  gh.factory<_i13.HomeRepository>(
-      () => _i12.HomeRepositoryImpl(gh<_i12.HomeRemoteDataSource>()));
-  gh.factory<_i14.NotificationBloc>(() => _i14.NotificationBloc());
-  gh.factory<_i15.NotificationUseCase>(() => _i15.NotificationUseCase());
-  gh.factory<_i16.AuthenticationBloc>(
-      () => _i16.AuthenticationBloc(gh<_i8.AuthenticationUseCase>()));
-  gh.factory<_i17.DriveBookingBloc>(
-      () => _i17.DriveBookingBloc(gh<_i9.DriveBookingRepository>()));
-  gh.factory<_i18.HomeBloc>(() => _i18.HomeBloc(gh<_i13.HomeRepository>()));
+  gh.factory<_i10.FavoriteLocationLocalDataSource>(
+      () => _i10.FavoriteLocationLocalDataSource());
+  gh.factory<_i10.FavoriteLocationRepository>(() =>
+      _i10.FavoriteLocationRepositoryImpl(
+          gh<_i10.FavoriteLocationLocalDataSource>()));
+  gh.factory<_i11.HomeRemoteDataSource>(
+      () => _i11.HomeRemoteDataSource(gh<_i5.ApiClient>()));
+  gh.factory<_i12.HomeRepository>(
+      () => _i11.HomeRepositoryImpl(gh<_i11.HomeRemoteDataSource>()));
+  gh.factory<_i13.NotificationBloc>(() => _i13.NotificationBloc());
+  gh.factory<_i14.NotificationUseCase>(() => _i14.NotificationUseCase());
+  gh.factory<_i15.AuthenticationBloc>(
+      () => _i15.AuthenticationBloc(gh<_i8.AuthenticationUseCase>()));
+  gh.factory<_i16.DriveBookingBloc>(
+      () => _i16.DriveBookingBloc(gh<_i9.DriveBookingRepository>()));
+  gh.factory<_i17.FavoriteLocationBloc>(
+      () => _i17.FavoriteLocationBloc(gh<_i10.FavoriteLocationRepository>()));
+  gh.factory<_i18.HomeBloc>(() => _i18.HomeBloc(gh<_i12.HomeRepository>()));
   return getIt;
 }

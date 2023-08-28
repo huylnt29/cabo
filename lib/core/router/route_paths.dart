@@ -6,5 +6,6 @@ class RoutePath {
   static const String bottomNavBar = '/bottom-nav-bar';
   static const String locationSearchingScreen = '/search-location';
   static const String realTimeTrackingScreen = '/real-time-track';
-  static const String driveHistoryScreen = '/view-drive-history';
+
+  static const String viewFavoriteLocationScreen = '/view-favorite-location';
 }
