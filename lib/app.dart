@@ -13,11 +13,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => getIt<AuthenticationBloc>(),
+        BlocProvider.value(
+          value: getIt<AuthenticationBloc>(),
         ),
-        BlocProvider(
-          create: (_) => getIt<NotificationBloc>(),
+        BlocProvider.value(
+          value: getIt<NotificationBloc>(),
         ),
       ],
       child: MaterialApp(
