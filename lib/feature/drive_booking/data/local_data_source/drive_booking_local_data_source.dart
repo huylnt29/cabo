@@ -17,7 +17,11 @@ class DriveBookingLocalDataSource with IsarDatabase {
   }
 
   Future<bool> deleteFirstBookingResponse() async {
-    final booking = await isarInstance!.collection<BookingResponse>().delete(1);
-    return booking;
+    await isarInstance!.writeTxn(() async {
+      await isarInstance!.collection<BookingResponse>().delete(1);
+      return true;
+    });
+
+    return false;
   }
 }
