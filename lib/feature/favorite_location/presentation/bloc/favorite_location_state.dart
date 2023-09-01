@@ -7,5 +7,6 @@ class FavoriteLocationState with _$FavoriteLocationState {
     required LoadState loadState,
     required LoadState newLocationLoadState,
     required LoadState deleteLocationLoadState,
+    @Default(false) bool newLocationCanBeSaved,
   }) = _FavoriteLocationState;
 }

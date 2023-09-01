@@ -21,6 +21,7 @@ abstract class FavoriteLocationRepository {
     Address address,
   );
   Future<bool> deleteFavoriteLocation(String title);
+  Future<FavoriteLocation?> checkLocalExistence(Location location);
 }
 
 @Injectable(as: FavoriteLocationRepository)
@@ -57,5 +58,10 @@ class FavoriteLocationRepositoryImpl extends FavoriteLocationRepository {
   @override
   Future<bool> deleteFavoriteLocation(String title) async {
     return localDataSource.deleteFavoriteLocation(title);
+  }
+
+  @override
+  Future<FavoriteLocation?> checkLocalExistence(Location location) async {
+    return localDataSource.checkLocalExistence(location);
   }
 }

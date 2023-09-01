@@ -7,6 +7,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 
+import '../../../../core/model/location.dart';
+
 part 'favorite_location_event.dart';
 part 'favorite_location_state.dart';
 
@@ -45,6 +47,10 @@ class FavoriteLocationBloc
       emit(state.copyWith(deleteLocationLoadState: LoadState.loading));
       await repository.deleteFavoriteLocation(event.title);
       add(GetAllByCategoryEvent(favoritePlace));
+    });
+
+    on<CheckLocalExistence>((event, emit) async {
+      final response = await repository.checkLocalExistence(event.location);
     });
   }
   final FavoriteLocationRepository repository;

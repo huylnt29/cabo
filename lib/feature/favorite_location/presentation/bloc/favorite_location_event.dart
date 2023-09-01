@@ -26,3 +26,8 @@ class DeleteLocationEvent extends FavoriteLocationEvent {
   DeleteLocationEvent(this.title);
   final String title;
 }
+
+class CheckLocalExistence extends FavoriteLocationEvent {
+  CheckLocalExistence(this.location);
+  final Location location;
+}

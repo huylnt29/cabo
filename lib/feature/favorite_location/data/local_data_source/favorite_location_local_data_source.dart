@@ -1,17 +1,19 @@
 part of '../../domain/repository/favorite_location_repository.dart';
 
 class FavoriteLocationLocalDataSource with IsarDatabase {
-  FavoriteLocationLocalDataSource();
-
+  FavoriteLocationLocalDataSource() {
+    favoriteLocationsCollection = isarInstance!.favoriteLocations;
+  }
+  late IsarCollection<FavoriteLocation> favoriteLocationsCollection;
   Future<List<FavoriteLocation>> getAll() async {
-    final response = await isarInstance!.favoriteLocations.where().findAll();
+    final response = await favoriteLocationsCollection.where().findAll();
     return response;
   }
 
   Future<List<FavoriteLocation>> getAllByCategory(
     FavoritePlace favoritePlace,
   ) async {
-    final response = await isarInstance!.favoriteLocations
+    final response = await favoriteLocationsCollection
         .filter()
         .favoritePlaceEqualTo(favoritePlace)
         .findAll();
@@ -24,8 +26,6 @@ class FavoriteLocationLocalDataSource with IsarDatabase {
     String address,
     Location location,
   ) async {
-    final favoriteLocationsCollection = isarInstance!.favoriteLocations;
-
     int modelKey = -1;
     await isarInstance!.writeTxn(() async {
       modelKey = await favoriteLocationsCollection.putByTitle(
@@ -41,8 +41,18 @@ class FavoriteLocationLocalDataSource with IsarDatabase {
 
   Future<bool> deleteFavoriteLocation(String title) async {
     await isarInstance!.writeTxn(() async {
-      await isarInstance!.favoriteLocations.deleteByTitle(title);
+      await favoriteLocationsCollection.deleteByTitle(title);
     });
     return true;
+  }
+
+  Future<FavoriteLocation?> checkLocalExistence(Location location) async {
+    final response = favoriteLocationsCollection
+        .filter()
+        .location(
+          (q) => q.latEqualTo(location.lat).and().longEqualTo(location.long),
+        )
+        .findFirst();
+    return response;
   }
 }
