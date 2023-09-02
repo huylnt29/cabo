@@ -3,6 +3,7 @@ import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/enums/vehicle_type.dart';
 
 import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/form_booking_request.dart';
 import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
 import 'package:cabo_customer/feature/drive_booking/domain/repository/drive_booking_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -65,7 +66,14 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
             bookingResponse: response,
             bookingLoadState: LoadState.loaded,
           ));
-          await driveBookingRepository.saveBookingResponse(response);
+          await driveBookingRepository.saveBookingResponse(
+            response,
+            FormBookingRequest()
+              ..fromAddress = event.fromAddress
+              ..toAddress = event.toAddress
+              ..paymentMethod = event.paymentMethod
+              ..vehicleType = event.vehicleType,
+          );
         } else {
           // emit(state.copyWith(
           //   bookingResponse: BookingResponse(

@@ -51,6 +51,7 @@ Handler realTimeTrackingScreenHandler = Handler(
     return RealTimeTrackingScreen(
       tripId: arg['tripId'],
       driver: arg['driver'],
+      bookingRequest: arg['bookingRequest'],
     );
   },
 );

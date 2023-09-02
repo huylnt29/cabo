@@ -10,8 +10,8 @@ part 'form_booking_request.g.dart';
 @JsonSerializable()
 @embedded
 class FormBookingRequest {
-  Address? from;
-  Address? to;
+  Address? fromAddress;
+  Address? toAddress;
   @enumerated
   PaymentMethod paymentMethod = PaymentMethod.cash;
   @enumerated

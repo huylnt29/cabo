@@ -23,12 +23,16 @@ mixin IsarDatabase {
     final isarDir = Directory('${appDir.path}/isar');
     await isarDir.create(recursive: true);
 
-    final isar = await Isar.open([
-      AccountSchema,
-      VoucherSchema,
-      BookingResponseSchema,
-      FavoriteLocationSchema,
-    ], directory: isarDir.path, inspector: true);
+    final isar = await Isar.open(
+      [
+        AccountSchema,
+        VoucherSchema,
+        BookingResponseSchema,
+        FavoriteLocationSchema,
+      ],
+      directory: isarDir.path,
+      inspector: true,
+    );
 
     return isar;
   }

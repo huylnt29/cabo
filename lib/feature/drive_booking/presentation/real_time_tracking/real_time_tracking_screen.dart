@@ -1,6 +1,8 @@
+import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 
 import 'package:cabo_customer/core/widgets/no_data_widget.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/form_booking_request.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,10 +28,12 @@ class RealTimeTrackingScreen extends StatefulWidget {
     super.key,
     this.tripId,
     this.driver,
+    this.bookingRequest,
   });
 
   final String? tripId;
   final Driver? driver;
+  final FormBookingRequest? bookingRequest;
 
   @override
   State<RealTimeTrackingScreen> createState() => _RealTimeTrackingScreenState();
@@ -73,6 +77,8 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
             buildDriverArrivalEstimation(),
             24.vertical,
             buildDriverArea(),
+            24.vertical,
+            builBookingRequestArea(),
           ],
         ),
       );
@@ -98,6 +104,29 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
           12.vertical,
           buildRowItem('Vehicle number name', widget.driver!.regNo),
           // buildRowItem('Starting location', widget.driver!.realAddress),
+        ],
+      ),
+    );
+  }
+
+  Widget builBookingRequestArea() {
+    return RoundedContainerWidget(
+      child: Column(
+        children: [
+          buildRowItem(
+            'Starting place',
+            widget.bookingRequest!.fromAddress!.address,
+          ),
+          12.vertical,
+          buildRowItem(
+            'Destination',
+            widget.bookingRequest!.toAddress!.address,
+          ),
+          12.vertical,
+          buildRowItem(
+            'Payment method',
+            widget.bookingRequest!.paymentMethod.text,
+          ),
         ],
       ),
     );

@@ -4,11 +4,13 @@ import 'package:cabo_customer/core/network/local/isar/isar_database.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/feature/account/data/local_data_source/authentication_local_data_source.dart';
 import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/form_booking_request.dart';
 
 import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
 import 'package:dio/dio.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
 
 import '../../../../core/model/address.dart';
 import '../../../../core/model/location.dart';
@@ -35,7 +37,10 @@ abstract class DriveBookingRepository {
     PaymentMethod paymentMethod,
   );
   Future<BookingResponse?> getFirstBookingResponse();
-  Future<int> saveBookingResponse(BookingResponse bookingResponse);
+  Future<int> saveBookingResponse(
+    BookingResponse bookingResponse,
+    FormBookingRequest bookingRequest,
+  );
   Future<bool> deleteFirstBookingResponse();
 }
 
@@ -95,8 +100,15 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
   }
 
   @override
-  Future<int> saveBookingResponse(BookingResponse bookingResponse) async {
-    return driveBookingLocalDataSource.saveBookingResponse(bookingResponse);
+  Future<int> saveBookingResponse(
+    BookingResponse bookingResponse,
+    FormBookingRequest bookingRequest,
+  ) async {
+    return driveBookingLocalDataSource.saveBookingResponse(
+      bookingResponse.copyWith(
+        formBookingRequest: bookingRequest,
+      ),
+    );
   }
 
   @override

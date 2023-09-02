@@ -2,6 +2,7 @@ import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/enums/vehicle_type.dart';
 import 'package:cabo_customer/core/model/address.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/form_booking_request.dart';
 import 'package:cabo_customer/feature/drive_booking/presentation/location_searching/location_searching_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,9 +43,10 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
         navigateToRealTimeTrackingScreen(
           state.bookingResponse!.tripId,
           state.bookingResponse!.driver,
+          state.bookingResponse!.request,
         );
       } else if (state.bookingLoadState == LoadState.loaded) {
-        navigateToRealTimeTrackingScreen(null, null);
+        navigateToRealTimeTrackingScreen(null, null, null);
       } else if (state.bookingLoadState == LoadState.error) {
         // TODO: Handle later
       }
@@ -55,6 +57,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
   Future<dynamic> navigateToRealTimeTrackingScreen(
     String? tripId,
     Driver? driver,
+    FormBookingRequest? bookingRequest,
   ) {
     return Routes.router.navigateTo(
       context,
@@ -63,6 +66,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
         arguments: {
           'tripId': tripId,
           'driver': driver,
+          'bookingRequest': bookingRequest,
         },
       ),
     );
