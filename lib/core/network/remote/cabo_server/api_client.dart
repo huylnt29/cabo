@@ -3,6 +3,7 @@ import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.d
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../../../feature/trip_history/data/model/trip_model.dart';
 import '../../../model/address.dart';
 
 part 'api_client.g.dart';
@@ -42,5 +43,10 @@ abstract class ApiClient {
   @GET('/bing-map/get-list-places')
   Future<List<Address>> getAddressList(
     @Query('searchLocation') String locationHint,
+  );
+
+  @GET('/trip/customer/{customerId}')
+  Future<List<Trip>> getTrips(
+    @Path() String customerId,
   );
 }

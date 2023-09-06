@@ -88,15 +88,22 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
           //   bookingLoadState: LoadState.loaded,
           // ));
 
-          // await driveBookingRepository.saveBookingResponse(BookingResponse(
-          //   tripId: '123456',
-          //   driver: Driver(
-          //     fullName: 'Le Minh Nhat',
-          //     phoneNumber: '0774848931',
-          //     brand: 'Yamaha',
-          //     regNo: 'AbcXyz',
+          // await driveBookingRepository.saveBookingResponse(
+          //   BookingResponse(
+          //     tripId: '123456',
+          //     driver: Driver(
+          //       fullName: 'Le Minh Nhat',
+          //       phoneNumber: '0774848931',
+          //       brand: 'Yamaha',
+          //       regNo: 'AbcXyz',
+          //     ),
           //   ),
-          // ));
+          //   FormBookingRequest()
+          //     ..fromAddress = event.fromAddress
+          //     ..toAddress = event.toAddress
+          //     ..paymentMethod = event.paymentMethod
+          //     ..vehicleType = event.vehicleType,
+          // );
           emit(state.copyWith(
             bookingResponse: null,
             bookingLoadState: LoadState.loaded,
@@ -116,7 +123,10 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
     });
 
     on<TripEstimatingEvent>((event, emit) async {
-      emit(state.copyWith(tripEstimationLoadState: LoadState.loading));
+      emit(state.copyWith(
+        tripEstimationLoadState: LoadState.loading,
+        tripEstimation: null,
+      ));
       try {
         final response = await driveBookingRepository.getTripEstimation(
           event.fromAddress,

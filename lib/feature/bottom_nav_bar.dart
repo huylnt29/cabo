@@ -6,8 +6,9 @@ import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/drive_booking/presentation/bloc/drive_booking_bloc.dart';
+import 'package:cabo_customer/feature/trip_history/presentation/cubit/trip_history_cubit.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/cached_network_image_widget.dart';
-import 'package:cabo_customer/feature/drive_history/presentation/drive_history_screen.dart';
+import 'package:cabo_customer/feature/trip_history/presentation/trip_history_screen.dart';
 import 'package:cabo_customer/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:cabo_customer/feature/home/presentation/home_screen.dart';
 import 'package:cabo_customer/feature/notification/domain/use_case/notification_use_case.dart';
@@ -76,7 +77,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
       value: getIt<DriveBookingBloc>(),
       child: const FormBookingScreen(),
     ),
-    const DriveHistoryScreen(),
+    BlocProvider(
+      create: (context) => getIt<TripHistoryCubit>()..getTripHistory(),
+      child: const TripHistoryScreen(),
+    ),
   ];
 
   final List<String> screenTitles = [

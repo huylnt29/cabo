@@ -151,11 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       buildRecentTripFieldItem(
                         'Cost',
-                        customerSummary.recentTrip!.formattedCost,
+                        customerSummary.recentTrip!.cost,
                       ),
                       buildRecentTripFieldItem(
                         'Distance',
-                        customerSummary.recentTrip!.formattedDistance,
+                        customerSummary.recentTrip!.distance,
                       ),
                       buildRecentTripFieldItem(
                         'Booking time',
@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       buildRecentTripFieldItem(
                         'Booking location',
-                        customerSummary.recentTrip!.customerOrderLocation,
+                        customerSummary.recentTrip!.orderLocation,
                       ),
                       buildRecentTripFieldItem(
                         'Destination',

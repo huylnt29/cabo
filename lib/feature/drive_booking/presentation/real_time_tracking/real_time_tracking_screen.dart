@@ -143,11 +143,17 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
             bold: true,
           ),
         ),
-        Text(
-          value ?? ErrorMessage.isNotDetermined,
-          style: AppTextStyles.text(
-            AppColors.secondaryColor,
-            bold: false,
+        Expanded(
+          child: Text(
+            value ?? ErrorMessage.isNotDetermined,
+            style: AppTextStyles.text(
+              AppColors.secondaryColor,
+              bold: false,
+            ),
+            textAlign: TextAlign.right,
+            softWrap: false,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],

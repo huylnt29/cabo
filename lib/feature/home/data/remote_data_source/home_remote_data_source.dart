@@ -8,9 +8,9 @@ class HomeRemoteDataSource with IsarDatabase {
     return CustomerSummary.fromJson({
       'totalTrip': 1,
       'recentTrip': {
-        'id': '1',
-        'cost': 50000,
-        'distance': 12,
+        'tripId': '1',
+        'cost': '50000 VND',
+        'distance': '12 km',
         'startTime': 1689261671,
         'endTime': 1689262311,
         'customerOrderLocation':

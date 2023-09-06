@@ -35,18 +35,30 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
   Address? toAddress;
 
   @override
+  void initState() {
+    vehicleTypeIndex.addListener(() => triggerTripEstimatingEventIfCan());
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     driveBookingBloc = context.read<DriveBookingBloc>()
       ..add(FetchCurrentBookingEvent());
     driveBookingBloc.stream.listen((state) {
       if (state.bookingResponse != null) {
         navigateToRealTimeTrackingScreen(
+          context,
           state.bookingResponse!.tripId,
           state.bookingResponse!.driver,
           state.bookingResponse!.request,
         );
       } else if (state.bookingLoadState == LoadState.loaded) {
-        navigateToRealTimeTrackingScreen(null, null, null);
+        navigateToRealTimeTrackingScreen(
+          context,
+          null,
+          null,
+          null,
+        );
       } else if (state.bookingLoadState == LoadState.error) {
         // TODO: Handle later
       }
@@ -55,6 +67,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
   }
 
   Future<dynamic> navigateToRealTimeTrackingScreen(
+    BuildContext context,
     String? tripId,
     Driver? driver,
     FormBookingRequest? bookingRequest,
@@ -283,8 +296,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
                         ),
                       ),
                       Text(
-                        state.tripEstimation?.distance ??
-                            ErrorMessage.isNotDetermined,
+                        state.tripEstimation?.distance ?? 'Calculating...',
                         style: AppTextStyles.text(
                           AppColors.secondaryColor,
                         ),
@@ -303,8 +315,7 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
                         ),
                       ),
                       Text(
-                        state.tripEstimation?.cost ??
-                            ErrorMessage.isNotDetermined,
+                        state.tripEstimation?.cost ?? 'Calculating...',
                         style: AppTextStyles.text(
                           AppColors.secondaryColor,
                         ),
