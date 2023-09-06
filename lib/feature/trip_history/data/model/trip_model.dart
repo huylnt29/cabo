@@ -12,7 +12,7 @@ part 'trip_model.g.dart';
 @JsonSerializable()
 class Trip {
   Trip({
-    required this.id,
+    this.id,
     this.cost,
     this.distance,
     this.startTime,
@@ -22,7 +22,7 @@ class Trip {
     this.paymentType,
   });
   @JsonKey(name: 'tripId')
-  String id;
+  String? id;
   String? cost;
   String? distance;
   int? startTime;

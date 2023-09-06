@@ -1,3 +1,4 @@
+import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 
 import 'package:cabo_customer/feature/home/data/model/customer_summary_model.dart';
@@ -175,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       buildRecentTripFieldItem(
                         'Payment type',
-                        customerSummary.recentTrip!.paymentType?.name ??
+                        customerSummary.recentTrip!.paymentType?.text ??
                             ErrorMessage.isNotDetermined,
                       ),
                     ],

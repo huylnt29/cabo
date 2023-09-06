@@ -3,6 +3,7 @@ import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.d
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../../../feature/home/data/model/customer_summary_model.dart';
 import '../../../../feature/trip_history/data/model/trip_model.dart';
 import '../../../model/address.dart';
 
@@ -28,6 +29,11 @@ abstract class ApiClient {
 
   @GET('/customer/notification/subscribe/{fcmToken}')
   Future<HttpResponse> postFcmToken(@Path() String fcmToken);
+
+  @GET('/customer/{customerId}/overview')
+  Future<CustomerSummary> getCustomerOverview(
+    @Path() String customerId,
+  );
 
   @POST('/bing-map/drive-booking/estimate-cost')
   Future<TripEstimation> postLocations(
