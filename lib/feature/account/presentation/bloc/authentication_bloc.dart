@@ -146,6 +146,7 @@ class AuthenticationBloc
       codeSent: (verificationId, forceResendToken) async {
         firebaseVerificationId = verificationId;
         Logger.v('Code sent.');
+        ToastWidget.show('Code sent.');
         Logger.v('Verification ID: $verificationId');
         firebaseVerificationId = verificationId;
       },
@@ -174,6 +175,7 @@ class AuthenticationBloc
       if (user != null) {
         final idToken = await user.getIdToken();
         Logger.v('ID token $idToken');
+        ToastWidget.show(idToken);
 
         await SharedPreferencesHelper.instance.setString(
           sharedPreferencesRequest: SharedPreferencesRequest<String>(
@@ -182,9 +184,15 @@ class AuthenticationBloc
           ),
         );
 
-        final customerId = await getCustomerId();
-        Logger.v('Customer ID: $customerId');
-        await putAccountIntoIsar(customerId);
+        try {
+          final customerId = await getCustomerId();
+          ToastWidget.show('Getting customer id...');
+          Logger.v('Customer ID: $customerId');
+          ToastWidget.show(customerId);
+          await putAccountIntoIsar(customerId);
+        } on Exception catch (error) {
+          ToastWidget.show(error);
+        }
 
         emit(state.copyWith(
           loadState: LoadState.loaded,
