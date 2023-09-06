@@ -107,7 +107,7 @@ class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
               ),
             );
           case LoadState.loading:
-            return const ListViewShimmer();
+            return const ListViewShimmer(itemHeight: 48);
           case LoadState.error:
             return const AppErrorWidget();
           case LoadState.initial:

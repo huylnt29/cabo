@@ -11,6 +11,7 @@ import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/home_shimmer.dart';
+import 'package:huylnt_flutter_component/reusable_core/widgets/list_view_shimmer.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/rounded_container_widget.dart';
 
 import 'cubit/trip_history_cubit.dart';
@@ -26,7 +27,7 @@ class TripHistoryScreen extends StatelessWidget {
           case LoadState.error:
             return const AppErrorWidget();
           case LoadState.loading:
-            return const HomeShimmer();
+            return const ListViewShimmer(itemHeight: 80);
           case LoadState.initial:
             return Container();
           case LoadState.loaded:
