@@ -5,5 +5,6 @@ class NotificationState with _$NotificationState {
   const factory NotificationState({
     String? driverRemainingDistance,
     String? driverRemainingTime,
+    bool? didDriverArrive,
   }) = _NotificationState;
 }

@@ -10,3 +10,11 @@ class UpdateDriverArrivalStatusEvent extends NotificationEvent {
   final String remainingTime;
   final String remainingDistance;
 }
+
+class AnnounceDriverArrivedEvent extends NotificationEvent {
+  AnnounceDriverArrivedEvent();
+}
+
+class ResetDriverArrivedEvent extends NotificationEvent {
+  ResetDriverArrivedEvent();
+}

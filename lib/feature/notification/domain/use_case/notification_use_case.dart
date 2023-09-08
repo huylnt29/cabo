@@ -20,9 +20,13 @@ class NotificationUseCase {
             remainingTime: fcmMessage.data['driverRemainingTime'],
           ));
           break;
+        case NotificationCategory.informDriverArrived:
+          notificationBloc.add(AnnounceDriverArrivedEvent());
+          break;
         case NotificationCategory.informTripDone:
           getIt<DriveBookingRepository>().deleteFirstBookingResponse();
           break;
+
         default:
           break;
       }

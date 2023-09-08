@@ -74,7 +74,28 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
         ),
         child: Column(
           children: [
-            buildDriverArrivalEstimation(),
+            BlocConsumer<NotificationBloc, NotificationState>(
+              listener: (context, state) => ToastWidget.show(
+                'Driver status has been updated.',
+              ),
+              builder: (context, state) {
+                if (state.didDriverArrive == false) {
+                  return buildDriverArrivalEstimation(state);
+                } else {
+                  return RoundedContainerWidget(
+                    child: Row(
+                      children: [
+                        const Icon(Icons.done_all),
+                        Text(
+                          LongMessage.driverArrived,
+                          style: AppTextStyles.text(AppColors.textColor),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
             24.vertical,
             buildDriverArea(),
             24.vertical,
@@ -160,22 +181,16 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
     );
   }
 
-  Widget buildDriverArrivalEstimation() {
-    return BlocConsumer<NotificationBloc, NotificationState>(
-      listener: (context, state) =>
-          ToastWidget.show('Driver status has been updated.'),
-      builder: (context, state) {
-        return RoundedContainerWidget(
-          boxShadowColor: AppColors.accentColor,
-          child: Column(
-            children: [
-              buildRowItem('Remaing distance', state.driverRemainingDistance),
-              12.vertical,
-              buildRowItem('Remaing time', state.driverRemainingTime),
-            ],
-          ),
-        );
-      },
+  Widget buildDriverArrivalEstimation(NotificationState state) {
+    return RoundedContainerWidget(
+      boxShadowColor: AppColors.accentColor,
+      child: Column(
+        children: [
+          buildRowItem('Remaing distance', state.driverRemainingDistance),
+          12.vertical,
+          buildRowItem('Remaing time', state.driverRemainingTime),
+        ],
+      ),
     );
   }
 }

@@ -13,5 +13,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         driverRemainingTime: event.remainingTime,
       ));
     });
+    on<AnnounceDriverArrivedEvent>(
+      (event, emit) => emit(state.copyWith(didDriverArrive: true)),
+    );
+    on<ResetDriverArrivedEvent>(
+      (event, emit) => emit(state.copyWith(didDriverArrive: false)),
+    );
   }
 }
