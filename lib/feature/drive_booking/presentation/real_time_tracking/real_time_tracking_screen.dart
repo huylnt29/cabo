@@ -82,12 +82,19 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
               builder: (context, state) {
                 if (state.didTripDone == true) {
                   return RoundedContainerWidget(
+                    backgroundColor: AppColors.greenBackgroundColor,
                     child: Row(
                       children: [
                         const Icon(Icons.done_all),
-                        Text(
-                          LongMessage.tripDone,
-                          style: AppTextStyles.text(AppColors.textColor),
+                        8.horizontal,
+                        Expanded(
+                          child: Text(
+                            LongMessage.tripDone,
+                            style: AppTextStyles.text(AppColors.textColor),
+                            softWrap: false,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
@@ -95,12 +102,19 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
                 }
                 if (state.didDriverArrive == true) {
                   return RoundedContainerWidget(
+                    backgroundColor: AppColors.purpleBackgroundColor,
                     child: Row(
                       children: [
-                        const Icon(Icons.handshake),
-                        Text(
-                          LongMessage.driverArrived,
-                          style: AppTextStyles.text(AppColors.textColor),
+                        const Icon(Icons.place_rounded),
+                        8.horizontal,
+                        Expanded(
+                          child: Text(
+                            LongMessage.driverArrived,
+                            style: AppTextStyles.text(AppColors.textColor),
+                            softWrap: false,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),

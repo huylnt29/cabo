@@ -41,8 +41,10 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
 
   @override
   void didChangeDependencies() {
-    driveBookingBloc = context.read<DriveBookingBloc>()
-      ..add(FetchCurrentBookingEvent());
+    driveBookingBloc = context.read<DriveBookingBloc>();
+    if (driveBookingBloc.state.yetBooked == true) {
+      driveBookingBloc.add(FetchCurrentBookingEvent());
+    }
     driveBookingBloc.stream.listen((state) {
       if (state.bookingLoadState == LoadState.loaded) {
         if (state.bookingResponse == null) {

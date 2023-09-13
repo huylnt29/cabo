@@ -68,6 +68,7 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
           emit(state.copyWith(
             bookingResponse: response,
             bookingLoadState: LoadState.loaded,
+            yetBooked: true,
           ));
           await driveBookingRepository.saveBookingResponse(
             response,
@@ -78,39 +79,40 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
               ..vehicleType = event.vehicleType,
           );
         } else {
+          emit(state.copyWith(
+            bookingResponse: BookingResponse(
+              tripId: '123456',
+              driver: Driver(
+                fullName: 'Le Minh Nhat',
+                phoneNumber: '0774848931',
+                brand: 'Yamaha',
+                regNo: 'AbcXyz',
+              ),
+            ),
+            bookingLoadState: LoadState.loaded,
+            yetBooked: true,
+          ));
+
+          await driveBookingRepository.saveBookingResponse(
+            BookingResponse(
+              tripId: '123456',
+              driver: Driver(
+                fullName: 'Le Minh Nhat',
+                phoneNumber: '0774848931',
+                brand: 'Yamaha',
+                regNo: 'AbcXyz',
+              ),
+            ),
+            FormBookingRequest()
+              ..fromAddress = event.fromAddress
+              ..toAddress = event.toAddress
+              ..paymentMethod = event.paymentMethod
+              ..vehicleType = event.vehicleType,
+          );
           // emit(state.copyWith(
-          //   bookingResponse: BookingResponse(
-          //     tripId: '123456',
-          //     driver: Driver(
-          //       fullName: 'Le Minh Nhat',
-          //       phoneNumber: '0774848931',
-          //       brand: 'Yamaha',
-          //       regNo: 'AbcXyz',
-          //     ),
-          //   ),
+          //   bookingResponse: null,
           //   bookingLoadState: LoadState.loaded,
           // ));
-
-          // await driveBookingRepository.saveBookingResponse(
-          //   BookingResponse(
-          //     tripId: '123456',
-          //     driver: Driver(
-          //       fullName: 'Le Minh Nhat',
-          //       phoneNumber: '0774848931',
-          //       brand: 'Yamaha',
-          //       regNo: 'AbcXyz',
-          //     ),
-          //   ),
-          //   FormBookingRequest()
-          //     ..fromAddress = event.fromAddress
-          //     ..toAddress = event.toAddress
-          //     ..paymentMethod = event.paymentMethod
-          //     ..vehicleType = event.vehicleType,
-          // );
-          emit(state.copyWith(
-            bookingResponse: null,
-            bookingLoadState: LoadState.loaded,
-          ));
         }
       } catch (error) {
         Logger.e(error);

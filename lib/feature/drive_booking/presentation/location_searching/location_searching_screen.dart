@@ -36,6 +36,7 @@ class LocationSearchingScreen extends StatefulWidget {
 class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
   final driveBookingBloc = getIt<DriveBookingBloc>();
   Timer? timer;
+  final textFieldTapped = ValueNotifier(false);
 
   @override
   void dispose() {
@@ -46,6 +47,7 @@ class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
   @override
   Widget build(BuildContext context) {
     return CompleteScaffoldWidget(
+      // resizeToAvoidBottomInset: false,
       appBarTextWidget: const Text(
         'Search location',
       ),
@@ -63,19 +65,27 @@ class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildLocalAddressListArea(),
               Text(
                 'Hint location',
                 style: AppTextStyles.heading3(AppColors.textColor),
               ),
               Expanded(
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 12.sf),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: 200.sf),
                   child: buildRemoteAddressListArea(),
                 ),
               ),
-              8.vertical,
+              ValueListenableBuilder(
+                valueListenable: textFieldTapped,
+                builder: (context, value, child) => (value == false)
+                    ? Container(
+                        margin: EdgeInsets.symmetric(vertical: 12.sf),
+                        child: buildLocalAddressListArea(),
+                      )
+                    : const SizedBox.shrink(),
+              ),
               TextFormFieldWidget(
+                onTap: () => textFieldTapped.value = true,
                 textInputType: TextInputType.streetAddress,
                 colorTheme: AppColors.secondaryColor,
                 labelText: 'Address',
@@ -85,7 +95,7 @@ class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
                     driveBookingBloc.add(GetAddressListEvent(keyword));
                   });
                 },
-              )
+              ),
             ],
           ),
         ),
@@ -195,13 +205,19 @@ class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      favoriteLocation.title!,
-                      style: AppTextStyles.text(
-                        AppColors.textColor,
-                        bold: true,
+                    Expanded(
+                      child: Text(
+                        favoriteLocation.title!,
+                        style: AppTextStyles.text(
+                          AppColors.textColor,
+                          bold: true,
+                        ),
+                        softWrap: false,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    5.horizontal,
                     Container(
                       decoration: BoxDecoration(
                         color: AppColors.getRandom(),

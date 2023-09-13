@@ -9,5 +9,6 @@ class DriveBookingState with _$DriveBookingState {
     required LoadState tripEstimationLoadState,
     BookingResponse? bookingResponse,
     required LoadState bookingLoadState,
+    @Default(false) bool yetBooked,
   }) = _DriveBookingState;
 }

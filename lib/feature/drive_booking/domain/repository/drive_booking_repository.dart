@@ -134,7 +134,7 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
     );
     return (favoriteLocation == null)
         ? favoriteLocationLocalDataSource.putFavoriteLocation(
-            'A place on ${DateTime.now().timeFirstDateAfter}',
+            'A place on ${DateTime.now().beautifulDate}',
             FavoritePlace.recent,
             address.address!,
             address.location!,
