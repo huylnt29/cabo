@@ -84,13 +84,17 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
                   return RoundedContainerWidget(
                     backgroundColor: AppColors.greenBackgroundColor,
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Icon(Icons.done_all),
                         8.horizontal,
                         Expanded(
                           child: Text(
                             LongMessage.tripDone,
-                            style: AppTextStyles.text(AppColors.textColor),
+                            style: AppTextStyles.text(AppColors.textColor)
+                                .copyWith(
+                              height: 0,
+                            ),
                             softWrap: false,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

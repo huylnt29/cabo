@@ -25,11 +25,13 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
         )) {
     on<FetchCurrentBookingEvent>((event, emit) async {
       try {
+        emit(state.copyWith(bookingLoadState: LoadState.loading));
         final response = await driveBookingRepository.getFirstBookingResponse();
         Logger.v('Current booking response: $response');
         emit(state.copyWith(
           bookingResponse: response,
-          bookingLoadState: LoadState.loaded,
+          bookingLoadState:
+              (response != null) ? LoadState.loaded : LoadState.initial,
         ));
       } catch (error) {
         Logger.e(error);
@@ -88,6 +90,12 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
                 brand: 'Yamaha',
                 regNo: 'AbcXyz',
               ),
+            ).copyWith(
+              formBookingRequest: FormBookingRequest()
+                ..fromAddress = event.fromAddress
+                ..toAddress = event.toAddress
+                ..paymentMethod = event.paymentMethod
+                ..vehicleType = event.vehicleType,
             ),
             bookingLoadState: LoadState.loaded,
             yetBooked: true,
@@ -123,7 +131,10 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
     on<ResetBookingEvent>((event, emit) async {
       await Future.delayed(
         const Duration(seconds: 1),
-        () => emit(state.copyWith(bookingLoadState: LoadState.initial)),
+        () => emit(state.copyWith(
+          bookingLoadState: LoadState.initial,
+          yetBooked: false,
+        )),
       );
     });
 

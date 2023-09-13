@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
+import 'package:cabo_customer/core/extensions/build_context.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/drive_booking/presentation/bloc/drive_booking_bloc.dart';
@@ -26,8 +27,8 @@ import '../core/router/route_paths.dart';
 import 'drive_booking/presentation/form_booking/form_booking_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
-
+  const BottomNavBar({super.key, this.index});
+  final int? index;
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
@@ -42,11 +43,23 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
-  @override
-  void dispose() {
-    _screenController.dispose();
-    super.dispose();
-  }
+  final List<Widget> bottomBarScreens = [
+    BlocProvider.value(
+      value: getIt<HomeBloc>()..fetchDataForScreen(),
+      child: const HomeScreen(),
+    ),
+    const FormBookingScreen(),
+    BlocProvider.value(
+      value: getIt<TripHistoryCubit>()..getTripHistory(),
+      child: const TripHistoryScreen(),
+    ),
+  ];
+
+  // @override
+  // void dispose() {
+  //   _screenController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   void didChangeDependencies() {
@@ -63,13 +76,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
       );
       getIt<NotificationUseCase>().handleFcmData(
         message,
-        context.read<NotificationBloc>(),
+        context,
       );
 
       if (message.notification != null) {
         Logger.custom(
           Logger.cyan,
-          'Message also contains a notification: ${message.notification}',
+          'Message also contains a notification: ${message.notification.toString()}',
         );
       }
     });
@@ -80,26 +93,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
       if (message != null) {
         getIt<NotificationUseCase>().handleFcmData(
           message,
-          context.read<NotificationBloc>(),
+          context,
         );
       }
     });
   }
-
-  final List<Widget> bottomBarScreens = [
-    BlocProvider(
-      create: (_) => getIt<HomeBloc>()..fetchDataForScreen(),
-      child: const HomeScreen(),
-    ),
-    BlocProvider.value(
-      value: getIt<DriveBookingBloc>(),
-      child: const FormBookingScreen(),
-    ),
-    BlocProvider(
-      create: (context) => getIt<TripHistoryCubit>()..getTripHistory(),
-      child: const TripHistoryScreen(),
-    ),
-  ];
 
   final List<String> screenTitles = [
     'Home',

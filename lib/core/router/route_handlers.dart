@@ -25,10 +25,13 @@ Handler otpScreenHandler = Handler(
       const OtpScreen(),
 );
 
-Handler bottomNavBarHandler = Handler(
-  handlerFunc: (BuildContext? context, Map<String, List<String>> params) =>
-      const BottomNavBar(),
-);
+Handler bottomNavBarHandler = Handler(handlerFunc: (
+  BuildContext? context,
+  Map<String, List<String>> params,
+) {
+  final arg = context?.settings?.arguments as int?;
+  return BottomNavBar(index: arg);
+});
 
 Handler locationSearchingScreenHandler = Handler(
   handlerFunc: (

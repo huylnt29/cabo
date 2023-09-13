@@ -1,5 +1,6 @@
 import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/enums/vehicle_type.dart';
+import 'package:cabo_customer/core/extensions/build_context.dart';
 import 'package:cabo_customer/core/model/address.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/drive_booking/data/model/form_booking_request.dart';
@@ -42,18 +43,19 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
   @override
   void didChangeDependencies() {
     driveBookingBloc = context.read<DriveBookingBloc>();
-    if (driveBookingBloc.state.yetBooked == true) {
-      driveBookingBloc.add(FetchCurrentBookingEvent());
-    }
+    driveBookingBloc.add(FetchCurrentBookingEvent());
+
     driveBookingBloc.stream.listen((state) {
       if (state.bookingLoadState == LoadState.loaded) {
         if (state.bookingResponse == null) {
-          navigateToRealTimeTrackingScreen(
-            context,
-            null,
-            null,
-            null,
-          );
+          if (state.yetBooked == true) {
+            navigateToRealTimeTrackingScreen(
+              context,
+              null,
+              null,
+              null,
+            );
+          }
         } else {
           navigateToRealTimeTrackingScreen(
             context,
@@ -90,33 +92,30 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: driveBookingBloc,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildLocationArea(),
-            24.vertical,
-            Text(
-              'Vehicle type',
-              style: AppTextStyles.heading3(AppColors.textColor),
-            ),
-            12.vertical,
-            buildVehicleTypeArea(),
-            24.vertical,
-            Text(
-              'Payment method',
-              style: AppTextStyles.heading3(AppColors.textColor),
-            ),
-            12.vertical,
-            buildPaymentMethodArea(),
-            24.vertical,
-            buildTripEstimationWithSubmitButton(),
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildLocationArea(),
+          24.vertical,
+          Text(
+            'Vehicle type',
+            style: AppTextStyles.heading3(AppColors.textColor),
+          ),
+          12.vertical,
+          buildVehicleTypeArea(),
+          24.vertical,
+          Text(
+            'Payment method',
+            style: AppTextStyles.heading3(AppColors.textColor),
+          ),
+          12.vertical,
+          buildPaymentMethodArea(),
+          24.vertical,
+          buildTripEstimationWithSubmitButton(),
+        ],
       ),
     );
   }
