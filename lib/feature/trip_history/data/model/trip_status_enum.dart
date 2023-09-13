@@ -8,6 +8,8 @@ enum TripStatus {
   searching,
   @JsonValue('TRIP_STATUS_PICKING')
   picking,
+  @JsonValue('TRIP_STATUS_INPROGRESS')
+  inProgress,
   @JsonValue('TRIP_STATUS_DONE')
   done,
 }
@@ -21,6 +23,8 @@ extension TripStatusX on TripStatus {
         return const Color.fromARGB(255, 159, 137, 106);
       case TripStatus.picking:
         return const Color.fromARGB(255, 164, 169, 97);
+      case TripStatus.inProgress:
+        return const Color.fromARGB(255, 147, 97, 169);
       case TripStatus.done:
         return const Color.fromARGB(175, 144, 194, 176);
     }

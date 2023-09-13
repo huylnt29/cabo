@@ -68,7 +68,13 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
         );
         if (response is BookingResponse) {
           emit(state.copyWith(
-            bookingResponse: response,
+            bookingResponse: response.copyWith(
+              formBookingRequest: FormBookingRequest()
+                ..fromAddress = event.fromAddress
+                ..toAddress = event.toAddress
+                ..paymentMethod = event.paymentMethod
+                ..vehicleType = event.vehicleType,
+            ),
             bookingLoadState: LoadState.loaded,
             yetBooked: true,
           ));
@@ -111,11 +117,11 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
           //       regNo: 'AbcXyz',
           //     ),
           //   ),
-          //   FormBookingRequest()
-          //     ..fromAddress = event.fromAddress
-          //     ..toAddress = event.toAddress
-          //     ..paymentMethod = event.paymentMethod
-          //     ..vehicleType = event.vehicleType,
+          // FormBookingRequest()
+          //   ..fromAddress = event.fromAddress
+          //   ..toAddress = event.toAddress
+          //   ..paymentMethod = event.paymentMethod
+          //   ..vehicleType = event.vehicleType,
           // );
           emit(state.copyWith(
             bookingResponse: null,
