@@ -139,7 +139,7 @@ class AuthenticationBloc
         if (error.code == 'invalid-phone-number') {
           ToastWidget.show('The given number is not valid');
         } else {
-          ToastWidget.show(error.toString());
+          // ToastWidget.show(error.toString());
           Logger.e(error);
         }
       },
@@ -175,7 +175,7 @@ class AuthenticationBloc
       if (user != null) {
         final idToken = await user.getIdToken();
         Logger.v('ID token $idToken');
-        ToastWidget.show(idToken);
+        // ToastWidget.show(idToken);
 
         await SharedPreferencesHelper.instance.setString(
           sharedPreferencesRequest: SharedPreferencesRequest<String>(
@@ -188,7 +188,7 @@ class AuthenticationBloc
           final customerId = await getCustomerId();
           ToastWidget.show('Getting customer id...');
           Logger.custom(Logger.green, 'Customer ID: $customerId');
-          ToastWidget.show(customerId);
+          // ToastWidget.show(customerId);
           await putAccountIntoIsar(customerId);
         } on Exception catch (error) {
           ToastWidget.show(error);

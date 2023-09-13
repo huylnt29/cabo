@@ -240,6 +240,9 @@ class _LocationSearchingScreenState extends State<LocationSearchingScreen> {
                 favoriteLocation.address!,
                 style: AppTextStyles.text(AppColors.textColor)
                     .copyWith(fontStyle: FontStyle.italic),
+                softWrap: false,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
