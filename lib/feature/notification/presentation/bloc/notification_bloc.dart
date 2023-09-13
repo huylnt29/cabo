@@ -19,5 +19,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<ResetDriverArrivedEvent>(
       (event, emit) => emit(state.copyWith(didDriverArrive: false)),
     );
+    on<AnnounceTripDoneEvent>(
+      (event, emit) => emit(state.copyWith(didTripDone: true)),
+    );
+    on<ResetTripDoneEvent>(
+      (event, emit) => emit(state.copyWith(didTripDone: false)),
+    );
   }
 }

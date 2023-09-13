@@ -6,11 +6,11 @@ import 'package:cabo_customer/feature/trip_history/data/model/trip_status_enum.d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
-import 'package:huylnt_flutter_component/reusable_core/constants/long_message.dart';
+
 import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
-import 'package:huylnt_flutter_component/reusable_core/widgets/home_shimmer.dart';
+
 import 'package:huylnt_flutter_component/reusable_core/widgets/list_view_shimmer.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/rounded_container_widget.dart';
 

@@ -20,6 +20,16 @@ class FavoriteLocationLocalDataSource with IsarDatabase {
     return response;
   }
 
+  Future<int> updateByKey(
+    FavoriteLocation favoriteLocation,
+  ) async {
+    int modelKey = -1;
+    await isarInstance!.writeTxn(() async {
+      modelKey = await favoriteLocationsCollection.put(favoriteLocation);
+    });
+    return modelKey;
+  }
+
   Future<int> putFavoriteLocation(
     String title,
     FavoritePlace favoritePlace,
@@ -47,7 +57,7 @@ class FavoriteLocationLocalDataSource with IsarDatabase {
   }
 
   Future<FavoriteLocation?> checkLocalExistence(Location location) async {
-    final response = favoriteLocationsCollection
+    final response = await favoriteLocationsCollection
         .filter()
         .location(
           (q) => q.latEqualTo(location.lat).and().longEqualTo(location.long),

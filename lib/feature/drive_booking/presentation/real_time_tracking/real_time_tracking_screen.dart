@@ -7,7 +7,7 @@ import 'package:cabo_customer/feature/drive_booking/data/model/form_booking_requ
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
-import 'package:huylnt_flutter_component/reusable_core/constants/long_message.dart';
+
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
@@ -16,6 +16,7 @@ import 'package:huylnt_flutter_component/reusable_core/widgets/complete_scaffold
 import 'package:huylnt_flutter_component/reusable_core/widgets/rounded_container_widget.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/toast_widget.dart';
 
+import '../../../../core/constants/long_message.dart';
 import '../../../../core/faked_data/faked_data.dart';
 
 import '../../../../core/router/route_config.dart';
@@ -79,13 +80,24 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
                 'Driver status has been updated.',
               ),
               builder: (context, state) {
-                if (state.didDriverArrive == false) {
-                  return buildDriverArrivalEstimation(state);
-                } else {
+                if (state.didTripDone == true) {
                   return RoundedContainerWidget(
                     child: Row(
                       children: [
                         const Icon(Icons.done_all),
+                        Text(
+                          LongMessage.tripDone,
+                          style: AppTextStyles.text(AppColors.textColor),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                if (state.didDriverArrive == true) {
+                  return RoundedContainerWidget(
+                    child: Row(
+                      children: [
+                        const Icon(Icons.handshake),
                         Text(
                           LongMessage.driverArrived,
                           style: AppTextStyles.text(AppColors.textColor),
@@ -94,6 +106,7 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
                     ),
                   );
                 }
+                return buildDriverArrivalEstimation(state);
               },
             ),
             24.vertical,
@@ -164,6 +177,7 @@ class _RealTimeTrackingScreenState extends State<RealTimeTrackingScreen> {
             bold: true,
           ),
         ),
+        8.horizontal,
         Expanded(
           child: Text(
             value ?? ErrorMessage.isNotDetermined,

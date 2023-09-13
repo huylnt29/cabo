@@ -40,6 +40,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   /// Controller to handle bottom nav bar and also handles initial page
   final _controller = NotchBottomBarController(index: 0);
 
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
   @override
   void dispose() {
     _screenController.dispose();
@@ -49,20 +51,36 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   void didChangeDependencies() {
     listenToForegroundMessage();
+    listenToMessageInTerminatedApp();
     super.didChangeDependencies();
   }
 
   void listenToForegroundMessage() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      Logger.v('Got foreground message: ${message.data}');
+      Logger.custom(
+        Logger.yellow,
+        'Got foreground message: ${message.data}',
+      );
       getIt<NotificationUseCase>().handleFcmData(
         message,
         context.read<NotificationBloc>(),
       );
 
       if (message.notification != null) {
-        Logger.v(
+        Logger.custom(
+          Logger.cyan,
           'Message also contains a notification: ${message.notification}',
+        );
+      }
+    });
+  }
+
+  void listenToMessageInTerminatedApp() {
+    firebaseMessaging.getInitialMessage().then((message) async {
+      if (message != null) {
+        getIt<NotificationUseCase>().handleFcmData(
+          message,
+          context.read<NotificationBloc>(),
         );
       }
     });

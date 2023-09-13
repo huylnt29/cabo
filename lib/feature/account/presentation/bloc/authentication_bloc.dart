@@ -63,10 +63,10 @@ class AuthenticationBloc
     final user = firebaseAuth.currentUser;
 
     if (user != null) {
-      Logger.v('Current Firebase user: $user');
+      Logger.custom(Logger.green, 'Current Firebase user: $user');
       final refreshedIdToken = await user.getIdToken(true);
 
-      Logger.v('Refreshed ID token: $refreshedIdToken');
+      Logger.custom(Logger.green, 'Refreshed ID token: $refreshedIdToken');
 
       await SharedPreferencesHelper.instance.setString(
         sharedPreferencesRequest: SharedPreferencesRequest<String>(
@@ -187,7 +187,7 @@ class AuthenticationBloc
         try {
           final customerId = await getCustomerId();
           ToastWidget.show('Getting customer id...');
-          Logger.v('Customer ID: $customerId');
+          Logger.custom(Logger.green, 'Customer ID: $customerId');
           ToastWidget.show(customerId);
           await putAccountIntoIsar(customerId);
         } on Exception catch (error) {
@@ -252,7 +252,7 @@ class AuthenticationBloc
   Future<void> setUpFcmToken() async {
     final token = await firebaseMessaging.getToken();
 
-    Logger.v('FCM token: $token');
+    Logger.custom(Logger.green, 'FCM token: $token');
 
     await _authenticationUseCase.registerFcmNotification(token!);
 

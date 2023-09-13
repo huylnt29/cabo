@@ -27,7 +27,10 @@ class DriveBookingBloc extends Bloc<DriveBookingEvent, DriveBookingState> {
       try {
         final response = await driveBookingRepository.getFirstBookingResponse();
         Logger.v('Current booking response: $response');
-        emit(state.copyWith(bookingResponse: response));
+        emit(state.copyWith(
+          bookingResponse: response,
+          bookingLoadState: LoadState.loaded,
+        ));
       } catch (error) {
         Logger.e(error);
       }

@@ -18,3 +18,11 @@ class AnnounceDriverArrivedEvent extends NotificationEvent {
 class ResetDriverArrivedEvent extends NotificationEvent {
   ResetDriverArrivedEvent();
 }
+
+class AnnounceTripDoneEvent extends NotificationEvent {
+  AnnounceTripDoneEvent();
+}
+
+class ResetTripDoneEvent extends NotificationEvent {
+  ResetTripDoneEvent();
+}

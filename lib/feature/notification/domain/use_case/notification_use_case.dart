@@ -24,6 +24,7 @@ class NotificationUseCase {
           notificationBloc.add(AnnounceDriverArrivedEvent());
           break;
         case NotificationCategory.informTripDone:
+          notificationBloc.add(AnnounceTripDoneEvent());
           getIt<DriveBookingRepository>().deleteFirstBookingResponse();
           break;
 

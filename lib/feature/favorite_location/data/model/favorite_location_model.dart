@@ -15,5 +15,5 @@ class FavoriteLocation {
   FavoritePlace favoritePlace = FavoritePlace.other;
   String? address;
   Location? location;
-  // String? famousNearbySite;
+  DateTime modifiedAt = DateTime.now();
 }

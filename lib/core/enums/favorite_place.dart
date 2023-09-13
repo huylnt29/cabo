@@ -1,6 +1,5 @@
-import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
-
 enum FavoritePlace {
+  recent,
   home,
   office,
   relativeHouse,
@@ -14,8 +13,10 @@ enum FavoritePlace {
 extension FavoritePlaceX on FavoritePlace {
   String get name {
     switch (this) {
+      case FavoritePlace.recent:
+        return 'Recent';
       case FavoritePlace.other:
-        return ErrorMessage.isNotDetermined;
+        return 'Other';
       case FavoritePlace.home:
         return 'Home';
       case FavoritePlace.office:

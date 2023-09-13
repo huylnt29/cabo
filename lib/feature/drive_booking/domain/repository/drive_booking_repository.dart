@@ -1,3 +1,4 @@
+import 'package:cabo_customer/core/enums/favorite_place.dart';
 import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/enums/vehicle_type.dart';
 import 'package:cabo_customer/core/network/local/isar/isar_database.dart';
@@ -7,7 +8,9 @@ import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.
 import 'package:cabo_customer/feature/drive_booking/data/model/form_booking_request.dart';
 
 import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.dart';
+import 'package:cabo_customer/feature/favorite_location/data/model/favorite_location_model.dart';
 import 'package:dio/dio.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/date_time.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -16,6 +19,7 @@ import '../../../../core/model/address.dart';
 import '../../../../core/model/location.dart';
 import '../../../../core/network/remote/cabo_server/api_client.dart';
 import '../../../account/data/model/account_model.dart';
+import '../../../favorite_location/domain/repository/favorite_location_repository.dart';
 
 part '../../data/remote_data_source/drive_booking_remote_data_source.dart';
 part '../../data/local_data_source/drive_booking_local_data_source.dart';
@@ -47,15 +51,17 @@ abstract class DriveBookingRepository {
 @Injectable(as: DriveBookingRepository)
 class DriveBookingRepositoryImpl extends DriveBookingRepository {
   DriveBookingRepositoryImpl(
-    this.driveBookingRemoteDataSource,
-    this.driveBookingLocalDataSource,
+    this.remoteDataSource,
+    this.localDataSource,
+    this.favoriteLocationLocalDataSource,
   );
-  final DriveBookingRemoteDataSource driveBookingRemoteDataSource;
-  final DriveBookingLocalDataSource driveBookingLocalDataSource;
+  final DriveBookingRemoteDataSource remoteDataSource;
+  final DriveBookingLocalDataSource localDataSource;
+  final FavoriteLocationLocalDataSource favoriteLocationLocalDataSource;
 
   @override
   Future<List<Address>> getAddressList(String keyword) async {
-    final response = await driveBookingRemoteDataSource.getAddressList(keyword);
+    final response = await remoteDataSource.getAddressList(keyword);
     return response;
   }
 
@@ -65,7 +71,7 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
     Address toAddress,
     VehicleType vehicleType,
   ) async {
-    final response = await driveBookingRemoteDataSource.getTripEstimation(
+    final response = await remoteDataSource.getTripEstimation(
       fromAddress.location!,
       toAddress.location!,
       vehicleType.serverKey,
@@ -83,7 +89,7 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
   ) async {
     final account =
         await getIt<AuthenticationLocalDataSource>().getFirstAccount();
-    final response = await driveBookingRemoteDataSource.proceedBooking(
+    final response = await remoteDataSource.proceedBooking(
       account!,
       fromLocation,
       toLocation,
@@ -96,7 +102,7 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
 
   @override
   Future<BookingResponse?> getFirstBookingResponse() async {
-    return driveBookingLocalDataSource.getFirstBookingResponse();
+    return localDataSource.getFirstBookingResponse();
   }
 
   @override
@@ -104,7 +110,7 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
     BookingResponse bookingResponse,
     FormBookingRequest bookingRequest,
   ) async {
-    return driveBookingLocalDataSource.saveBookingResponse(
+    return localDataSource.saveBookingResponse(
       bookingResponse.copyWith(
         formBookingRequest: bookingRequest,
       ),
@@ -113,6 +119,26 @@ class DriveBookingRepositoryImpl extends DriveBookingRepository {
 
   @override
   Future<bool> deleteFirstBookingResponse() async {
-    return driveBookingLocalDataSource.deleteFirstBookingResponse();
+    final bookingResponse = await localDataSource.getFirstBookingResponse();
+    if (bookingResponse != null) {
+      await handleSaveFavoriteLocation(bookingResponse.request!.fromAddress!);
+      await handleSaveFavoriteLocation(bookingResponse.request!.toAddress!);
+    }
+    return localDataSource.deleteFirstBookingResponse();
+  }
+
+  Future<dynamic> handleSaveFavoriteLocation(Address address) async {
+    final favoriteLocation =
+        await favoriteLocationLocalDataSource.checkLocalExistence(
+      address.location!,
+    );
+    return (favoriteLocation == null)
+        ? favoriteLocationLocalDataSource.putFavoriteLocation(
+            'A place on ${DateTime.now().timeFirstDateAfter}',
+            FavoritePlace.recent,
+            address.address!,
+            address.location!,
+          )
+        : favoriteLocationLocalDataSource.updateByKey(favoriteLocation);
   }
 }

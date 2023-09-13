@@ -6,5 +6,6 @@ class NotificationState with _$NotificationState {
     String? driverRemainingDistance,
     String? driverRemainingTime,
     bool? didDriverArrive,
+    bool? didTripDone,
   }) = _NotificationState;
 }

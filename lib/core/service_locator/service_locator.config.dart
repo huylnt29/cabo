@@ -27,14 +27,14 @@ import '../../feature/account/presentation/bloc/authentication_bloc.dart'
 import '../../feature/drive_booking/domain/repository/drive_booking_repository.dart'
     as _i9;
 import '../../feature/drive_booking/presentation/bloc/drive_booking_bloc.dart'
-    as _i17;
+    as _i20;
 import '../../feature/favorite_location/domain/repository/favorite_location_repository.dart'
     as _i10;
 import '../../feature/favorite_location/presentation/bloc/favorite_location_bloc.dart'
-    as _i18;
+    as _i17;
 import '../../feature/home/data/repository/home_repository_impl.dart' as _i11;
 import '../../feature/home/domain/repository/home_repository.dart' as _i12;
-import '../../feature/home/presentation/bloc/home_bloc.dart' as _i19;
+import '../../feature/home/presentation/bloc/home_bloc.dart' as _i18;
 import '../../feature/notification/domain/use_case/notification_use_case.dart'
     as _i14;
 import '../../feature/notification/presentation/bloc/notification_bloc.dart'
@@ -42,7 +42,7 @@ import '../../feature/notification/presentation/bloc/notification_bloc.dart'
 import '../../feature/trip_history/domain/repository/trip_history_repository.dart'
     as _i15;
 import '../../feature/trip_history/presentation/cubit/trip_history_cubit.dart'
-    as _i20;
+    as _i19;
 import '../network/remote/cabo_server/api_client.dart' as _i5;
 
 // ignore_for_file: unnecessary_lambdas
@@ -73,10 +73,6 @@ _i1.GetIt $initGetIt(
       () => _i9.DriveBookingLocalDataSource());
   gh.factory<_i9.DriveBookingRemoteDataSource>(
       () => _i9.DriveBookingRemoteDataSource(gh<_i5.ApiClient>()));
-  gh.factory<_i9.DriveBookingRepository>(() => _i9.DriveBookingRepositoryImpl(
-        gh<_i9.DriveBookingRemoteDataSource>(),
-        gh<_i9.DriveBookingLocalDataSource>(),
-      ));
   gh.factory<_i10.FavoriteLocationLocalDataSource>(
       () => _i10.FavoriteLocationLocalDataSource());
   gh.factory<_i10.FavoriteLocationRepository>(() =>
@@ -94,12 +90,17 @@ _i1.GetIt $initGetIt(
       _i15.TripHistoryRepositoryImpl(gh<_i15.TripHistoryRemoteDataSource>()));
   gh.factory<_i16.AuthenticationBloc>(
       () => _i16.AuthenticationBloc(gh<_i8.AuthenticationUseCase>()));
-  gh.factory<_i17.DriveBookingBloc>(
-      () => _i17.DriveBookingBloc(gh<_i9.DriveBookingRepository>()));
-  gh.factory<_i18.FavoriteLocationBloc>(
-      () => _i18.FavoriteLocationBloc(gh<_i10.FavoriteLocationRepository>()));
-  gh.factory<_i19.HomeBloc>(() => _i19.HomeBloc(gh<_i12.HomeRepository>()));
-  gh.factory<_i20.TripHistoryCubit>(
-      () => _i20.TripHistoryCubit(gh<_i15.TripHistoryRepository>()));
+  gh.factory<_i9.DriveBookingRepository>(() => _i9.DriveBookingRepositoryImpl(
+        gh<_i9.DriveBookingRemoteDataSource>(),
+        gh<_i9.DriveBookingLocalDataSource>(),
+        gh<_i10.FavoriteLocationLocalDataSource>(),
+      ));
+  gh.factory<_i17.FavoriteLocationBloc>(
+      () => _i17.FavoriteLocationBloc(gh<_i10.FavoriteLocationRepository>()));
+  gh.factory<_i18.HomeBloc>(() => _i18.HomeBloc(gh<_i12.HomeRepository>()));
+  gh.factory<_i19.TripHistoryCubit>(
+      () => _i19.TripHistoryCubit(gh<_i15.TripHistoryRepository>()));
+  gh.factory<_i20.DriveBookingBloc>(
+      () => _i20.DriveBookingBloc(gh<_i9.DriveBookingRepository>()));
   return getIt;
 }

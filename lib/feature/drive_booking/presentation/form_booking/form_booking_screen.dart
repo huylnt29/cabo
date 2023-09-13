@@ -6,7 +6,6 @@ import 'package:cabo_customer/feature/drive_booking/data/model/form_booking_requ
 import 'package:cabo_customer/feature/drive_booking/presentation/location_searching/location_searching_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:huylnt_flutter_component/reusable_core/constants/error_message.dart';
 import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
@@ -45,20 +44,22 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
     driveBookingBloc = context.read<DriveBookingBloc>()
       ..add(FetchCurrentBookingEvent());
     driveBookingBloc.stream.listen((state) {
-      if (state.bookingResponse != null) {
-        navigateToRealTimeTrackingScreen(
-          context,
-          state.bookingResponse!.tripId,
-          state.bookingResponse!.driver,
-          state.bookingResponse!.request,
-        );
-      } else if (state.bookingLoadState == LoadState.loaded) {
-        navigateToRealTimeTrackingScreen(
-          context,
-          null,
-          null,
-          null,
-        );
+      if (state.bookingLoadState == LoadState.loaded) {
+        if (state.bookingResponse == null) {
+          navigateToRealTimeTrackingScreen(
+            context,
+            null,
+            null,
+            null,
+          );
+        } else {
+          navigateToRealTimeTrackingScreen(
+            context,
+            state.bookingResponse!.tripId,
+            state.bookingResponse!.driver,
+            state.bookingResponse!.request,
+          );
+        }
       } else if (state.bookingLoadState == LoadState.error) {
         // TODO: Handle later
       }
