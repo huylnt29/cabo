@@ -86,6 +86,10 @@ class AuthenticationBloc
         loadState: LoadState.loaded,
         canLoginAutomatically: false,
       ));
+      await Future.delayed(
+        Duration.zero,
+        () => emit(state.copyWith(loadState: LoadState.initial)),
+      );
     }
   }
 
@@ -120,7 +124,10 @@ class AuthenticationBloc
     fullName = event.fullName;
     phoneNumber = event.phoneNumber;
     await _authenticateWithPhone(event, emit);
-    emit(state.copyWith(canNavigateToOtpScreen: true));
+    emit(state.copyWith(
+      canNavigateToOtpScreen: true,
+      loadState: LoadState.initial,
+    ));
   }
 
   Future<void> _authenticateWithPhone(

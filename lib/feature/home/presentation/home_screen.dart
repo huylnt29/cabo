@@ -148,39 +148,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       AppColors.secondaryColor,
                     ),
                   ),
-                  Column(
-                    children: [
-                      buildRecentTripFieldItem(
-                        'Cost',
-                        customerSummary.recentTrip!.cost,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Distance',
-                        customerSummary.recentTrip!.distance,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Booking time',
-                        customerSummary.recentTrip!.formattedStartTime,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Arriving time',
-                        customerSummary.recentTrip!.formattedEndTime,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Booking location',
-                        customerSummary.recentTrip!.orderLocation,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Destination',
-                        customerSummary.recentTrip!.toLocation,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Payment type',
-                        customerSummary.recentTrip!.paymentType?.text ??
-                            ErrorMessage.isNotDetermined,
-                      ),
-                    ],
-                  )
+                  if (customerSummary.recentTrip != null)
+                    Column(
+                      children: [
+                        buildRecentTripFieldItem(
+                          'Cost',
+                          customerSummary.recentTrip!.cost,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Distance',
+                          customerSummary.recentTrip!.distance,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Booking time',
+                          customerSummary.recentTrip!.formattedStartTime,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Arriving time',
+                          customerSummary.recentTrip!.formattedEndTime,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Booking location',
+                          customerSummary.recentTrip!.orderLocation,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Destination',
+                          customerSummary.recentTrip!.toLocation,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Payment type',
+                          customerSummary.recentTrip!.paymentType?.text ??
+                              ErrorMessage.isNotDetermined,
+                        ),
+                      ],
+                    )
                 ],
               ),
             )

@@ -6,6 +6,7 @@ import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/account/presentation/bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/button_widget.dart';
@@ -33,13 +34,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (state.canNavigateToOtpScreen) {
           Routes.router.navigateTo(context, RoutePath.otpScreen);
         }
       },
-      child: CompleteScaffoldWidget(
+      builder: (context, state) => CompleteScaffoldWidget(
         backButtonEnabled: false,
         appBarTextWidget: Text(
           'Sign up',
@@ -69,15 +70,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         bottomNavigationBar: ButtonWidget(
           backgroundColor: AppColors.accentColor,
-          title: 'Submit',
-          onPressed: () {
-            _authenticationBloc.add(
-              PhoneSentToFirebaseEvent(
-                phoneNumerController.text,
-                fullnameController.text,
-              ),
-            );
-          },
+          title: (state.loadState == LoadState.initial)
+              ? 'Submit'
+              : 'Proceeding...',
+          onPressed: () => _authenticationBloc.add(
+            PhoneSentToFirebaseEvent(
+              phoneNumerController.text,
+              fullnameController.text,
+            ),
+          ),
         ),
       ),
     );

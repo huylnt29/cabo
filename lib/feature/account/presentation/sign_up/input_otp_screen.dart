@@ -7,6 +7,7 @@ import 'package:cabo_customer/core/theme/app_colors.dart';
 import 'package:cabo_customer/feature/account/presentation/bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 import 'package:huylnt_flutter_component/reusable_core/theme/app_text_styles.dart';
 import 'package:huylnt_flutter_component/reusable_core/widgets/button_widget.dart';
@@ -32,7 +33,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (state.otpCorrect) {
           Routes.router.navigateTo(
@@ -41,7 +42,7 @@ class _OtpScreenState extends State<OtpScreen> {
           );
         }
       },
-      child: CompleteScaffoldWidget(
+      builder: (context, state) => CompleteScaffoldWidget(
         backButtonEnabled: false,
         appBarTextWidget: Text(
           'Verify OTP',
@@ -79,7 +80,9 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
         bottomNavigationBar: ButtonWidget(
           backgroundColor: AppColors.accentColor,
-          title: 'Submit',
+          title: (state.loadState == LoadState.loading)
+              ? 'Verifying...'
+              : 'Submit',
           onPressed: () => _authenticationBloc.add(
             OtpVerificationEvent(otpController.text),
           ),
