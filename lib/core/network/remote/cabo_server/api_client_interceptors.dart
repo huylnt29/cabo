@@ -21,7 +21,7 @@ class ApiClientInterceptors extends InterceptorsWrapper {
 
     if (token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
-      Logger.v('Bearer $token');
+      Logger.custom(Logger.green, 'Bearer $token');
     }
 
     super.onRequest(options, handler);

@@ -2,6 +2,10 @@ part of 'drive_booking_bloc.dart';
 
 abstract class DriveBookingEvent {}
 
+class FetchCurrentBookingEvent extends DriveBookingEvent {
+  FetchCurrentBookingEvent();
+}
+
 class GetAddressListEvent extends DriveBookingEvent {
   GetAddressListEvent(this.locationKeyword);
   final String locationKeyword;
@@ -9,16 +13,31 @@ class GetAddressListEvent extends DriveBookingEvent {
 
 class ConfirmBookingEvent extends DriveBookingEvent {
   ConfirmBookingEvent(
-    this.fromLocation,
-    this.toLocation,
+    this.fromAddress,
+    this.toAddress,
     this.paymentMethod,
     this.vehicleType,
   );
-  final Address fromLocation;
-  final Address toLocation;
-  final int paymentMethod;
-  final int vehicleType;
+  final Address fromAddress;
+  final Address toAddress;
+  final PaymentMethod paymentMethod;
+  final VehicleType vehicleType;
 
   String get string =>
-      '${fromLocation.toJson()} - ${toLocation.toJson()} - $paymentMethod - $vehicleType';
+      '${fromAddress.toJson()} - ${toAddress.toJson()} - $paymentMethod - $vehicleType';
+}
+
+class ResetBookingEvent extends DriveBookingEvent {
+  ResetBookingEvent();
+}
+
+class TripEstimatingEvent extends DriveBookingEvent {
+  TripEstimatingEvent(
+    this.fromAddress,
+    this.toAddress,
+    this.vehicleType,
+  );
+  final Address fromAddress;
+  final Address toAddress;
+  final VehicleType vehicleType;
 }

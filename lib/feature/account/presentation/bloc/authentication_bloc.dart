@@ -1,6 +1,7 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, implementation_imports
 
 import 'dart:io';
+
 import 'package:cabo_customer/core/network/local/shared_preferences/shared_preferences_request_model.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:bloc/bloc.dart';
@@ -62,10 +63,10 @@ class AuthenticationBloc
     final user = firebaseAuth.currentUser;
 
     if (user != null) {
-      Logger.v('Current Firebase user: $user');
+      Logger.custom(Logger.green, 'Current Firebase user: $user');
       final refreshedIdToken = await user.getIdToken(true);
 
-      Logger.v('Refreshed ID token: $refreshedIdToken');
+      Logger.custom(Logger.green, 'Refreshed ID token: $refreshedIdToken');
 
       await SharedPreferencesHelper.instance.setString(
         sharedPreferencesRequest: SharedPreferencesRequest<String>(
@@ -85,9 +86,14 @@ class AuthenticationBloc
         loadState: LoadState.loaded,
         canLoginAutomatically: false,
       ));
+      await Future.delayed(
+        Duration.zero,
+        () => emit(state.copyWith(loadState: LoadState.initial)),
+      );
     }
   }
 
+  // TODO: Use later
   Future<void> _checkPhoneExistence(
       PhoneExistenceCheckEvent event, Emitter<AuthenticationState> emit) async {
     emit(state.copyWith(loadState: LoadState.loading));
@@ -103,6 +109,7 @@ class AuthenticationBloc
     PhoneSentToFirebaseEvent event,
     Emitter<AuthenticationState> emit,
   ) async {
+    // TODO: Use later
     // if (event.phoneNumber.length != 10) {
     //   ToastWidget.show('Phone number must include 10 digits.');
     // } else if (event.fullName.length < 3) {
@@ -117,7 +124,10 @@ class AuthenticationBloc
     fullName = event.fullName;
     phoneNumber = event.phoneNumber;
     await _authenticateWithPhone(event, emit);
-    emit(state.copyWith(canNavigateToOtpScreen: true));
+    emit(state.copyWith(
+      canNavigateToOtpScreen: true,
+      loadState: LoadState.initial,
+    ));
   }
 
   Future<void> _authenticateWithPhone(
@@ -127,6 +137,7 @@ class AuthenticationBloc
     emit(state.copyWith(loadState: LoadState.loading));
 
     await firebaseAuth.verifyPhoneNumber(
+      // TODO: Add +84 later
       phoneNumber: event.phoneNumber,
       verificationCompleted: (credential) async {
         await firebaseAuth.signInWithCredential(credential);
@@ -135,13 +146,14 @@ class AuthenticationBloc
         if (error.code == 'invalid-phone-number') {
           ToastWidget.show('The given number is not valid');
         } else {
-          ToastWidget.show(error.toString());
+          // ToastWidget.show(error.toString());
           Logger.e(error);
         }
       },
       codeSent: (verificationId, forceResendToken) async {
         firebaseVerificationId = verificationId;
         Logger.v('Code sent.');
+        ToastWidget.show('Code sent.');
         Logger.v('Verification ID: $verificationId');
         firebaseVerificationId = verificationId;
       },
@@ -170,6 +182,7 @@ class AuthenticationBloc
       if (user != null) {
         final idToken = await user.getIdToken();
         Logger.v('ID token $idToken');
+        // ToastWidget.show(idToken);
 
         await SharedPreferencesHelper.instance.setString(
           sharedPreferencesRequest: SharedPreferencesRequest<String>(
@@ -178,9 +191,15 @@ class AuthenticationBloc
           ),
         );
 
-        final customerId = await getCustomerId();
-        Logger.v('Customer ID: $customerId');
-        await putAccountIntoIsar(customerId);
+        try {
+          final customerId = await getCustomerId();
+          ToastWidget.show('Getting customer id...');
+          Logger.custom(Logger.green, 'Customer ID: $customerId');
+          // ToastWidget.show(customerId);
+          await putAccountIntoIsar(customerId);
+        } on Exception catch (error) {
+          ToastWidget.show(error);
+        }
 
         emit(state.copyWith(
           loadState: LoadState.loaded,
@@ -212,16 +231,6 @@ class AuthenticationBloc
   Future<void> invokeFcmListener() async {
     await requestNotificationPermission();
     await setUpFcmToken();
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      Logger.v('Got foreground message: ${message.data}');
-
-      if (message.notification != null) {
-        Logger.v(
-          'Message also contains a notification: ${message.notification}',
-        );
-      }
-    });
   }
 
   Future<void> requestPermission() async {
@@ -250,7 +259,7 @@ class AuthenticationBloc
   Future<void> setUpFcmToken() async {
     final token = await firebaseMessaging.getToken();
 
-    Logger.v('FCM token: $token');
+    Logger.custom(Logger.green, 'FCM token: $token');
 
     await _authenticationUseCase.registerFcmNotification(token!);
 

@@ -3,23 +3,32 @@
 import 'dart:math';
 
 import 'package:cabo_customer/core/automatic_generator/assets.gen.dart';
+import 'package:cabo_customer/core/extensions/build_context.dart';
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
-
-import 'package:cabo_customer/feature/drive_history/presentation/drive_history_screen.dart';
+import 'package:cabo_customer/feature/drive_booking/presentation/bloc/drive_booking_bloc.dart';
+import 'package:cabo_customer/feature/trip_history/presentation/cubit/trip_history_cubit.dart';
+import 'package:huylnt_flutter_component/reusable_core/widgets/cached_network_image_widget.dart';
+import 'package:cabo_customer/feature/trip_history/presentation/trip_history_screen.dart';
 import 'package:cabo_customer/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:cabo_customer/feature/home/presentation/home_screen.dart';
+import 'package:cabo_customer/feature/notification/domain/use_case/notification_use_case.dart';
+import 'package:cabo_customer/feature/notification/presentation/bloc/notification_bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:huylnt_flutter_component/reusable_core/extensions/font_size.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 
-import '../core/faked_data/faked_account.dart';
+import '../core/faked_data/faked_data.dart';
+import '../core/router/route_config.dart';
+import '../core/router/route_paths.dart';
 import 'drive_booking/presentation/form_booking/form_booking_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
-
+  const BottomNavBar({super.key, this.index});
+  final int? index;
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
@@ -32,26 +41,81 @@ class _BottomNavBarState extends State<BottomNavBar> {
   /// Controller to handle bottom nav bar and also handles initial page
   final _controller = NotchBottomBarController(index: 0);
 
-  @override
-  void dispose() {
-    _screenController.dispose();
-    super.dispose();
-  }
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   final List<Widget> bottomBarScreens = [
-    BlocProvider(
-      create: (_) => getIt<HomeBloc>()..fetchDataForScreen(),
+    BlocProvider.value(
+      value: getIt<HomeBloc>()..fetchDataForScreen(),
       child: const HomeScreen(),
     ),
     const FormBookingScreen(),
-    const DriveHistoryScreen(),
+    BlocProvider.value(
+      value: getIt<TripHistoryCubit>()..getTripHistory(),
+      child: const TripHistoryScreen(),
+    ),
   ];
+
+  // @override
+  // void dispose() {
+  //   _screenController.dispose();
+  //   super.dispose();
+  // }
+
+  @override
+  void didChangeDependencies() {
+    listenToForegroundMessage();
+    listenToMessageInTerminatedApp();
+    super.didChangeDependencies();
+  }
+
+  void listenToForegroundMessage() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      Logger.custom(
+        Logger.yellow,
+        'Got foreground message: ${message.data}',
+      );
+      getIt<NotificationUseCase>().handleFcmData(
+        message,
+        context,
+      );
+
+      if (message.notification != null) {
+        Logger.custom(
+          Logger.cyan,
+          'Message also contains a notification: ${message.notification.toString()}',
+        );
+      }
+    });
+  }
+
+  void listenToMessageInTerminatedApp() {
+    firebaseMessaging.getInitialMessage().then((message) async {
+      if (message != null) {
+        getIt<NotificationUseCase>().handleFcmData(
+          message,
+          context,
+        );
+      }
+    });
+  }
 
   final List<String> screenTitles = [
     'Home',
     'Drive booking',
     'Booking history',
   ];
+
+  Widget buildFavoriteLocationAction() {
+    return IconButton(
+      onPressed: () => Routes.router.navigateTo(
+        context,
+        RoutePath.viewFavoriteLocationScreen,
+      ),
+      icon: Assets.icons.favoriteLocation.svg(
+        color: AppColors.accentColor,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,23 +129,19 @@ class _BottomNavBarState extends State<BottomNavBar> {
         leading: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 10.sf,
-            horizontal: 5.sf,
-          ),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(
-              fakedAvatar[Random().nextInt(fakedAvatar.length)],
+          ).copyWith(left: 12.sf),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: CachedNetWorkImageWidget(
+              imageUrl: FakedData
+                  .fakedAvatar[Random().nextInt(FakedData.fakedAvatar.length)],
             ),
           ),
         ),
         backgroundColor: AppColors.secondaryColor,
         foregroundColor: AppColors.primaryColor,
         actions: [
-          Container(
-            margin: EdgeInsets.only(right: 20.sf),
-            child: Assets.icons.favoriteLocation.svg(
-              color: AppColors.primaryColor,
-            ),
-          )
+          buildFavoriteLocationAction(),
         ],
       ),
       body: PageView(

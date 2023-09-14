@@ -1,7 +1,9 @@
 import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/enums/vehicle_type.dart';
+import 'package:cabo_customer/core/extensions/build_context.dart';
 import 'package:cabo_customer/core/model/address.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/form_booking_request.dart';
 import 'package:cabo_customer/feature/drive_booking/presentation/location_searching/location_searching_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +16,8 @@ import 'package:huylnt_flutter_component/reusable_core/widgets/toast_widget.dart
 
 import '../../../../core/router/route_config.dart';
 import '../../../../core/router/route_paths.dart';
-import '../../../../core/service_locator/service_locator.dart';
+
+import '../../data/model/booking_response.dart';
 import '../bloc/drive_booking_bloc.dart';
 
 class FormBookingScreen extends StatefulWidget {
@@ -25,11 +28,67 @@ class FormBookingScreen extends StatefulWidget {
 }
 
 class _FormBookingScreenState extends State<FormBookingScreen> {
-  final driveBookingBloc = getIt<DriveBookingBloc>();
+  late DriveBookingBloc driveBookingBloc;
   final vehicleTypeIndex = ValueNotifier(0);
   final paymentMethodIndex = ValueNotifier(0);
-  Address? fromLocation;
-  Address? toLocation;
+  Address? fromAddress;
+  Address? toAddress;
+
+  @override
+  void initState() {
+    vehicleTypeIndex.addListener(() => triggerTripEstimatingEventIfCan());
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    driveBookingBloc = context.read<DriveBookingBloc>();
+    driveBookingBloc.add(FetchCurrentBookingEvent());
+
+    driveBookingBloc.stream.listen((state) {
+      if (state.bookingLoadState == LoadState.loaded) {
+        if (state.bookingResponse == null) {
+          if (state.yetBooked == true) {
+            navigateToRealTimeTrackingScreen(
+              context,
+              null,
+              null,
+              null,
+            );
+          }
+        } else {
+          navigateToRealTimeTrackingScreen(
+            context,
+            state.bookingResponse!.tripId,
+            state.bookingResponse!.driver,
+            state.bookingResponse!.request,
+          );
+        }
+      } else if (state.bookingLoadState == LoadState.error) {
+        // TODO: Handle later
+      }
+    });
+    super.didChangeDependencies();
+  }
+
+  Future<dynamic> navigateToRealTimeTrackingScreen(
+    BuildContext context,
+    String? tripId,
+    Driver? driver,
+    FormBookingRequest? bookingRequest,
+  ) {
+    return Routes.router.navigateTo(
+      context,
+      RoutePath.realTimeTrackingScreen,
+      routeSettings: RouteSettings(
+        arguments: {
+          'tripId': tripId,
+          'driver': driver,
+          'bookingRequest': bookingRequest,
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +113,8 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
           ),
           12.vertical,
           buildPaymentMethodArea(),
-          BlocProvider.value(
-            value: driveBookingBloc,
-            child: buildSubmitButton(),
-          ),
+          24.vertical,
+          buildTripEstimationWithSubmitButton(),
         ],
       ),
     );
@@ -77,17 +134,19 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
               ),
               ButtonWidget(
                 margin: EdgeInsets.zero,
-                title: fromLocation?.address ?? 'Pick a place',
+                title: fromAddress?.address ?? 'Pick a place',
+                titleFontSize: 13,
                 onPressed: () async {
                   final response = await Routes.router.navigateTo(
                     context,
                     RoutePath.locationSearchingScreen,
                     routeSettings: const RouteSettings(
-                      arguments: LocationSearchingPurpose.bookingToLocation,
+                      arguments: LocationSearchingPurpose.bookingFromLocation,
                     ),
                   );
                   setState(() {
-                    fromLocation = response;
+                    fromAddress = response;
+                    triggerTripEstimatingEventIfCan();
                   });
                 },
                 titleColor: AppColors.textColor,
@@ -103,7 +162,8 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
               ),
               ButtonWidget(
                 margin: EdgeInsets.zero,
-                title: toLocation?.address ?? 'Pick a place',
+                title: toAddress?.address ?? 'Pick a place',
+                titleFontSize: 13,
                 onPressed: () async {
                   final response = await Routes.router.navigateTo(
                     context,
@@ -113,7 +173,8 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
                     ),
                   );
                   setState(() {
-                    toLocation = response;
+                    toAddress = response;
+                    triggerTripEstimatingEventIfCan();
                   });
                 },
                 titleColor: AppColors.textColor,
@@ -216,35 +277,129 @@ class _FormBookingScreenState extends State<FormBookingScreen> {
     );
   }
 
-  Widget buildSubmitButton() {
+  Widget buildTripEstimationWithSubmitButton() {
     return BlocBuilder<DriveBookingBloc, DriveBookingState>(
       builder: (context, state) {
-        return ButtonWidget(
-          disabled: (state.bookingLoadState == LoadState.loading),
-          margin: EdgeInsets.only(top: 18.sf),
-          backgroundColor: AppColors.accentColor,
-          title: (state.bookingLoadState != LoadState.loading)
-              ? 'Book now!'
-              : 'Finding driver...',
-          titleColor: AppColors.textColor,
-          onPressed: () {
-            if (fromLocation == null) {
-              ToastWidget.show('Please select your starting place');
-              return;
-            }
-            if (toLocation == null) {
-              ToastWidget.show('Please select your destination');
-              return;
-            }
-            driveBookingBloc.add(ConfirmBookingEvent(
-              fromLocation!,
-              toLocation!,
-              paymentMethodIndex.value,
-              vehicleTypeIndex.value,
-            ));
-          },
+        switch (state.tripEstimationLoadState) {
+          case LoadState.loaded || LoadState.loading:
+            return RoundedContainerWidget(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  8.vertical,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Distance',
+                        style: AppTextStyles.text(
+                          AppColors.secondaryColor,
+                          bold: true,
+                        ),
+                      ),
+                      Text(
+                        state.tripEstimation?.distance ?? 'Calculating...',
+                        style: AppTextStyles.text(
+                          AppColors.secondaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  12.vertical,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Cost',
+                        style: AppTextStyles.text(
+                          AppColors.secondaryColor,
+                          bold: true,
+                        ),
+                      ),
+                      Text(
+                        state.tripEstimation?.cost ?? 'Calculating...',
+                        style: AppTextStyles.text(
+                          AppColors.secondaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  buildActionButtons(),
+                ],
+              ),
+            );
+          default:
+            return buildActionButtons();
+        }
+      },
+    );
+  }
+
+  Widget buildActionButtons() {
+    return BlocBuilder<DriveBookingBloc, DriveBookingState>(
+      builder: (context, state) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ButtonWidget(
+              disabled: (state.bookingLoadState == LoadState.loading ||
+                  state.bookingLoadState == LoadState.loaded),
+              margin: EdgeInsets.only(top: 18.sf),
+              backgroundColor: AppColors.accentColor,
+              title: getSubmitButtonTitle(state.bookingLoadState),
+              titleColor: AppColors.textColor,
+              onPressed: () {
+                if (fromAddress == null) {
+                  ToastWidget.show('Please select your starting place');
+                  return;
+                }
+                if (toAddress == null) {
+                  ToastWidget.show('Please select your destination');
+                  return;
+                }
+                driveBookingBloc.add(ConfirmBookingEvent(
+                  fromAddress!,
+                  toAddress!,
+                  PaymentMethod.values[paymentMethodIndex.value],
+                  VehicleType.values[vehicleTypeIndex.value],
+                ));
+              },
+            ),
+            Visibility(
+              visible: state.bookingLoadState == LoadState.loading,
+              child: ButtonWidget(
+                disabled: false,
+                margin: EdgeInsets.zero,
+                backgroundColor: AppColors.blueBackgroundColor,
+                title: 'Cancel',
+                titleColor: AppColors.textColor,
+                onPressed: () {},
+              ),
+            ),
+          ],
         );
       },
     );
+  }
+
+  void triggerTripEstimatingEventIfCan() {
+    if (fromAddress != null && toAddress != null) {
+      driveBookingBloc.add(TripEstimatingEvent(
+        fromAddress!,
+        toAddress!,
+        VehicleType.values[vehicleTypeIndex.value],
+      ));
+    }
+  }
+
+  String getSubmitButtonTitle(LoadState bookingLoadState) {
+    switch (bookingLoadState) {
+      case LoadState.loading:
+        return 'Finding a driver...';
+      case LoadState.loaded:
+        return 'Currently in a drive...';
+      default:
+        return 'Book now!';
+    }
   }
 }

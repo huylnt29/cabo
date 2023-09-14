@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Padding(
             padding: EdgeInsets.all(36.sf),
             child: Text(
-              'A car booking app that eases your journey',
+              'A drive-booking app that eases your journey',
               textAlign: TextAlign.center,
               style: AppTextStyles.heading1(AppColors.primaryColor),
             ).align(Alignment.center),

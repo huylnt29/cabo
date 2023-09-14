@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:cabo_customer/core/model/voucher_model.dart';
 import 'package:cabo_customer/feature/account/data/model/account_model.dart';
+import 'package:cabo_customer/feature/drive_booking/data/model/booking_response.dart';
+import 'package:cabo_customer/feature/favorite_location/data/model/favorite_location_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:isar/isar.dart';
 
@@ -21,10 +23,16 @@ mixin IsarDatabase {
     final isarDir = Directory('${appDir.path}/isar');
     await isarDir.create(recursive: true);
 
-    final isar = await Isar.open([
-      AccountSchema,
-      VoucherSchema,
-    ], directory: isarDir.path, inspector: true);
+    final isar = await Isar.open(
+      [
+        AccountSchema,
+        VoucherSchema,
+        BookingResponseSchema,
+        FavoriteLocationSchema,
+      ],
+      directory: isarDir.path,
+      inspector: true,
+    );
 
     return isar;
   }

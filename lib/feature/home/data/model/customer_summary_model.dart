@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../../core/model/trip_model.dart';
+import '../../../trip_history/data/model/trip_model.dart';
 
 part 'customer_summary_model.g.dart';
 

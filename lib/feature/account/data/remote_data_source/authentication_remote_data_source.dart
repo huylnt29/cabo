@@ -1,5 +1,4 @@
 import 'package:cabo_customer/core/network/remote/cabo_server/api_client.dart';
-import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 
 class AuthenticationRemoteDataSource {
   AuthenticationRemoteDataSource(this._caboClient);

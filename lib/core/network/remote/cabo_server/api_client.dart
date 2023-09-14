@@ -3,6 +3,8 @@ import 'package:cabo_customer/feature/drive_booking/data/model/trip_estimation.d
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../../../feature/home/data/model/customer_summary_model.dart';
+import '../../../../feature/trip_history/data/model/trip_model.dart';
 import '../../../model/address.dart';
 
 part 'api_client.g.dart';
@@ -28,7 +30,12 @@ abstract class ApiClient {
   @GET('/customer/notification/subscribe/{fcmToken}')
   Future<HttpResponse> postFcmToken(@Path() String fcmToken);
 
-  @POST('/customer/drive-booking/estimate-cost')
+  @GET('/customer/{customerId}/overview')
+  Future<CustomerSummary> getCustomerOverview(
+    @Path() String customerId,
+  );
+
+  @POST('/bing-map/drive-booking/estimate-cost')
   Future<TripEstimation> postLocations(
     @Body() Map<String, dynamic> body,
   );
@@ -42,5 +49,10 @@ abstract class ApiClient {
   @GET('/bing-map/get-list-places')
   Future<List<Address>> getAddressList(
     @Query('searchLocation') String locationHint,
+  );
+
+  @GET('/trip/customer/{customerId}')
+  Future<List<Trip>> getTrips(
+    @Path() String customerId,
   );
 }

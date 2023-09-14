@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const greenBackgroundColor = Color.fromARGB(255, 162, 202, 184);
+
   AppColors._internall();
 
   static const Color primaryColor = Colors.white;

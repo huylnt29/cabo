@@ -1,3 +1,4 @@
+import 'package:cabo_customer/core/enums/payment_method.dart';
 import 'package:cabo_customer/core/theme/app_colors.dart';
 
 import 'package:cabo_customer/feature/home/data/model/customer_summary_model.dart';
@@ -147,39 +148,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       AppColors.secondaryColor,
                     ),
                   ),
-                  Column(
-                    children: [
-                      buildRecentTripFieldItem(
-                        'Cost',
-                        customerSummary.recentTrip!.formattedCost,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Distance',
-                        customerSummary.recentTrip!.formattedDistance,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Booking time',
-                        customerSummary.recentTrip!.formattedStartTime,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Arriving time',
-                        customerSummary.recentTrip!.formattedEndTime,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Booking location',
-                        customerSummary.recentTrip!.customerOrderLocation,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Destination',
-                        customerSummary.recentTrip!.toLocation,
-                      ),
-                      buildRecentTripFieldItem(
-                        'Payment type',
-                        customerSummary.recentTrip!.paymentType?.name ??
-                            ErrorMessage.isNotDetermined,
-                      ),
-                    ],
-                  )
+                  if (customerSummary.recentTrip != null)
+                    Column(
+                      children: [
+                        buildRecentTripFieldItem(
+                          'Cost',
+                          customerSummary.recentTrip!.cost,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Distance',
+                          customerSummary.recentTrip!.distance,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Booking time',
+                          customerSummary.recentTrip!.formattedStartTime,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Arriving time',
+                          customerSummary.recentTrip!.formattedEndTime,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Booking location',
+                          customerSummary.recentTrip!.orderLocation,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Destination',
+                          customerSummary.recentTrip!.toLocation,
+                        ),
+                        buildRecentTripFieldItem(
+                          'Payment type',
+                          customerSummary.recentTrip!.paymentType?.text ??
+                              ErrorMessage.isNotDetermined,
+                        ),
+                      ],
+                    )
                 ],
               ),
             )

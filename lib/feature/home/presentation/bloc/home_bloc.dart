@@ -4,6 +4,7 @@ import 'package:cabo_customer/feature/home/data/model/customer_summary_model.dar
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:huylnt_flutter_component/reusable_core/enums/load_state.dart';
+import 'package:huylnt_flutter_component/reusable_core/extensions/logger.dart';
 
 import '../../domain/repository/home_repository.dart';
 
@@ -17,12 +18,18 @@ class HomeBloc extends Cubit<HomeState> {
   final HomeRepository homeRepository;
 
   Future<void> fetchDataForScreen() async {
-    final customerSummary = await homeRepository.getCustomerSummary();
-    final vouchers = await homeRepository.getAllVouchers();
-    emit(state.copyWith(
-      customerSummary: customerSummary,
-      vouchers: vouchers,
-      loadState: LoadState.loaded,
-    ));
+    emit(state.copyWith(loadState: LoadState.loading));
+    try {
+      final customerSummary = await homeRepository.getCustomerSummary();
+      final vouchers = await homeRepository.getAllVouchers();
+      emit(state.copyWith(
+        customerSummary: customerSummary,
+        vouchers: vouchers,
+        loadState: LoadState.loaded,
+      ));
+    } on Exception catch (error) {
+      Logger.e(error);
+      emit(state.copyWith(loadState: LoadState.error));
+    }
   }
 }

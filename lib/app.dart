@@ -1,6 +1,8 @@
 import 'package:cabo_customer/core/service_locator/service_locator.dart';
 
 import 'package:cabo_customer/feature/account/presentation/bloc/authentication_bloc.dart';
+import 'package:cabo_customer/feature/drive_booking/presentation/bloc/drive_booking_bloc.dart';
+import 'package:cabo_customer/feature/notification/presentation/bloc/notification_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,8 +14,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => getIt<AuthenticationBloc>(),
+        BlocProvider.value(
+          value: getIt<AuthenticationBloc>(),
+        ),
+        BlocProvider.value(
+          value: getIt<NotificationBloc>(),
+        ),
+        BlocProvider.value(
+          value: getIt<DriveBookingBloc>(),
         ),
       ],
       child: MaterialApp(
@@ -27,3 +35,5 @@ class App extends StatelessWidget {
     );
   }
 }
+
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
